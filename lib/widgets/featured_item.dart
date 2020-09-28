@@ -74,6 +74,8 @@ class _FeaturedItem extends StatelessWidget {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
               "\$12.99",

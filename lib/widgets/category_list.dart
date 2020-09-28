@@ -73,7 +73,7 @@ class _CategoryItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.all(4),
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: Column(
                   children: [
                     Text(category.name, style: themeData.textTheme.headline5),

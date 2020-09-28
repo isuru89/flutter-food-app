@@ -111,7 +111,6 @@ class Sample3 extends StatelessWidget {
                   delegate: SessionBar(
                       preferredHeight: 96,
                       marginTop: 20,
-                      isElevated: true,
                       children: [SessionList(menuList: sessions), CategoryList(categoryList: categories)]
                   ),
                   pinned: true,
@@ -191,7 +190,7 @@ class SessionBar extends SliverPersistentHeaderDelegate {
     // final stick = ratio >= 0.03;
     return Container(
       height: preferredHeight,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 0),
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
         boxShadow: [
@@ -400,7 +399,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
         ClipRRect(
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40*(1-ratio)), bottomRight: Radius.circular(40*(1-ratio))),
           child: Image.network(
-            "https://source.unsplash.com/random/1600x900",
+            "https://picsum.photos/1600/900",
             fit: BoxFit.cover,
           ),
         ),
