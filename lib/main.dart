@@ -1,9 +1,11 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'widgets/featured_item.dart';
 import 'widgets/restaurant_header.dart';
 import 'widgets/app_header.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 void main() => runApp(MyApp());
 final List<String> imgList = [
@@ -168,7 +170,80 @@ class MyStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Sample3()
+      body: SlidingUpPanel(
+        minHeight: 60,
+        backdropEnabled: true,
+        boxShadow: [BoxShadow(
+            color: Colors.black54,
+            blurRadius: 20,
+            offset: Offset(0, 0)
+        )],
+        borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
+        collapsed: Container(
+          height: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
+            color: Theme.of(context).primaryColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Center(child: IconButton(icon: Icon(Icons.shopping_cart, size: 32,))),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.pink,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 3,
+                      color: Colors.pink,
+                      offset: Offset(0, 0),
+                      spreadRadius: 1
+                    )
+                  ]
+                ),
+                child: Text(
+                    "\$123.27",
+                    style: Theme.of(context).textTheme.headline3.copyWith(color: Colors.white)
+                ),
+              ),
+            ],
+          ),
+        ),
+        panel: Container(
+          child: Column(
+            children: [
+              Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: Center(child: IconButton(icon: Icon(Icons.shopping_cart, size: 32))),
+              ),
+              Center(
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.date_range),
+                      onPressed: () => {
+                        DatePicker.showDateTimePicker(context,
+                          minTime: DateTime.now(),
+                          maxTime: DateTime.now().add(Duration(days: 7)),
+                          onConfirm: (date) {
+                            print('changed to $date');
+                          })
+                      },
+                    ),
+                  ],
+                )
+            )
+            ],
+          ),
+        ),
+        body: Sample3(),
+      )
     );
   }
 }

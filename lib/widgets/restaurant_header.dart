@@ -8,6 +8,7 @@ import 'package:food_app/widgets/menu_item.dart';
 import 'package:food_app/widgets/menu_list.dart';
 import 'package:food_app/widgets/category_list.dart';
 import 'package:food_app/widgets/utils/gradients.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class Song {
   final String title;
@@ -62,43 +63,45 @@ class Sample3 extends StatelessWidget {
     var themeData = Theme.of(context);
     return Scaffold(
       backgroundColor: themeData.backgroundColor,
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: themeData.primaryColor,
-        backgroundColor: themeData.backgroundColor,
-        currentIndex: 4,
-        elevation: 4,
-        type: BottomNavigationBarType.fixed,
-        onTap: (idx) {
-          showModalBottomSheet(context: context, builder: (_) {
-            return Container(
-              height: MediaQuery.of(context).size.height / 2,
-              child: Text("Hello bottom sheet!")
-            );
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            title: Text('Favorites'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.music_note),
-            title: Text('Songs'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_input_antenna),
-            title: Text('Radio'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   selectedItemColor: themeData.primaryColor,
+      //   backgroundColor: themeData.backgroundColor,
+      //   currentIndex: 4,
+      //   elevation: 4,
+      //   type: BottomNavigationBarType.fixed,
+      //   onTap: (idx) {
+      //     showModalBottomSheet(context: context, builder: (_) {
+      //       return Container(
+      //         height: MediaQuery.of(context).size.height / 2,
+      //         child: Text("Hello bottom sheet!")
+      //       );
+      //     });
+      //   },
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_cart),
+      //       title: Text('Cart'),
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.favorite),
+      //       title: Text('Favorites'),
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.music_note),
+      //       title: Text('Songs'),
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.settings_input_antenna),
+      //       title: Text('Radio'),
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.search),
+      //       title: Text('Search'),
+      //     ),
+      //   ],
+      // ),
+      //
+
       body: Column(
         children: [
           Expanded(
@@ -160,6 +163,8 @@ class Sample3 extends StatelessWidget {
                           MenuItemWidget(song: song)
                         ],
                       );
+                    } else if (index == 19) {
+                      return Container(height: 60);
                     }
                     return MenuItemWidget(song: song);
                   }, childCount: 20),
