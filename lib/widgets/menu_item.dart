@@ -20,6 +20,7 @@ class MenuItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
+    var isRange = rnd.nextInt(21) % 3 == 0;
     return Container(
       height: 140,
       margin: EdgeInsets.symmetric(vertical: 16),
@@ -28,7 +29,7 @@ class MenuItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           MenuItemImage(imageUrl: 'https://picsum.photos/300/300', isSoldOut: rnd.nextInt(5) % 2 == 0, width: 124, height: 124,),
-          SizedBox(width: 14),
+          SizedBox(width: 16),
           Flexible(
             flex: 1,
             child: Column(
@@ -47,13 +48,13 @@ class MenuItemWidget extends StatelessWidget {
                         style: themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800),
                       ),
                       SizedBox(height: 4),
-                      Text(
-                        '${song.title} ${song.title} ${song.title} ${song.title}',
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: themeData.textTheme.subtitle1,
-                      ),
+                      // Text(
+                      //   '${song.title} ${song.title} ${song.title} ${song.title}',
+                      //   softWrap: true,
+                      //   maxLines: 2,
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: themeData.textTheme.subtitle1,
+                      // ),
                     ],
                   ),
                 ),
@@ -77,11 +78,11 @@ class MenuItemWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 4),
+            padding: const EdgeInsets.only(left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(rnd.nextInt(21) % 3 == 0 ? "\$14.55 - 20.99" : "\$5.99", style: themeData.textTheme.headline3.copyWith(fontSize: 14)),
+                renderPrice(themeData,  "${rnd.nextInt(15)}.99", isRange ? "${15 + rnd.nextInt(20)}.99" : null),
                 SizedBox(height: 4),
                 Text("325 cal", style: themeData.textTheme.subtitle1)
               ],
@@ -92,4 +93,25 @@ class MenuItemWidget extends StatelessWidget {
     );
   }
 
+  Widget renderPrice(ThemeData themeData, String fromPrice, String toPrice) {
+    var parts = fromPrice.split(".");
+    var toParts = toPrice != null ? toPrice.split(".") : [];
+    return RichText(
+      text: TextSpan(
+          style: themeData.textTheme.headline3.copyWith(fontSize: 18, letterSpacing: -1, fontWeight: FontWeight.w500),
+          children: [
+            TextSpan(text: "\$${parts[0]}", style: themeData.textTheme.headline3.copyWith(fontSize: 24)),
+            TextSpan(text: ".${parts[1]}"),
+            // if (toPrice != null)
+            //   ...[
+            //     TextSpan(text: "-"),
+            //     TextSpan(text: "\$${toParts[0]}",
+            //         style: themeData.textTheme.headline3.copyWith(
+            //             fontSize: 18)),
+            //     TextSpan(text: ".${toParts[1]}"),
+            //   ]
+          ]
+      ),
+    );
+  }
 }

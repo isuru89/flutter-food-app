@@ -33,20 +33,24 @@ class _FeaturedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(right: 10),
-        child: Container(
-          width: width,
-          child: Column(
-            children: [
-              Stack(
-                children: <Widget>[
-                  MenuItemImage(imageUrl: item, width: 160, height: 160,)
-                ],
+        width: this.width + 10,
+        margin: EdgeInsets.only(right: 16),
+        child: GestureDetector(
+          onTap: () => print(item),
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: <Widget>[
+              Positioned(
+                bottom: 0,
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: featuredItemDetails(context)
+                ),
               ),
-              Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: featuredItemDetails(context)
-              )
+              Positioned(
+                  top: 10,
+                  child: MenuItemImage(imageUrl: item, width: 130, height: 130,)
+              ),
             ],
           ),
         )
@@ -55,39 +59,55 @@ class _FeaturedItem extends StatelessWidget {
 
   Widget featuredItemDetails(BuildContext context) {
     var themeData = Theme.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(
-          height: 4,
-        ),
-        Text(
-          "Fruit salad with chicken mustards and garlic also cheese",
-          softWrap: true,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: themeData.textTheme.headline5.copyWith(fontWeight: FontWeight.w800),
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-          children: [
-            Text(
-              "\$12.99",
-              style: themeData.textTheme.headline5,
-            ),
-            SizedBox(width: 6),
-            Text("∙", style: themeData.textTheme.subtitle1),
-            SizedBox(width: 6),
-            Text("324 cal", style: themeData.textTheme.subtitle1,)
-          ],
-        ),
-      ],
+    return Container(
+      width: this.width,
+      padding: EdgeInsets.only(top: 40, left: 8, right: 8),
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            offset: Offset(0, 0)
+          ),
+        ]
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: 4,
+          ),
+          Text(
+            "Fruit salad with chicken mustards and garlic also cheese",
+            softWrap: true,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800, color: Colors.black54),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                "\$12.99",
+                style: themeData.textTheme.headline4.copyWith(color: themeData.primaryColor),
+              ),
+              SizedBox(width: 6),
+              Text("∙", style: themeData.textTheme.subtitle1),
+              SizedBox(width: 6),
+              Text("324 cal", style: themeData.textTheme.subtitle1,)
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

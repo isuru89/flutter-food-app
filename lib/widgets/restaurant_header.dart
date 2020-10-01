@@ -126,7 +126,15 @@ class Sample3 extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text("Featured", style: themeData.textTheme.headline3,),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            textBaseline: TextBaseline.alphabetic,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Featured", style: themeData.textTheme.headline3,),
+                              Text("${imgList.length} items", style: themeData.textTheme.subtitle1),
+                            ],
+                          ),
                         ),
                         FeaturedItemList(imgList: imgList,),
                       ],
