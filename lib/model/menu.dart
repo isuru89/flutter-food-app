@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 
-
 class Menu {
 
   final String name;
   final String fromTime;
   final String endTime;
+  final List<MenuCategory> categories;
   int _start;
   int _end;
 
-  Menu({ this.name, this.fromTime, this.endTime }) {
+  Menu({ this.name, this.fromTime, this.endTime, this.categories }) {
     _start = int.parse(fromTime.split(":")[0]) * 60 +  int.parse(fromTime.split(":")[1]);
     _end = int.parse(endTime.split(":")[0]) * 60 + int.parse(endTime.split(":")[1]);
   }
@@ -21,6 +21,16 @@ class Menu {
     var mins = timeOfDay.hour * 60 + timeOfDay.minute;
     return mins <= _end;
   }
+
+}
+
+class MenuCategory {
+
+  final String name;
+  final String id;
+  final List<MenuItem> items;
+
+  MenuCategory(this.id, this.name, { this.items });
 
 }
 

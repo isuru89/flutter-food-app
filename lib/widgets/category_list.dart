@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu_category.dart';
+import 'package:food_app/model/menu.dart';
 
 const List<MenuCategory> EMPTY_CATS = [];
 

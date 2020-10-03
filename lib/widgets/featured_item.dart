@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
-import 'package:food_app/widgets/utils/gradients.dart';
 
 class FeaturedItemList extends StatelessWidget {
 
-  final List<String> imgList;
+  final List<MenuItem> imgList;
 
   FeaturedItemList({ this.imgList });
 
@@ -14,7 +15,7 @@ class FeaturedItemList extends StatelessWidget {
       height: 220,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: imgList.map((String e) => _FeaturedItem(item: e, width: 150)).toList(),
+        children: imgList.map((MenuItem e) => _FeaturedItem(item: e, width: 150)).toList(),
       ),
     );
   }
@@ -24,7 +25,7 @@ class FeaturedItemList extends StatelessWidget {
 
 class _FeaturedItem extends StatelessWidget {
 
-  final String item;
+  final MenuItem item;
   final double width;
   final double height;
 
@@ -33,23 +34,27 @@ class _FeaturedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: this.width + 10,
+        width: this.width,
         margin: EdgeInsets.only(right: 16),
         child: GestureDetector(
-          onTap: () => print(item),
+          onTap: () {
+            print(item.id);
+            Navigator.pushNamed(context, '/item', arguments: ItemModalArguments(item));
+          },
           child: Stack(
             alignment: Alignment.topCenter,
             children: <Widget>[
               Positioned(
-                bottom: 0,
                 child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: featuredItemDetails(context)
+                    child: featuredItemDetails(context, item)
                 ),
               ),
               Positioned(
-                  top: 10,
-                  child: MenuItemImage(imageUrl: item, width: 130, height: 130,)
+                  child: Hero(
+                    tag: "menux-item-" + item.id,
+                    child: MenuItemImage(imageUrl: item.images["lg"], width: 134, height: 140,)
+                  )
               ),
             ],
           ),
@@ -57,7 +62,7 @@ class _FeaturedItem extends StatelessWidget {
     );
   }
 
-  Widget featuredItemDetails(BuildContext context) {
+  Widget featuredItemDetails(BuildContext context, MenuItem item) {
     var themeData = Theme.of(context);
     return Container(
       width: this.width,
@@ -65,14 +70,15 @@ class _FeaturedItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 15,
-            offset: Offset(0, 0)
-          ),
-        ]
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        border: Border.all(color: Colors.black12),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12,
+                blurRadius: 15,
+                offset: Offset(0, 0)
+            ),
+          ]
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -82,14 +88,14 @@ class _FeaturedItem extends StatelessWidget {
             height: 4,
           ),
           Text(
-            "Fruit salad with chicken mustards and garlic also cheese",
+            '${item.name} ${item.name} ${item.name}',
             softWrap: true,
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800, color: Colors.black54),
           ),
           SizedBox(
-            height: 4,
+            height: 12,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -106,6 +112,9 @@ class _FeaturedItem extends StatelessWidget {
               Text("324 cal", style: themeData.textTheme.subtitle1,)
             ],
           ),
+          SizedBox(
+            height: 10,
+          )
         ],
       ),
     );

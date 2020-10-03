@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu_category.dart';
 import 'package:food_app/model/menu.dart';
 import 'package:food_app/widgets/featured_item.dart';
 import 'package:food_app/widgets/menu_item.dart';
@@ -46,15 +45,8 @@ const songs = [
       image:
       'https://d2tml28x3t0b85.cloudfront.net/tracks/artworks/000/631/866/original/c42c03.jpeg?1507101208'),
 ];
-final List<String> imgList = [
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
+final List<MenuItem> imgList = [
+  for (var i = 0; i < 10; i++) MenuItem(i.toString(), "Item $i", images: { "lg": "https://picsum.photos/700/400" })
 ];
 
 class Sample3 extends StatelessWidget {
@@ -194,8 +186,10 @@ class SessionBar extends SliverPersistentHeaderDelegate {
   final List<Widget> children;
   final double marginTop;
   final bool isElevated;
+  final bool isTopMost;
 
-  SessionBar({ this.preferredHeight, this.bgColor, this.children, this.marginTop = 0, this.isElevated = false });
+  SessionBar({ this.preferredHeight, this.bgColor, this.children, this.marginTop = 0,
+    this.isElevated = false, this.isTopMost = true });
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -410,7 +404,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       overflow: Overflow.visible,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40*(1-ratio)), bottomRight: Radius.circular(40*(1-ratio))),
+          //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40*(1-ratio)), bottomRight: Radius.circular(40*(1-ratio))),
           child: Image.network(
             "https://picsum.photos/1600/900",
             fit: BoxFit.cover,
@@ -425,7 +419,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "MySliverAppBar",
+                  "Ocean's Side",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -445,15 +439,16 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
           ),
         ),
         // Positioned(
-        //   top: expandedHeight / 2 - shrinkOffset,
-        //   left: MediaQuery.of(context).size.width / 4,
+        //   top: expandedHeight - 96 - shrinkOffset,
+        //   left: MediaQuery.of(context).size.width / 8,
         //   child: Opacity(
         //     opacity: (1 - shrinkOffset / expandedHeight),
         //     child: Card(
+        //       color: Colors.transparent,
         //       elevation: 10,
         //       child: SizedBox(
-        //         height: expandedHeight,
-        //         width: MediaQuery.of(context).size.width / 2,
+        //         height: 96,
+        //         width: MediaQuery.of(context).size.width / 4 * 3,
         //         child: FlutterLogo(),
         //       ),
         //     ),

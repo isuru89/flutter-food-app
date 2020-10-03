@@ -30,7 +30,7 @@ class MenuItemImage extends StatelessWidget {
                 Expanded(
                   child: Container(
                       decoration: BoxDecoration(
-                          color: Colors.red
+                          color: Theme.of(context).errorColor
                       ),
                       child: Center(child: Text("Sold out", style: TextStyle(color: Colors.white)))
                   ),

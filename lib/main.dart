@@ -1,6 +1,8 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:food_app/model/menu.dart';
+import 'package:food_app/widgets/cart_panel.dart';
+import 'package:food_app/widgets/item_modal.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'widgets/featured_item.dart';
 import 'widgets/restaurant_header.dart';
@@ -8,15 +10,8 @@ import 'widgets/app_header.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 void main() => runApp(MyApp());
-final List<String> imgList = [
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
-  'https://source.unsplash.com/user/erondu/300x300',
+final List<MenuItem> imgList = [
+  for (var i = 0; i < 10; i++) MenuItem(i.toString(), "Item $i", images: { "lg": "https://picsum.photos/700/400?t=$i" })
 ];
 
 class Pair {
@@ -42,14 +37,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/item': (_) => ItemModal()
+      },
       title: 'Flutter Code Sample for material.AppBar.actions',
       theme: ThemeData(
         brightness: Brightness.light,
         backgroundColor: Colors.white,
-        primaryColor: Colors.pinkAccent,
-        dividerColor: Colors.pinkAccent,
+        primaryColor: Colors.blue,
+        dividerColor: Colors.blue,
+        accentColor: Colors.blue.shade800,
+        errorColor: Colors.green,
         textTheme: TextTheme(
-          headline3: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.pinkAccent),
+          headline3: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blue),
           headline4: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           headline5: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
           headline6: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
@@ -169,10 +169,12 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeData = Theme.of(context);
     return Scaffold(
       body: SlidingUpPanel(
         minHeight: 60,
         backdropEnabled: true,
+        margin: EdgeInsets.only(left: 5, right: 5),
         boxShadow: [BoxShadow(
             color: Colors.black54,
             blurRadius: 20,
@@ -192,12 +194,12 @@ class MyStatelessWidget extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.pink,
+                  color: themeData.accentColor,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 3,
-                      color: Colors.pink,
+                      color: themeData.primaryColor,
                       offset: Offset(0, 0),
                       spreadRadius: 1
                     )
@@ -211,37 +213,7 @@ class MyStatelessWidget extends StatelessWidget {
             ],
           ),
         ),
-        panel: Container(
-          child: Column(
-            children: [
-              Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Center(child: IconButton(icon: Icon(Icons.shopping_cart, size: 32))),
-              ),
-              Center(
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.date_range),
-                      onPressed: () => {
-                        DatePicker.showDateTimePicker(context,
-                          minTime: DateTime.now(),
-                          maxTime: DateTime.now().add(Duration(days: 7)),
-                          onConfirm: (date) {
-                            print('changed to $date');
-                          })
-                      },
-                    ),
-                  ],
-                )
-            )
-            ],
-          ),
-        ),
+        panelBuilder: (ScrollController sc) => createCartPanel(sc),
         body: Sample3(),
       )
     );
