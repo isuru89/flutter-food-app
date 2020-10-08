@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/model/menu.dart';
 import 'package:food_app/widgets/cart_panel.dart';
-import 'package:food_app/widgets/item_modal.dart';
+import 'package:food_app/screens/item_modal.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'widgets/featured_item.dart';
 import 'widgets/restaurant_header.dart';
@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/item': (_) => ItemModal()
       },
       title: 'Flutter Code Sample for material.AppBar.actions',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
         backgroundColor: Colors.white,

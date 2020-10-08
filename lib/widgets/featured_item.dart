@@ -53,7 +53,12 @@ class _FeaturedItem extends StatelessWidget {
               Positioned(
                   child: Hero(
                     tag: "menux-item-" + item.id,
-                    child: MenuItemImage(imageUrl: item.images["lg"], width: 134, height: 140,)
+                    child: MenuItemImage(
+                      imageUrl: item.images["lg"],
+                      width: 134,
+                      height: 140,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                    )
                   )
               ),
             ],

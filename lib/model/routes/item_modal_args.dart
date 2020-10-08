@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 import 'package:food_app/model/menu.dart';
 
 class ItemModalArguments {

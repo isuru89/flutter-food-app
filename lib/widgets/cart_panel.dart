@@ -42,6 +42,7 @@ class _CartPanel extends State<CartPanel> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
+    print(selectedOrderType);
     return Container(
       child: Column(
         children: [

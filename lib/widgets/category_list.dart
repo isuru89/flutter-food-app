@@ -11,7 +11,7 @@ class CategoryList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _CategoryListA(categoryList: categoryList);
+    return _CategoryListA(categoryList: categoryList, selectedCategoryId: categoryList[0].id);
   }
 
 }
@@ -22,7 +22,16 @@ class _CategoryListA extends State<CategoryList> {
   String selectedCategoryId;
   final Function(String) onCategoryClicked;
 
-  _CategoryListA({ this.categoryList = EMPTY_CATS, this.selectedCategoryId, this.onCategoryClicked });
+  _CategoryListA({ this.categoryList, this.selectedCategoryId, this.onCategoryClicked });
+
+
+  @override
+  void initState() {
+    super.initState();
+    if (this.selectedCategoryId != null) {
+      this.selectedCategoryId = categoryList[0].id;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +70,7 @@ class _CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     final pkColor = themeData.primaryColor;
-    return GestureDetector(
+    return InkWell(
       onTap: () => onCategoryClicked(this.category.id),
       child: Container(
         decoration: BoxDecoration(

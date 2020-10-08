@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/featured_item.dart';
 import 'package:food_app/widgets/menu_item.dart';
 import 'package:food_app/widgets/menu_list.dart';
 import 'package:food_app/widgets/category_list.dart';
-import 'package:food_app/widgets/utils/gradients.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:food_app/model/routes/item_modal_args.dart';
 
 class Song {
   final String title;
@@ -32,26 +32,27 @@ final categories = [
   MenuCategory("id5", "One-Whole"),
 ];
 
-const songs = [
-  Song(
-      title: 'Wake Me Up',
-      image: 'https://i.ytimg.com/vi/ssRPuC-w2M4/hqdefault.jpg'),
-  Song(
-      title: 'SOS (feat. Aloe Blacc)',
-      image:
-      'https://lifestyle.americaeconomia.com/sites/lifestyle.americaeconomia.com/files/styles/600x600/public/avicii_sos_0.jpg'),
-  Song(
-      title: 'Without You (feat. Sandro Cavazza)',
-      image:
-      'https://d2tml28x3t0b85.cloudfront.net/tracks/artworks/000/631/866/original/c42c03.jpeg?1507101208'),
-];
 final List<MenuItem> imgList = [
-  for (var i = 0; i < 10; i++) MenuItem(i.toString(), "Item $i", images: { "lg": "https://picsum.photos/700/400" })
+  for (var i = 0; i < 10; i++) MenuItem(
+      i.toString(),
+      "Chicken Salad",
+      description: "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
+      images: { "lg": "https://picsum.photos/700/300?t=$i" })
+];
+
+final List<MenuItem> menuItemList = [
+  for (var i = 0; i < 15; i++) MenuItem(
+      i.toString(),
+      "Chicken Salad",
+      images: { "lg": "https://picsum.photos/700/400?t=$i" },
+      description: "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
+    )
 ];
 
 class Sample3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var nav = Navigator.of(context);
     var themeData = Theme.of(context);
     return Scaffold(
       backgroundColor: themeData.backgroundColor,
@@ -155,18 +156,23 @@ class Sample3 extends StatelessWidget {
                 // ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((_, index) {
-                    final song = songs[index % songs.length];
+                    final menuIt = menuItemList[index % menuItemList.length];
+                    var widget;
                     if (index == 0) {
                       return Column(
                         children: [
                           Divider(),
-                          MenuItemWidget(song: song)
+                          MenuItemWidget(menuItem: menuIt, onClicked: (it) {
+                            nav.pushNamed('/item', arguments: ItemModalArguments(it));
+                          })
                         ],
                       );
                     } else if (index == 19) {
                       return Container(height: 60);
                     }
-                    return MenuItemWidget(song: song);
+                    return MenuItemWidget(menuItem: menuIt, onClicked: (it) {
+                      nav.pushNamed('/item', arguments: ItemModalArguments(it));
+                    });
                   }, childCount: 20),
                 ),
               ],
@@ -177,6 +183,7 @@ class Sample3 extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class SessionBar extends SliverPersistentHeaderDelegate {
@@ -195,23 +202,26 @@ class SessionBar extends SliverPersistentHeaderDelegate {
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     // final ratio = shrinkOffset / preferredHeight;
     // final stick = ratio >= 0.03;
-    return Container(
-      height: preferredHeight,
-      padding: EdgeInsets.symmetric(horizontal: 0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        boxShadow: [
-          if (isElevated) BoxShadow(
-            color: Colors.black38,
-            offset: Offset(0, 0),
-            blurRadius: 10
-          )
-        ]
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [...children]
+    return ClipRect(
+      child: Container(
+        height: preferredHeight,
+        margin: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.symmetric(horizontal: 0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38,
+              offset: Offset(0, 0),
+              blurRadius: 10
+            )
+          ]
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [...children]
+        ),
       ),
     );
   }

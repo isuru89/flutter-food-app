@@ -6,13 +6,15 @@ class MenuItemImage extends StatelessWidget {
   final bool isSoldOut;
   final double width;
   final double height;
+  final BorderRadius borderRadius;
 
-  const MenuItemImage({Key key, this.imageUrl, this.isSoldOut = false, this.width = 80, this.height = 80}) : super(key: key);
+  const MenuItemImage({Key key, this.imageUrl, this.isSoldOut = false,
+    this.width = 80, this.height = 80, this.borderRadius}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(10)),
       child: Stack(
         children: [
           FadeInImage.assetNetwork(
