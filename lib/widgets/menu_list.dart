@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/model/menu.dart';
 
-class SessionList extends StatefulWidget {
+class MenuList extends StatefulWidget {
 
   final List<Menu> menuList;
 
-  const SessionList({Key key, this.menuList}) : super(key: key);
+  const MenuList({Key key, this.menuList}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return SessionListA(sessionList: menuList);
+    return _MenuListState(sessionList: menuList);
   }
 
 }
 
-class SessionListA extends State<SessionList> {
+class _MenuListState extends State<MenuList> {
 
   List<Menu> sessionList;
   String selectedMenu;
   Function(String) onMenuSelected;
 
-  SessionListA({ this.sessionList, this.selectedMenu, this.onMenuSelected });
+  _MenuListState({ this.sessionList, this.selectedMenu, this.onMenuSelected });
+
+
+  @override
+  void initState() {
+    super.initState();
+    if (this.selectedMenu == null) {
+      var firstAvailable = sessionList.firstWhere((element) => element.isAvailable());
+      this.selectedMenu = firstAvailable != null ? firstAvailable.name : sessionList[0].name;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

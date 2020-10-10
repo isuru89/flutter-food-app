@@ -7,7 +7,7 @@ import 'package:food_app/widgets/featured_item.dart';
 import 'package:food_app/widgets/menu_item.dart';
 import 'package:food_app/widgets/menu_list.dart';
 import 'package:food_app/widgets/category_list.dart';
-import 'package:food_app/model/routes/item_modal_args.dart';
+import 'package:food_app/widgets/restaurant_app_bar.dart';
 
 class Song {
   final String title;
@@ -30,6 +30,11 @@ final categories = [
   MenuCategory("id3", "Snacks"),
   MenuCategory("id4", "Pizzas"),
   MenuCategory("id5", "One-Whole"),
+  MenuCategory("id6", "Drinks"),
+  MenuCategory("id7", "Salads"),
+  MenuCategory("id8", "Snacks"),
+  MenuCategory("id9", "Pizzas"),
+  MenuCategory("id10", "One-Whole"),
 ];
 
 final List<MenuItem> imgList = [
@@ -102,12 +107,12 @@ class Sample3 extends StatelessWidget {
               slivers: [
                 // HeaderWidget(),
                 // AlbumWidget(),
-                SliverPersistentHeader(delegate: MySliverAppBar(expandedHeight: 260), pinned: true),
+                SliverPersistentHeader(delegate: RestaurantHeader(expandedHeight: 260, showLogo: true), pinned: true),
                 SliverPersistentHeader(
                   delegate: SessionBar(
-                      preferredHeight: 96,
+                      preferredHeight: 112,
                       marginTop: 20,
-                      children: [SessionList(menuList: sessions), CategoryList(categoryList: categories)]
+                      children: [MenuList(menuList: sessions), CategoryList(categoryList: categories)]
                   ),
                   pinned: true,
                 ),
@@ -200,8 +205,8 @@ class SessionBar extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // final ratio = shrinkOffset / preferredHeight;
-    // final stick = ratio >= 0.03;
+    final ratio = shrinkOffset / preferredHeight;
+    final stick = ratio > 0;
     return ClipRect(
       child: Container(
         height: preferredHeight,
@@ -210,7 +215,7 @@ class SessionBar extends SliverPersistentHeaderDelegate {
         decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           boxShadow: [
-            BoxShadow(
+            if (stick) BoxShadow(
               color: Colors.black38,
               offset: Offset(0, 0),
               blurRadius: 10
@@ -397,83 +402,4 @@ class HeaderWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class MySliverAppBar extends SliverPersistentHeaderDelegate {
-  final double expandedHeight;
-
-  MySliverAppBar({@required this.expandedHeight});
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final ratio = shrinkOffset / expandedHeight;
-    final stick = ratio >= 1;
-    return Stack(
-      fit: StackFit.expand,
-      overflow: Overflow.visible,
-      children: [
-        ClipRRect(
-          //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40*(1-ratio)), bottomRight: Radius.circular(40*(1-ratio))),
-          child: Image.network(
-            "https://picsum.photos/1600/900",
-            fit: BoxFit.cover,
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "Ocean's Side",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 23,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 20.0,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ]
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-        ),
-        // Positioned(
-        //   top: expandedHeight - 96 - shrinkOffset,
-        //   left: MediaQuery.of(context).size.width / 8,
-        //   child: Opacity(
-        //     opacity: (1 - shrinkOffset / expandedHeight),
-        //     child: Card(
-        //       color: Colors.transparent,
-        //       elevation: 10,
-        //       child: SizedBox(
-        //         height: 96,
-        //         width: MediaQuery.of(context).size.width / 4 * 3,
-        //         child: FlutterLogo(),
-        //       ),
-        //     ),
-        //   ),
-        // ),
-      ],
-    );
-  }
-
-  @override
-  double get maxExtent => expandedHeight;
-
-  @override
-  double get minExtent => 80;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

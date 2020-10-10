@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:food_app/model/menu.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
-import 'package:food_app/widgets/restaurant_header.dart';
+import 'package:food_app/widgets/price_label.dart';
+import 'package:food_app/widgets/food_label.dart';
 
 final rnd = Random(12345);
 
@@ -21,7 +22,7 @@ class MenuItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    var isRange = rnd.nextInt(21) % 3 == 0;
+    var isRange = rnd.nextInt(21) % 2 == 0;
     return InkWell(
       onTap: () => this.onClicked(menuItem),
       child: Card(
@@ -37,7 +38,7 @@ class MenuItemWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Hero(
-                      tag: "menu-item-${menuItem.images['lg']}",
+                      tag: "menu-item-${menuItem.id}",
                       child: MenuItemImage(imageUrl: menuItem.images['lg'], isSoldOut: rnd.nextInt(5) % 2 == 0, width: 124, height: 124,)
                     ),
                     SizedBox(width: 16),
@@ -45,30 +46,9 @@ class MenuItemWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '${menuItem.name}',
-                            softWrap: true,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800),
-                          ),
+                          Labels.createItemNameLabel(menuItem.name, themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800)),
                           SizedBox(height: 4),
-                          Wrap(
-                            children: List.generate(rnd.nextInt(foodLabels.length), (index) => index)
-                                .map((e) {
-                              return Container(
-                                margin: EdgeInsets.only(right: 4, top: 4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.black12,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                                  child: Text(foodLabels[e], style: themeData.textTheme.bodyText2.copyWith(color: Colors.black54, fontSize: 12)),
-                                ),
-                              );
-                            }).toList(),
-                          ),
+                          Labels.createFoodLabels(List.generate(rnd.nextInt(foodLabels.length), (index) => foodLabels[index]))
                         ],
                       ),
                     ),
@@ -79,9 +59,12 @@ class MenuItemWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    renderPrice(themeData,  "${rnd.nextInt(15)}.99", isRange ? "${15 + rnd.nextInt(20)}.99" : null),
+                    if (isRange)
+                      PriceLabel(rnd.nextInt(15) + 0.99)
+                    else
+                      PriceRangeLabel.create(rnd.nextInt(15) + 0.99, 15 + rnd.nextInt(20) + 0.99),
                     SizedBox(height: 4),
-                    Text("325 cal", style: themeData.textTheme.subtitle1),
+                    Labels.createCalorieLabel(100 + rnd.nextInt(512), themeData.textTheme.subtitle1)
                   ],
                 ),
               )
@@ -92,25 +75,4 @@ class MenuItemWidget extends StatelessWidget {
     );
   }
 
-  Widget renderPrice(ThemeData themeData, String fromPrice, String toPrice) {
-    var parts = fromPrice.split(".");
-    var toParts = toPrice != null ? toPrice.split(".") : [];
-    return RichText(
-      text: TextSpan(
-          style: themeData.textTheme.headline3.copyWith(fontSize: 18, letterSpacing: -1, fontWeight: FontWeight.w500),
-          children: [
-            TextSpan(text: "\$${parts[0]}", style: themeData.textTheme.headline3.copyWith(fontSize: 24)),
-            TextSpan(text: ".${parts[1]}"),
-            // if (toPrice != null)
-            //   ...[
-            //     TextSpan(text: "-"),
-            //     TextSpan(text: "\$${toParts[0]}",
-            //         style: themeData.textTheme.headline3.copyWith(
-            //             fontSize: 18)),
-            //     TextSpan(text: ".${toParts[1]}"),
-            //   ]
-          ]
-      ),
-    );
-  }
 }

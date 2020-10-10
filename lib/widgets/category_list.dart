@@ -11,18 +11,18 @@ class CategoryList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _CategoryListA(categoryList: categoryList, selectedCategoryId: categoryList[0].id);
+    return _CategoryListState(categoryList: categoryList, selectedCategoryId: categoryList[0].id);
   }
 
 }
 
-class _CategoryListA extends State<CategoryList> {
+class _CategoryListState extends State<CategoryList> {
 
   List<MenuCategory> categoryList;
   String selectedCategoryId;
   final Function(String) onCategoryClicked;
 
-  _CategoryListA({ this.categoryList, this.selectedCategoryId, this.onCategoryClicked });
+  _CategoryListState({ this.categoryList, this.selectedCategoryId, this.onCategoryClicked });
 
 
   @override
@@ -42,14 +42,14 @@ class _CategoryListA extends State<CategoryList> {
         children: categoryList.map((e) => _CategoryItem(
           category: e,
           isSelected: e.id == selectedCategoryId,
-          onCategoryClicked: whenCategorySelected,
+          onCategoryClicked: _whenCategorySelected,
         ),
         ).toList(),
       ),
     );
   }
 
-  void whenCategorySelected(String id) {
+  void _whenCategorySelected(String id) {
     print(id);
     this.setState(() {
       selectedCategoryId = id;

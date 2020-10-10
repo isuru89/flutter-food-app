@@ -16,7 +16,7 @@ class ItemModal extends StatelessWidget {
                 Container(
                   height: 340,
                   child: Hero(
-                      tag: "menux-item-" + args.menuItem.id,
+                      tag: args.heroTag ?? "menu-item-" + args.menuItem.id,
                       child: Image.network(args.menuItem.images['lg'], fit: BoxFit.cover,)
                   ),
                 ),
@@ -29,7 +29,23 @@ class ItemModal extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        icon: Icon(Icons.arrow_back_ios),
+                        icon: Stack(
+                          children: [
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black38,
+                                    blurRadius: 20
+                                  )
+                                ]
+                              ),
+                            ),
+                            Icon(Icons.arrow_back_ios, color: Colors.white,),
+                          ],
+                        ),
                       ),
                     ],
                   ),

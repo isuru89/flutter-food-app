@@ -29,7 +29,11 @@ class _FeaturedItem extends StatelessWidget {
   final double width;
   final double height;
 
-  const _FeaturedItem({Key key, this.item, this.width: 150, this.height: 150}) : super(key: key);
+  const _FeaturedItem({Key key,
+    this.item,
+    this.width: 150,
+    this.height: 150,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,10 @@ class _FeaturedItem extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             print(item.id);
-            Navigator.pushNamed(context, '/item', arguments: ItemModalArguments(item));
+            Navigator.pushNamed(
+                context, '/item',
+                arguments: ItemModalArguments(item, heroTag: 'featured-item-${item.id}')
+            );
           },
           child: Stack(
             alignment: Alignment.topCenter,
@@ -52,10 +59,10 @@ class _FeaturedItem extends StatelessWidget {
               ),
               Positioned(
                   child: Hero(
-                    tag: "menux-item-" + item.id,
+                    tag: 'featured-item-${item.id}',
                     child: MenuItemImage(
                       imageUrl: item.images["lg"],
-                      width: 134,
+                      width: this.width,
                       height: 140,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                     )
@@ -72,7 +79,6 @@ class _FeaturedItem extends StatelessWidget {
     return Container(
       width: this.width,
       padding: EdgeInsets.only(top: 40, left: 8, right: 8),
-      margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20)),
