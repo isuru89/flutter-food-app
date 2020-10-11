@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/model/menu.dart';
 
+import 'package:food_app/constants.dart';
+
 const List<MenuCategory> EMPTY_CATS = [];
 
 class CategoryList extends StatefulWidget {
@@ -64,32 +66,33 @@ class _CategoryItem extends StatelessWidget {
   final bool isSelected;
   final Function(String) onCategoryClicked;
 
-  const _CategoryItem({Key key, this.category, this.onCategoryClicked, this.isSelected: false, }) : super(key: key);
+  const _CategoryItem({Key key,
+    this.category,
+    this.onCategoryClicked,
+    this.isSelected: false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     final pkColor = themeData.primaryColor;
+    var fontStyle = isSelected
+        ? themeData.textTheme.headline5.copyWith(fontWeight: FontWeight.w500)
+        : themeData.textTheme.headline5.copyWith(fontWeight: FontWeight.w300);
     return InkWell(
       onTap: () => onCategoryClicked(this.category.id),
       child: Container(
         decoration: BoxDecoration(
             border: isSelected
-                ? Border(bottom: BorderSide(color: pkColor, width: 4))
-                : Border(bottom: BorderSide(color: Colors.transparent, width: 4))
+                ? Border(bottom: BorderSide(color: pkColor, width: kCategorySelectedStrokeWidth))
+                : Border(bottom: BorderSide(color: Colors.transparent, width: kCategorySelectedStrokeWidth))
         ),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: Column(
-                  children: [
-                    Text(category.name, style: themeData.textTheme.headline5),
-                  ],
-                ),
-              ),
-            ]
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: kPadding / 2,
+              horizontal: kPadding
+          ),
+          child: Center(child: Text(category.name, style: fontStyle)),
         ),
       ),
     );

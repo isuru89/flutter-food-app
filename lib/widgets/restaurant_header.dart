@@ -2,12 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/restaurant.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/featured_item.dart';
+import 'package:food_app/widgets/food_label.dart';
 import 'package:food_app/widgets/menu_item.dart';
 import 'package:food_app/widgets/menu_list.dart';
 import 'package:food_app/widgets/category_list.dart';
 import 'package:food_app/widgets/restaurant_app_bar.dart';
+
+import 'package:food_app/constants.dart';
 
 class Song {
   final String title;
@@ -107,34 +111,28 @@ class Sample3 extends StatelessWidget {
               slivers: [
                 // HeaderWidget(),
                 // AlbumWidget(),
-                SliverPersistentHeader(delegate: RestaurantHeader(expandedHeight: 260, showLogo: true), pinned: true),
+                SliverPersistentHeader(
+                    delegate: RestaurantHeader(
+                      restaurant: Restaurant("Sun in my Belly Hello world Hello"),
+                        expandedHeight: kRestaurantHeaderHeight,
+                    ), pinned: true),
                 SliverPersistentHeader(
                   delegate: SessionBar(
-                      preferredHeight: 112,
-                      marginTop: 20,
+                      preferredHeight: kSessionBarHeight,
+                      // marginTop: 20,
                       children: [MenuList(menuList: sessions), CategoryList(categoryList: categories)]
                   ),
                   pinned: true,
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.symmetric(horizontal: kPadding * 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            textBaseline: TextBaseline.alphabetic,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Featured", style: themeData.textTheme.headline3,),
-                              Text("${imgList.length} items", style: themeData.textTheme.subtitle1),
-                            ],
-                          ),
-                        ),
+                        Labels.createHeaderAndSummary("Featured", "${imgList.length} items", themeData),
                         FeaturedItemList(imgList: imgList,),
+                        Divider(),
                       ],
                     ),
                   ),
@@ -162,11 +160,9 @@ class Sample3 extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildBuilderDelegate((_, index) {
                     final menuIt = menuItemList[index % menuItemList.length];
-                    var widget;
                     if (index == 0) {
                       return Column(
                         children: [
-                          Divider(),
                           MenuItemWidget(menuItem: menuIt, onClicked: (it) {
                             nav.pushNamed('/item', arguments: ItemModalArguments(it));
                           })
@@ -196,12 +192,15 @@ class SessionBar extends SliverPersistentHeaderDelegate {
   final double preferredHeight;
   final MaterialColor bgColor;
   final List<Widget> children;
-  final double marginTop;
   final bool isElevated;
   final bool isTopMost;
 
-  SessionBar({ this.preferredHeight, this.bgColor, this.children, this.marginTop = 0,
-    this.isElevated = false, this.isTopMost = true });
+  SessionBar({
+    this.preferredHeight,
+    this.bgColor,
+    this.children,
+    this.isElevated = false,
+    this.isTopMost = true });
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -210,8 +209,7 @@ class SessionBar extends SliverPersistentHeaderDelegate {
     return ClipRect(
       child: Container(
         height: preferredHeight,
-        margin: EdgeInsets.only(bottom: 10),
-        padding: EdgeInsets.symmetric(horizontal: 0),
+        margin: EdgeInsets.only(bottom: kDoublePadding),
         decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           boxShadow: [
@@ -339,66 +337,6 @@ class BottomWidget extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: 200,
-      stretch: true,
-      pinned: true,
-      title: Text("My App"),
-      backgroundColor: Color(0xFF0B0B14),
-      flexibleSpace: FlexibleSpaceBar(
-        // stretchModes: [
-        //   StretchMode.zoomBackground,
-        // ],
-        background: Stack(
-          fit: StackFit.expand,
-          overflow: Overflow.visible,
-          children: [
-            Positioned.fill(
-              child: Image.network(
-                //'https://pbs.twimg.com/media/DbQDvwGXkAgkh5f.jpg',
-                'https://source.unsplash.com/random/1600x900',
-                fit: BoxFit.cover,
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Avicii',
-                      style: Theme.of(context).textTheme.headline4.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    CircleAvatar(
-                      backgroundColor: Colors.pinkAccent,
-                      child: Icon(
-                        Icons.play_arrow,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

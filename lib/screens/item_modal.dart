@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
+import 'package:food_app/widgets/icons.dart';
 
 class ItemModal extends StatelessWidget {
   @override
@@ -29,23 +30,10 @@ class ItemModal extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        icon: Stack(
-                          children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black38,
-                                    blurRadius: 20
-                                  )
-                                ]
-                              ),
-                            ),
-                            Icon(Icons.arrow_back_ios, color: Colors.white,),
-                          ],
-                        ),
+                        icon: IconUtils.createShadowIcon(
+                          Icon(Icons.arrow_back_ios, color: Colors.white),
+                          24
+                        )
                       ),
                     ],
                   ),

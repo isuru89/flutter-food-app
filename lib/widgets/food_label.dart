@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 
 class Labels {
 
+  static createHeaderAndSummary(String headerText, String summaryText, ThemeData themeData) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        textBaseline: TextBaseline.alphabetic,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(headerText, style: themeData.textTheme.headline3,),
+          Text(summaryText, style: themeData.textTheme.subtitle1),
+        ],
+      ),
+    );
+  }
+
   static createCalorieLabel(num calories, TextStyle style) {
     return Text('$calories cal', style: style);
   }
