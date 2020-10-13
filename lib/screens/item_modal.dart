@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/icons.dart';
+import 'package:smart_select/smart_select.dart';
 
 class ItemModal extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final ItemModalArguments args = ModalRoute.of(context).settings.arguments;
@@ -96,7 +98,22 @@ class ItemModal extends StatelessWidget {
                   Divider(height: 32,),
                   Column(
                     children: [
-                      Text("Ingredients", style: themeData.textTheme.headline4.copyWith(fontSize: 18),),
+                      Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18)),
+                      SmartSelect<String>.single(
+                        modalType: S2ModalType.bottomSheet,
+                        modalHeaderStyle: S2ModalHeaderStyle(
+                          textStyle: themeData.textTheme.headline4
+                        ),
+                        title: "Proteins",
+                        value: '',
+                        onChange: (state) => print(state),
+                        choiceItems: [
+                          S2Choice<String>(value: 'ion', title: 'Ionic', subtitle: 'Ionic framework'),
+                          S2Choice<String>(value: 'flu', title: 'Flutter'),
+                          S2Choice<String>(value: 'rea', title: 'React Native'),
+                        ],
+                      )
+                      ,
                     ],
                   )
                 ],
@@ -112,7 +129,9 @@ class ItemModal extends StatelessWidget {
           height: 60,
           color: themeData.primaryColor,
           child: RaisedButton(
-            onPressed: () => print("aaa"),
+            onPressed: () => {
+
+            },
             color: themeData.primaryColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

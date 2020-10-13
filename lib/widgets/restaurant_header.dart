@@ -13,6 +13,9 @@ import 'package:food_app/widgets/restaurant_app_bar.dart';
 
 import 'package:food_app/constants.dart';
 
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:badges/badges.dart';
+
 class Song {
   final String title;
   final String image;
@@ -64,7 +67,27 @@ class Sample3 extends StatelessWidget {
     var nav = Navigator.of(context);
     var themeData = Theme.of(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.purple,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: themeData.backgroundColor,
+      // bottomNavigationBar: ConvexAppBar.badge(
+      //   {
+      //     1: '9+'
+      //   },
+      //   badgeMargin: EdgeInsets.only(bottom: 20, left: 20),
+      //   backgroundColor: themeData.primaryColor,
+      //   style: TabStyle.fixedCircle,
+      //   items: [
+      //     TabItem(icon: Icons.message),
+      //     TabItem(icon: Icons.shopping_cart),
+      //     TabItem(icon: Icons.people),
+      //   ],
+      //   initialActiveIndex: 1,//optional, default as 0
+      //   onTap: (int i) => print('click index=$i'),
+      // ),
       // bottomNavigationBar: BottomNavigationBar(
       //   selectedItemColor: themeData.primaryColor,
       //   backgroundColor: themeData.backgroundColor,

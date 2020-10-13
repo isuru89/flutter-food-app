@@ -31,6 +31,9 @@ dependencies:
   scrollable_positioned_list: ^0.1.7
   sliding_up_panel: ^1.0.2
   flutter_datetime_picker: ^1.4.0
+  convex_bottom_bar: ^2.5.1+1
+  badges: ^1.1.3
+  smart_select: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -76,3 +79,17 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Kufam
+      fonts:
+        - asset: assets/fonts/Kufam/static/Kufam-Regular.ttf
+        - asset: assets/fonts/Kufam/static/Kufam-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Kufam/static/Kufam-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Kufam/static/Kufam-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Kufam/static/Kufam-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Kufam/static/Kufam-ExtraBold.ttf
+          weight: 800

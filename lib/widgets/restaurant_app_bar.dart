@@ -23,7 +23,7 @@ class RestaurantHeader extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final ratio = shrinkOffset / expandedHeight;
     var logoSize = kRestaurantHeaderLogoMinSize + ((kRestaurantHeaderLogoMaxSize - kRestaurantHeaderLogoMinSize) * (1-ratio));
-    var collapsed = ratio > 0.75;
+    var collapsed = ratio > 0.5;
     return Stack(
       fit: StackFit.expand,
       overflow: Overflow.visible,
@@ -31,7 +31,7 @@ class RestaurantHeader extends SliverPersistentHeaderDelegate {
         ClipRRect(
           //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40*(1-ratio)), bottomRight: Radius.circular(40*(1-ratio))),
           child: Image.network(
-            "https://picsum.photos/1600/900",
+            restaurant.bannerUrl,
             fit: BoxFit.cover,
           ),
         ),

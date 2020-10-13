@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+// theme related data
+const kPrimaryColor = Colors.deepPurple;
+const kErrorColor = Colors.green;
+
+
 const double kPadding = 8;
 const double kDoublePadding = 16;
 
@@ -15,7 +20,7 @@ const double kRestaurantHeaderFontSize = 22;
 
 
 // Menu Sessions and category bar
-const double kSessionBarHeight = 120;
+const double kSessionBarHeight = 130;
 const double kSessionAvailableStrokeWidth = 2;
 const double kMenuSessionDisabledOpacity = 0.3;
 const double kCategorySelectedStrokeWidth = 4;

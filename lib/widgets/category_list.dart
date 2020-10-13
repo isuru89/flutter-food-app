@@ -78,7 +78,7 @@ class _CategoryItem extends StatelessWidget {
     final pkColor = themeData.primaryColor;
     var fontStyle = isSelected
         ? themeData.textTheme.headline5.copyWith(fontWeight: FontWeight.w500)
-        : themeData.textTheme.headline5.copyWith(fontWeight: FontWeight.w300);
+        : themeData.textTheme.headline5.copyWith(fontWeight: FontWeight.w300, color: Colors.black54);
     return InkWell(
       onTap: () => onCategoryClicked(this.category.id),
       child: Container(

@@ -8,7 +8,7 @@ import 'widgets/featured_item.dart';
 import 'widgets/restaurant_header.dart';
 import 'widgets/app_header.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
+import 'constants.dart';
 void main() => runApp(MyApp());
 final List<MenuItem> imgList = [
   for (var i = 0; i < 10; i++) MenuItem(i.toString(), "Item $i", images: { "lg": "https://picsum.photos/700/400?t=$i" })
@@ -43,17 +43,18 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Code Sample for material.AppBar.actions',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Kufam',
         brightness: Brightness.light,
         backgroundColor: Colors.white,
-        primaryColor: Colors.blue,
-        dividerColor: Colors.blue,
-        accentColor: Colors.blue.shade800,
-        errorColor: Colors.green,
+        primaryColor: kPrimaryColor,
+        dividerColor: kPrimaryColor,
+        accentColor: kPrimaryColor.shade800,
+        errorColor: kErrorColor,
         textTheme: TextTheme(
-          headline3: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blue),
-          headline4: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          headline3: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: kPrimaryColor),
+          headline4: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           headline5: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-          headline6: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+          headline6: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
           subtitle1: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
           subtitle2: TextStyle(fontSize: 10, fontWeight: FontWeight.w200),
         )
@@ -172,51 +173,57 @@ class MyStatelessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
     return Scaffold(
-      body: SlidingUpPanel(
-        minHeight: 60,
-        backdropEnabled: true,
-        margin: EdgeInsets.only(left: 5, right: 5),
-        boxShadow: [BoxShadow(
-            color: Colors.black54,
-            blurRadius: 20,
-            offset: Offset(0, 0)
-        )],
-        borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
-        collapsed: Container(
-          height: 100,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
-            color: Theme.of(context).primaryColor,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Center(child: IconButton(icon: Icon(Icons.shopping_cart, size: 32,))),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: themeData.accentColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3,
-                      color: themeData.primaryColor,
-                      offset: Offset(0, 0),
-                      spreadRadius: 1
-                    )
-                  ]
+      body: Sample3(),
+    );
+  }
+
+  Widget _slidingScaffold(ThemeData themeData) {
+    return Scaffold(
+        body: SlidingUpPanel(
+          minHeight: 60,
+          backdropEnabled: true,
+          margin: EdgeInsets.only(left: 5, right: 5),
+          boxShadow: [BoxShadow(
+              color: Colors.black54,
+              blurRadius: 20,
+              offset: Offset(0, 0)
+          )],
+          borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
+          collapsed: Container(
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topRight: Radius.circular(60), topLeft: Radius.circular(60)),
+              color: themeData.primaryColor,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Center(child: IconButton(icon: Icon(Icons.shopping_cart, size: 32,))),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: themeData.accentColor,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 3,
+                            color: themeData.primaryColor,
+                            offset: Offset(0, 0),
+                            spreadRadius: 1
+                        )
+                      ]
+                  ),
+                  child: Text(
+                      "\$123.27",
+                      style: themeData.textTheme.headline3.copyWith(color: Colors.white)
+                  ),
                 ),
-                child: Text(
-                    "\$123.27",
-                    style: Theme.of(context).textTheme.headline3.copyWith(color: Colors.white)
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        panelBuilder: (ScrollController sc) => createCartPanel(sc),
-        body: Sample3(),
-      )
+          panelBuilder: (ScrollController sc) => createCartPanel(sc),
+          body: Sample3(),
+        )
     );
   }
 }
