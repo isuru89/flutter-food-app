@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_app/constants.dart';
+import 'package:food_app/model/menu.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
+import 'package:food_app/widgets/add_on_selector.dart';
 import 'package:food_app/widgets/icons.dart';
-import 'package:smart_select/smart_select.dart';
+import 'package:food_app/widgets/image_header.dart';
+
+final ItemAddOnGroup addOnGroup = ItemAddOnGroup(
+  "addon=group-1",
+  "Toppings",
+  1,
+  1,
+  [
+    ItemAddOn("ao-g1-1", "Salads", 2.99),
+    ItemAddOn("ao-g1-2", "Cherry", 1.99),
+    ItemAddOn("ao-g1-3", "Pineapples", 3.99),
+    ItemAddOn("ao-g1-4", "Cream", 0.99),
+  ]
+);
+final ItemAddOnGroup multiAddOnGroup = ItemAddOnGroup(
+  "addon-group-2",
+  "Flavours",
+  1,
+  3,
+  [
+    ItemAddOn("ao-g2-1", "Chocolate", 2.99),
+    ItemAddOn("ao-g2-2", "Vanilla", 1.99),
+    ItemAddOn("ao-g2-3", "Strawberry", 3.99),
+    ItemAddOn("ao-g2-4", "Cherry", 0.99),
+    ItemAddOn("ao-g2-5", "Hazlenuts", 0.99),
+  ]
+);
 
 class ItemModal extends StatelessWidget {
 
@@ -11,19 +40,44 @@ class ItemModal extends StatelessWidget {
     final ItemModalArguments args = ModalRoute.of(context).settings.arguments;
     var themeData = Theme.of(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: 340,
-                  child: Hero(
-                      tag: args.heroTag ?? "menu-item-" + args.menuItem.id,
-                      child: Image.network(args.menuItem.images['lg'], fit: BoxFit.cover,)
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: HeaderWithImage(
+              heroTag: args.heroTag ?? "menu-item-" + args.menuItem.id,
+              heroImage: args.menuItem.images['lg'],
+              maxHeight: 350,
+              minHeight: 100,
+              embossPanelOffset: -kDoublePadding * 2,
+              embossedPanel: Container(
+                height: kDoublePadding * 4,
+                width: MediaQuery.of(context).size.width,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: kPadding, horizontal: kPadding),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Text('${args.menuItem.name} ${args.menuItem.name} ${args.menuItem.name} ${args.menuItem.name} ${args.menuItem.name}',
+                          style: themeData.textTheme.headline4.copyWith(color: themeData.primaryColor, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                SafeArea(
+              ),
+              actionPanel: SafeArea(
+                top: true,
+                bottom: false,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,90 +91,64 @@ class ItemModal extends StatelessWidget {
                           24
                         )
                       ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: IconUtils.createShadowIcon(
+                          Icon(Icons.favorite_outline_rounded, color: Colors.white),
+                          24
+                        )
+                      ),
                     ],
                   ),
                 )
-              ],
-            ),
-            Container(
-              width: double.infinity,
-              transform: Matrix4.translationValues(0, -40, 0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(40.0),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-                    child: Text('${args.menuItem.name}', style: themeData.textTheme.headline3),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Container(
-                      height: 48,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Card(
-                        elevation: 4,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Center(child: Text("\$123.32", style: themeData.textTheme.headline4)),
-                            ),
-                            VerticalDivider(indent: 8, endIndent: 8),
-                            Expanded(
-                              child: Center(child: Text("345 cal", style: themeData.textTheme.subtitle1,)),
-                            ),
-                            VerticalDivider(indent: 8, endIndent: 8),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.timer, size: 16, color: Colors.black54),
-                                  SizedBox(width: 8),
-                                  Text("20 mins", style: themeData.textTheme.subtitle1),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text('In descriptive writing, the author does not just tell the reader what was seen, felt, tested, smelled, or heard. Rather, the author describes something from their own experience and, through careful choice of words and phrasing, makes it seem real. Descriptive writing is vivid, colorful, and detailed.',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(height: 1.5),),
-                  ),
-                  Divider(height: 32,),
-                  Column(
-                    children: [
-                      Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18)),
-                      SmartSelect<String>.single(
-                        modalType: S2ModalType.bottomSheet,
-                        modalHeaderStyle: S2ModalHeaderStyle(
-                          textStyle: themeData.textTheme.headline4
-                        ),
-                        title: "Proteins",
-                        value: '',
-                        onChange: (state) => print(state),
-                        choiceItems: [
-                          S2Choice<String>(value: 'ion', title: 'Ionic', subtitle: 'Ionic framework'),
-                          S2Choice<String>(value: 'flu', title: 'Flutter'),
-                          S2Choice<String>(value: 'rea', title: 'React Native'),
-                        ],
-                      )
-                      ,
-                    ],
-                  )
-                ],
               ),
             )
-          ],
-        ),
+          ),
+          SliverPersistentHeader(
+            delegate: FixedHeader(kDoublePadding * 2),
+            pinned: true,
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kPadding, vertical: kPadding),
+              child: Column(
+                children: [
+                  Text('In descriptive writing, the author does not just tell the reader what was seen, felt, tested, smelled, or heard. Rather, the author describes something from their own experience and, through careful choice of words and phrasing, makes it seem real. Descriptive writing is vivid, colorful, and detailed.',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(height: 1.5, fontSize: 12)
+                  ),
+                  Divider(height: 32),
+                  Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18)),
+                  SingleItemAddOnSelector(addOnGroup, (addon) => print(addon)),
+                  MultiItemAddOnSelector(multiAddOnGroup, (addons) => print(addons)),
+                  Divider(height: 32),
+                  Text("Instructions for Kitchen", style: themeData.textTheme.headline4.copyWith(fontSize: 18)),
+                  SizedBox(height: kPadding),
+                  TextField(
+                    autofocus: false,
+                    maxLength: 100,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: themeData.primaryColor),
+                        borderRadius: BorderRadius.circular(kDoublePadding),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 0.5, color: themeData.primaryColor),
+                        borderRadius: BorderRadius.circular(kDoublePadding),
+                      ),
+                      hintText: 'Tell something to kitchen when preparing this'
+                    ),
+                  )
+                ]
+              )
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: SafeArea(
         top: false,

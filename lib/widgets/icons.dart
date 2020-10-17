@@ -12,7 +12,7 @@ class IconUtils {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                  color: Colors.black38,
+                  color: Colors.black12,
                   blurRadius: kDoublePadding
               )
             ]

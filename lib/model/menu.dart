@@ -48,25 +48,25 @@ class MenuItem {
 
 }
 
-class ItemModifierGroup {
+class ItemAddOnGroup {
 
   final String id;
   final String name;
 
   final int minItems;
   final int maxItems;
-  final List<ItemModifier> modifiers;
+  final List<ItemAddOn> addOns;
 
-  ItemModifierGroup(this.id, this.name, this.minItems, this.maxItems, this.modifiers);
+  ItemAddOnGroup(this.id, this.name, this.minItems, this.maxItems, this.addOns);
 
 }
 
-class ItemModifier {
+class ItemAddOn {
 
   final String id;
   final String name;
   final double price;
 
-  ItemModifier(this.id, this.name, this.price);
+  ItemAddOn(this.id, this.name, this.price);
 
 }
