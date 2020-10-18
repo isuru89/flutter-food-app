@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/model/view/bottom_panel.dart';
 
 // theme related data
-const kPrimaryColor = Colors.deepPurple;
-const kErrorColor = Colors.green;
+const kPrimaryColor = Colors.blue;
+const kErrorColor = Colors.red;
 
 
 const double kPadding = 8;
@@ -34,3 +35,16 @@ const double kFeaturedItemImageHeight = 150;
 const double kMenuItemHeight = 140;
 const double kMenuItemCardElevation = 0;
 const double kMenuItemImageSize = 124;
+
+// item modal related configs
+const double kItemModalHeroImageMaxHeight = 280;
+const double kItemModalHeroImageMinHeight = 100;
+const double kItemModalBottomPanelHeight = 60;
+
+// bottom panel items
+final List<BottomPanelItem> kBottomPanelItems = [
+  BottomPanelItem('Home', '/home', Icons.home_outlined),
+  BottomPanelItem('History', '/history', Icons.history),
+  BottomPanelItem('Favourites', '/favourites', Icons.favorite_outline),
+  BottomPanelItem('Account', '/account', Icons.account_circle_outlined),
+];

@@ -12,9 +12,10 @@ import 'package:food_app/widgets/category_list.dart';
 import 'package:food_app/widgets/restaurant_app_bar.dart';
 
 import 'package:food_app/constants.dart';
-
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:badges/badges.dart';
+import 'package:food_app/widgets/restaurant_bottom_panel.dart';
 
 class Song {
   final String title;
@@ -45,19 +46,21 @@ final categories = [
 ];
 
 final List<MenuItem> imgList = [
-  for (var i = 0; i < 10; i++) MenuItem(
-      i.toString(),
-      "Chicken Salad",
-      description: "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
-      images: { "lg": "https://picsum.photos/700/300?t=$i" })
+  for (var i = 0; i < 10; i++)
+    MenuItem(i.toString(), "Chicken Salad",
+        description:
+            "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
+        images: {"lg": "https://picsum.photos/700/300?t=$i"})
 ];
 
 final List<MenuItem> menuItemList = [
-  for (var i = 0; i < 15; i++) MenuItem(
+  for (var i = 0; i < 15; i++)
+    MenuItem(
       i.toString(),
       "Chicken Salad",
-      images: { "lg": "https://picsum.photos/700/400?t=$i" },
-      description: "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
+      images: {"lg": "https://picsum.photos/700/400?t=$i"},
+      description:
+          "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
     )
 ];
 
@@ -68,135 +71,74 @@ class Sample3 extends StatelessWidget {
     var themeData = Theme.of(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Colors.purple,
-      ),
+        onPressed: () => nav.pushNamed('/cart'),
+          child: Icon(Icons.shopping_cart_outlined),
+          backgroundColor: themeData.primaryColor),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: themeData.backgroundColor,
-      // bottomNavigationBar: ConvexAppBar.badge(
-      //   {
-      //     1: '9+'
-      //   },
-      //   badgeMargin: EdgeInsets.only(bottom: 20, left: 20),
-      //   backgroundColor: themeData.primaryColor,
-      //   style: TabStyle.fixedCircle,
-      //   items: [
-      //     TabItem(icon: Icons.message),
-      //     TabItem(icon: Icons.shopping_cart),
-      //     TabItem(icon: Icons.people),
-      //   ],
-      //   initialActiveIndex: 1,//optional, default as 0
-      //   onTap: (int i) => print('click index=$i'),
-      // ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   selectedItemColor: themeData.primaryColor,
-      //   backgroundColor: themeData.backgroundColor,
-      //   currentIndex: 4,
-      //   elevation: 4,
-      //   type: BottomNavigationBarType.fixed,
-      //   onTap: (idx) {
-      //     showModalBottomSheet(context: context, builder: (_) {
-      //       return Container(
-      //         height: MediaQuery.of(context).size.height / 2,
-      //         child: Text("Hello bottom sheet!")
-      //       );
-      //     });
-      //   },
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.shopping_cart),
-      //       title: Text('Cart'),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.favorite),
-      //       title: Text('Favorites'),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.music_note),
-      //       title: Text('Songs'),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.settings_input_antenna),
-      //       title: Text('Radio'),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.search),
-      //       title: Text('Search'),
-      //     ),
-      //   ],
-      // ),
-      //
-
+      bottomNavigationBar:
+          RestaurantBottomPanel(kBottomPanelItems, (item, _) => print('$item')),
       body: Column(
         children: [
           Expanded(
             child: CustomScrollView(
               slivers: [
-                // HeaderWidget(),
-                // AlbumWidget(),
                 SliverPersistentHeader(
                     delegate: RestaurantHeader(
-                      restaurant: Restaurant("Sun in my Belly Hello world Hello"),
-                        expandedHeight: kRestaurantHeaderHeight,
-                    ), pinned: true),
+                      restaurant:
+                          Restaurant("Sun in my Belly Hello world Hello"),
+                      expandedHeight: kRestaurantHeaderHeight,
+                    ),
+                    pinned: true),
                 SliverPersistentHeader(
-                  delegate: SessionBar(
-                      preferredHeight: kSessionBarHeight,
+                  delegate: SessionBar(preferredHeight: kSessionBarHeight,
                       // marginTop: 20,
-                      children: [MenuList(menuList: sessions), CategoryList(categoryList: categories)]
-                  ),
+                      children: [
+                        MenuList(menuList: sessions),
+                        CategoryList(categoryList: categories)
+                      ]),
                   pinned: true,
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: kPadding * 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kPadding * 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Labels.createHeaderAndSummary("Featured", "${imgList.length} items", themeData),
-                        FeaturedItemList(imgList: imgList,),
+                        Labels.createHeaderAndSummary(
+                            "Featured", "${imgList.length} items", themeData),
+                        FeaturedItemList(
+                          imgList: imgList,
+                        ),
                         Divider(),
                       ],
                     ),
                   ),
                 ),
-
-                // SliverToBoxAdapter(
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(15.0),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: <Widget>[
-                //         Text(
-                //           'Top songs',
-                //           style: TextStyle(color: Colors.white, fontSize: 17),
-                //         ),
-                //         Text(
-                //           'ADD TO PLAYLIST',
-                //           style: TextStyle(
-                //               color: Colors.pinkAccent, fontSize: 13),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((_, index) {
                     final menuIt = menuItemList[index % menuItemList.length];
                     if (index == 0) {
                       return Column(
                         children: [
-                          MenuItemWidget(menuItem: menuIt, onClicked: (it) {
-                            nav.pushNamed('/item', arguments: ItemModalArguments(it));
-                          })
+                          MenuItemWidget(
+                              menuItem: menuIt,
+                              onClicked: (it) {
+                                nav.pushNamed('/item',
+                                    arguments: ItemModalArguments(it));
+                              })
                         ],
                       );
                     } else if (index == 19) {
                       return Container(height: 60);
                     }
-                    return MenuItemWidget(menuItem: menuIt, onClicked: (it) {
-                      nav.pushNamed('/item', arguments: ItemModalArguments(it));
-                    });
+                    return MenuItemWidget(
+                        menuItem: menuIt,
+                        onClicked: (it) {
+                          nav.pushNamed('/item',
+                              arguments: ItemModalArguments(it));
+                        });
                   }, childCount: 20),
                 ),
               ],
@@ -207,47 +149,41 @@ class Sample3 extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class SessionBar extends SliverPersistentHeaderDelegate {
-
   final double preferredHeight;
   final MaterialColor bgColor;
   final List<Widget> children;
   final bool isElevated;
   final bool isTopMost;
 
-  SessionBar({
-    this.preferredHeight,
-    this.bgColor,
-    this.children,
-    this.isElevated = false,
-    this.isTopMost = true });
+  SessionBar(
+      {this.preferredHeight,
+      this.bgColor,
+      this.children,
+      this.isElevated = false,
+      this.isTopMost = true});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     final ratio = shrinkOffset / preferredHeight;
     final stick = ratio > 0;
     return ClipRect(
       child: Container(
         height: preferredHeight,
         margin: EdgeInsets.only(bottom: kDoublePadding),
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          boxShadow: [
-            if (stick) BoxShadow(
-              color: Colors.black38,
-              offset: Offset(0, 0),
-              blurRadius: 10
-            )
-          ]
-        ),
+        decoration:
+            BoxDecoration(color: Theme.of(context).backgroundColor, boxShadow: [
+          if (stick)
+            BoxShadow(
+                color: Colors.black38, offset: Offset(0, 0), blurRadius: 10)
+        ]),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [...children]
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [...children]),
       ),
     );
   }
@@ -262,7 +198,6 @@ class SessionBar extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
-
 }
 
 class AlbumWidget extends StatelessWidget {
