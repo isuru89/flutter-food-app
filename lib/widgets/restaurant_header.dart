@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -72,6 +73,8 @@ class DeliciousFoodApp extends StatefulWidget {
 
 class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
 
+  final Random random = Random(123456);
+
   final String restaurantFileName;
   Future<Restaurant> _restaurant;
   String selectedSessionName;
@@ -124,6 +127,12 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
     );
   }
 
+  List<MenuItem> findFeaturedItems(List<MenuItem> fullMenuItemList) {
+    List<MenuItem> tmpList = []..addAll(fullMenuItemList);
+    tmpList.shuffle();
+    return tmpList.sublist(0, random.nextInt(fullMenuItemList.length));
+  }
+
   CustomScrollView buildRestaurantHomePage(Restaurant restaurant, ThemeData themeData, NavigatorState nav) {
     var selectedMenuSession = this.selectedSessionName == null ?
       restaurant.menuSessions[0]
@@ -132,7 +141,7 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
       selectedMenuSession.categories[0] : selectedMenuSession.categories
         .firstWhere((cat) => cat.id == this.selectedCategoryId);
     var allItemsInCategory = selectedCategory.items;
-    print(selectedMenuSession.fromTime);
+    var featuredItems = findFeaturedItems(allItemsInCategory);
 
     return CustomScrollView(
             slivers: [
@@ -169,7 +178,7 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
                     ]),
                 pinned: true,
               ),
-              SliverToBoxAdapter(
+              if (featuredItems.length > 0) SliverToBoxAdapter(
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: kPadding * 2),
@@ -177,9 +186,9 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Labels.createHeaderAndSummary(
-                          "Featured", "${imgList.length} items", themeData),
+                          "Featured", "${featuredItems.length} items", themeData),
                       FeaturedItemList(
-                        imgList: imgList,
+                        imgList: featuredItems,
                       ),
                       Divider(),
                     ],
