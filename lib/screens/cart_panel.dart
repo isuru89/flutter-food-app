@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:food_app/constants.dart';
 import 'package:food_app/model/cart_item.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
 
 final List<CartItem> cartItems = [
@@ -135,43 +135,31 @@ class _CartPanel extends State<CartPanel> {
                 boxShadow: [
                   BoxShadow(color: Colors.black87, blurRadius: kPadding)
                 ],
-                color: themeData.primaryColor,
+                color: themeData.backgroundColor,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: SafeArea(
-                      bottom: true,
-                      top: false,
-                      child: InkWell(
-                        onTap: () => Navigator.of(context).pushNamed('/checkout'),
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.check,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: kPadding),
-                              Text(
-                                "Checkout",
-                                style: themeData.textTheme.headline3.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
                     child: Text(
                       "\$43.88",
                       style: themeData.textTheme.headline3
-                          .copyWith(color: Colors.white),
+                          .copyWith(color: themeData.primaryColor),
+                    ),
+                  ),
+                  Expanded(
+                    child: SafeArea(
+                        bottom: true,
+                        top: false,
+                        child: FlatButton.icon(
+                            onPressed: () => Navigator.of(context).pushNamed("/checkout"),
+                            icon: Text('Checkout'),
+                            label: Icon(Icons.arrow_forward_ios, size: 16),
+                            shape: StadiumBorder(),
+                            textColor: themeData.backgroundColor,
+                            color: themeData.primaryColor,
+                        )
                     ),
                   )
                 ],

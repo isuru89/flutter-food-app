@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/constants.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/add_on_selector.dart';
 import 'package:food_app/widgets/icons.dart';
@@ -159,7 +159,7 @@ class ItemModal extends StatelessWidget {
               Row(
                 children: [
                   FlatButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kPadding)),
+                    shape: StadiumBorder(),
                     color: Colors.white,
                     onPressed: () { Navigator.of(context).pop(); },
                     child: Text("Add to Cart",

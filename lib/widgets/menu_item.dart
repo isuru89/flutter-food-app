@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
 import 'package:food_app/widgets/price_label.dart';
 import 'package:food_app/widgets/food_label.dart';

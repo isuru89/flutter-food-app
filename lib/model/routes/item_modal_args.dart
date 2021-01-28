@@ -1,5 +1,5 @@
 
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu_item.dart';
 
 class ItemModalArguments {
   final MenuItem menuItem;

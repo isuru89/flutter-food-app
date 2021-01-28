@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu.dart';
 import 'package:food_app/constants.dart';
 
 class MenuList extends StatefulWidget {
 
   final List<Menu> menuList;
+  final Function(String) onMenuSelected;
 
-  const MenuList({Key key, this.menuList}) : super(key: key);
+  const MenuList({Key key, this.menuList, this.onMenuSelected}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _MenuListState(sessionList: menuList);
+    return _MenuListState(sessionList: menuList, onMenuSelected: onMenuSelected);
   }
 
 }

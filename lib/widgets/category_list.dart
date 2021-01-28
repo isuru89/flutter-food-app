@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu.dart';
 
 import 'package:food_app/constants.dart';
+import 'package:food_app/model/menu/menu_category.dart';
 
 const List<MenuCategory> EMPTY_CATS = [];
 
 class CategoryList extends StatefulWidget {
 
   final List<MenuCategory> categoryList;
+  final Function(String) onCategoryClicked;
 
-  const CategoryList({Key key, this.categoryList}) : super(key: key);
+  const CategoryList({Key key, this.categoryList, this.onCategoryClicked}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _CategoryListState(categoryList: categoryList, selectedCategoryId: categoryList[0].id);
+    return _CategoryListState(categoryList: categoryList,
+    selectedCategoryId: categoryList[0].id,
+    onCategoryClicked: onCategoryClicked);
   }
 
 }
@@ -56,6 +59,7 @@ class _CategoryListState extends State<CategoryList> {
     this.setState(() {
       selectedCategoryId = id;
     });
+    this.onCategoryClicked(id);
   }
 
 }

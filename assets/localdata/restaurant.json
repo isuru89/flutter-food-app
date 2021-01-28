@@ -1,0 +1,660 @@
+{
+  "id": "R5832137",
+  "name": "Sun in my Belly",
+  "bannerUrl": "https://picsum.photos/1600/900",
+  "menuSessions": [
+    {
+      "name": "Breakfast",
+      "fromTime": "06:00",
+      "endTime": "09:00",
+      "categories": [
+        {
+          "name": "Appeteasers",
+          "id": "C00001",
+          "items": [
+            {
+              "id": "MI0001",
+              "name": "3 Chicken Wings",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Tender, Spicy and Juicy. Original or Peri-Crusted",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0002",
+              "name": "Chicken Livers and Portuguese Roll",
+              "price": 2.79,
+              "calories": 370,
+              "description": "Chicken Livers Topped with PERi-PERi Sauce, Served with A Roll To Soak Up The Sauce",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=2"
+              }
+            },
+            {
+              "id": "MI0003",
+              "name": "Spicy Mixed Olives (V)",
+              "price": 2.15,
+              "calories": 140,
+              "description": "Co-Starring Garlic, Pepper and Chili",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=3"
+              }
+            },
+            {
+              "id": "MI0004",
+              "name": "Hummus with PERI-PERI Drizzle (V)",
+              "price": 2.29,
+              "calories": 120,
+              "description": "Pour Smoky PERi-PERi Oil Over Creamy Hummus and Dig in with Strips Of Warm Pita",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=4"
+              }
+            },
+            {
+              "id": "MI0005",
+              "name": "Red Pepper Dip (V)",
+              "price": 1.99,
+              "calories": 120,
+              "description": "Dive Into Temping Roasted Red Pepper and Chili Spice Dip with Warm Pita Strips",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=5"
+              }
+            },
+            {
+              "id": "MI0006",
+              "name": "All Together Now (V)",
+              "price": 5.29,
+              "calories": 530,
+              "description": "Spicy Mixed Olives, Red Pepper Dip, Hummus with PERi-PERi Drizzle and Warm Pita Strips",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=6"
+              }
+            }
+
+          ]
+        },
+        {
+          "name": "Fino Sides",
+          "id": "C00002",
+          "items": [
+            {
+              "id": "MI0101",
+              "name": "PERi-PERi Wedges",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Original or Peri-Crusted",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "Regular",
+                      "price": 1.9
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "Large",
+                      "price": 3.3
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0102",
+              "name": "Corn-On-The-Cob",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Fast food with corns",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00002",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0003",
+                      "name": "Regular",
+                      "price": 1.8
+                    },
+                    {
+                      "id": "AO00004",
+                      "name": "Large",
+                      "price": 2.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lunch",
+      "fromTime": "12:30",
+      "endTime": "15:00",
+      "categories": [
+        {
+          "name": "Chicken",
+          "id": "C00003",
+          "items": [
+            {
+              "id": "MI0301",
+              "name": "1/4 Chicken",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Quarter Chicken Marinated with PERi-PERi Sauce and Grilled",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 3,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 3.85
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 4.85
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 5.85
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0301",
+              "name": "1/2 Chicken",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Quarter Chicken Marinated with PERi-PERi Sauce and Grilled",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 6.85
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 7.85
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 8.85
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0301",
+              "name": "5 Chicken Wings",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Original Flavours or PERi-PEREi Crusted (P)",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 4.75
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 5.75
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 6.75
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0301",
+              "name": "Wing Roulette",
+              "price": 7.50,
+              "calories": 300,
+              "description": "10 Wings in PERi-PERi Flavors",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0301",
+              "name": "Whole Chicken",
+              "price": 13.50,
+              "calories": 600,
+              "description": "Whole Chicken Marinated in PERi-PERi Sauce and Grilled",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0301",
+              "name": "Chicken Butterfly",
+              "price": 4.95,
+              "calories": 300,
+              "description": "Succulent Double Chicken Breast in Crispy Skin",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 4.95
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 5.95
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 7.95
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0301",
+              "name": "Espetada",
+              "price": 6.95,
+              "calories": 300,
+              "description": "Tender Marinated Chicken Thighs and Fresh Peppers, Served on a Skewer",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 6.95
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 7.95
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 9.95
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0301",
+              "name": "Espetada Carnival",
+              "price": 6.95,
+              "calories": 300,
+              "description": "Flame-Grilled PERi-PERi Thighs, Stuffed with Feta and Parsley, Skewered with Mixed Peppers",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 8.25
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 9.25
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 12.25
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0301",
+              "name": "Grilled Chicken Tenders",
+              "price": 6.95,
+              "calories": 300,
+              "description": "uicy and Tender, Delicious with All Sides",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 2,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "On its own",
+                      "price": 2.00
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 1 Regular Side",
+                      "price": 3.00
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 2 Regular Sides",
+                      "price": 4.00
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Sharing platters",
+          "id": "C00004",
+          "items": [
+            {
+              "id": "MI0101",
+              "name": "Full Platter",
+              "price": 2.59,
+              "calories": 300,
+              "description": "For 3-4 People, Whole Chicken with  2 Large or 4 Regular Rides",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "With 2 Large Sides",
+                      "price": 17.65
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 4 Regular Sides",
+                      "price": 17.65
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0101",
+              "name": "No Bones Platter",
+              "price": 15.50,
+              "calories": 300,
+              "description": "For 2-3 People, Chicken Butterfly and a Espetada, with 2 Large or 4 Regular Sides",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "With 2 Large Sides",
+                      "price": 15.50
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "With 4 Regular Sides",
+                      "price": 15.50
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0101",
+              "name": "Jumbo Platter",
+              "price": 35.95,
+              "calories": 300,
+              "description": "For 4-6 People, 2 Whole Chickens and 5 Large Sides",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dinner",
+      "fromTime": "19:30",
+      "endTime": "21:30",
+      "categories": [
+        {
+          "name": "Sides",
+          "id": "C00005",
+          "items": [
+            {
+              "id": "MI0101",
+              "name": "PERi-PERi Chips (P)",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Crunchy Chips with PERi-PERi Sauce",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "Regular",
+                      "price": 1.30
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "Large",
+                      "price": 2.20
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0101",
+              "name": "Spicy Rice",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Spicy fried rice",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "Regular",
+                      "price": 1.30
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "Large",
+                      "price": 2.20
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MI0101",
+              "name": "Coleslaw",
+              "price": 1.3,
+              "calories": 300,
+              "description": "Cabbage, Carrot, Nandos Special Mayonnaise",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0101",
+              "name": "Grilled Veg",
+              "price": 1.3,
+              "calories": 300,
+              "description": "Grilled Assorted Vegetables",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0101",
+              "name": "Garlic Bread",
+              "price": 2.59,
+              "calories": 300,
+              "description": "Toasted Garlic Flavored Bread",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              },
+              "addOnGroups": [
+                {
+                  "id": "AG00001",
+                  "name": "Size",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "addOns": [
+                    {
+                      "id": "AO0001",
+                      "name": "Regular",
+                      "price": 1.30
+                    },
+                    {
+                      "id": "AO00002",
+                      "name": "Large",
+                      "price": 2.20
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Salads",
+          "id": "C00006",
+          "items": [
+            {
+              "id": "MI0101",
+              "name": "Portuguese Salad",
+              "price": 2.45,
+              "calories": 300,
+              "description": "Fresh Tomato, Nando's Peri-Olives, Mixed Peppers, Cucumber and Onion on A Bed of Crisp Lettuce",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0101",
+              "name": "Mediterranean Salad",
+              "price": 3.50,
+              "calories": 300,
+              "description": "Piccolo Tomato, Cucumber, Sweet Peppers and Mixed Leaves. Sprinkled with Olives and Feta Cheese",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            },
+            {
+              "id": "MI0101",
+              "name": "Caesar Salad",
+              "price": 2.45,
+              "calories": 300,
+              "description": "Cos Lettuce Sprinkled with Parmesan Cheese, Caesar Dressing and Crunchy Croutons",
+              "images": {
+                "lg": "https://picsum.photos/700/400?t=1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

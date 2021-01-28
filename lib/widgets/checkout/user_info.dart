@@ -43,11 +43,6 @@ class _CheckoutUserInfoState extends State<CheckoutUserInfo> {
             decoration: InputDecoration(labelText: 'Address Line 1'),
           ),
           SizedBox(height: kPadding),
-          TextField(
-            keyboardType: TextInputType.streetAddress,
-            decoration: InputDecoration(labelText: 'Address Line 2'),
-          ),
-          SizedBox(height: kPadding),
           Row(
             children: [
               Flexible(

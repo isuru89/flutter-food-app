@@ -1,14 +1,15 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu.dart';
 import 'package:food_app/screens/cart_panel.dart';
 import 'package:food_app/screens/checkout_screen.dart';
 import 'package:food_app/screens/item_modal.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'model/menu/menu_item.dart';
 import 'widgets/featured_item.dart';
 import 'widgets/restaurant_header.dart';
-import 'widgets/app_header.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'constants.dart';
 void main() => runApp(MyApp());
 final List<MenuItem> imgList = [
@@ -40,8 +41,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/item': (_) => ItemModal(),
-        '/cart': (_) => CartPanel(),
         '/checkout': (_) => CheckoutPage()
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == "/cart") {
+          return PageRouteBuilder(
+            pageBuilder: (_, __, ___) => CartPanel(),
+            transitionsBuilder: (_, anim, __, child) {
+              var begin = Offset(0.0, 1.0);
+              var end = Offset.zero;
+              var curve = Curves.ease;
+
+              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: anim.drive(tween),
+                child: child,
+              );
+            }
+          );
+        }
+        return MaterialPageRoute(builder: null);
       },
       title: 'Flutter Code Sample for material.AppBar.actions',
       debugShowCheckedModeBanner: false,
@@ -174,9 +194,8 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var themeData = Theme.of(context);
     return Scaffold(
-      body: Sample3(),
+      body: DeliciousFoodApp(),
     );
   }
 

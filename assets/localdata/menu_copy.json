@@ -1,0 +1,20 @@
+{
+  "name": "Breakfast",
+  "fromTime": "06:00",
+  "toTime": "09:00",
+  "categories": [
+    {
+      "name": "Appeteasers",
+      "id": "C00001",
+      "items": [
+        {
+          "id": "MI0001",
+          "name": "3 Chicken Wings",
+          "price": 2.59,
+          "calories": 300,
+          "description": "Tender, Spicy and Juicy. Original or Peri-Crusted"
+        }
+      ]
+    }
+  ]
+}

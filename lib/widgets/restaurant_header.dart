@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:food_app/model/menu/menu.dart';
+import 'package:food_app/model/menu/menu_category.dart';
+import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/restaurant.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/featured_item.dart';
@@ -12,9 +16,6 @@ import 'package:food_app/widgets/category_list.dart';
 import 'package:food_app/widgets/restaurant_app_bar.dart';
 
 import 'package:food_app/constants.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:badges/badges.dart';
 import 'package:food_app/widgets/restaurant_bottom_panel.dart';
 
 class Song {
@@ -64,7 +65,32 @@ final List<MenuItem> menuItemList = [
     )
 ];
 
-class Sample3 extends StatelessWidget {
+class DeliciousFoodApp extends StatefulWidget {
+  @override
+  _DeliciousFoodAppState createState() => _DeliciousFoodAppState("restaurant.json");
+}
+
+class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
+
+  final String restaurantFileName;
+  Future<Restaurant> _restaurant;
+  String selectedSessionName;
+  String selectedCategoryId;
+
+  _DeliciousFoodAppState(this.restaurantFileName);
+
+  @override
+  void initState() {
+    super.initState();
+    _restaurant = this.loadRestaurant();
+  }
+
+  Future<Restaurant> loadRestaurant() async {
+    var jsonStr = await rootBundle.loadString("assets/localdata/${this.restaurantFileName}");
+    var decoded = jsonDecode(jsonStr);
+    return Restaurant.fromJson(decoded);
+  }
+
   @override
   Widget build(BuildContext context) {
     var nav = Navigator.of(context);
@@ -81,73 +107,112 @@ class Sample3 extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverPersistentHeader(
-                    delegate: RestaurantHeader(
-                      restaurant:
-                          Restaurant("Sun in my Belly Hello world Hello"),
-                      expandedHeight: kRestaurantHeaderHeight,
-                    ),
-                    pinned: true),
-                SliverPersistentHeader(
-                  delegate: SessionBar(preferredHeight: kSessionBarHeight,
-                      // marginTop: 20,
-                      children: [
-                        MenuList(menuList: sessions),
-                        CategoryList(categoryList: categories)
-                      ]),
-                  pinned: true,
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kPadding * 2),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Labels.createHeaderAndSummary(
-                            "Featured", "${imgList.length} items", themeData),
-                        FeaturedItemList(
-                          imgList: imgList,
-                        ),
-                        Divider(),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate((_, index) {
-                    final menuIt = menuItemList[index % menuItemList.length];
-                    if (index == 0) {
-                      return Column(
-                        children: [
-                          MenuItemWidget(
-                              menuItem: menuIt,
-                              onClicked: (it) {
-                                nav.pushNamed('/item',
-                                    arguments: ItemModalArguments(it));
-                              })
-                        ],
-                      );
-                    } else if (index == 19) {
-                      return Container(height: 60);
-                    }
-                    return MenuItemWidget(
-                        menuItem: menuIt,
-                        onClicked: (it) {
-                          nav.pushNamed('/item',
-                              arguments: ItemModalArguments(it));
-                        });
-                  }, childCount: 20),
-                ),
-              ],
+            child: FutureBuilder<Restaurant>(
+              future: _restaurant,
+              builder: (BuildContext ctx, AsyncSnapshot<Restaurant> snapshot) {
+                if (snapshot.hasData) {
+                  Restaurant restaurant = snapshot.data;
+                  return buildRestaurantHomePage(restaurant, themeData, nav);
+                }
+                return Text("Loading...");
+              },
             ),
           ),
           // BottomWidget(),
         ],
       ),
     );
+  }
+
+  CustomScrollView buildRestaurantHomePage(Restaurant restaurant, ThemeData themeData, NavigatorState nav) {
+    var selectedMenuSession = this.selectedSessionName == null ?
+      restaurant.menuSessions[0]
+      : restaurant.menuSessions.firstWhere((m) => m.name == this.selectedSessionName);
+    var selectedCategory = this.selectedCategoryId == null ?
+      selectedMenuSession.categories[0] : selectedMenuSession.categories
+        .firstWhere((cat) => cat.id == this.selectedCategoryId);
+    var allItemsInCategory = selectedCategory.items;
+    print(selectedMenuSession.fromTime);
+
+    return CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                  delegate: RestaurantHeader(
+                    restaurant: restaurant,
+                    expandedHeight: kRestaurantHeaderHeight,
+                  ),
+                  pinned: true),
+              SliverPersistentHeader(
+                delegate: SessionBar(preferredHeight: kSessionBarHeight,
+                    // marginTop: 20,
+                    children: [
+                      MenuList(
+                        menuList: restaurant.menuSessions,
+                        onMenuSelected: (sessionName) {
+                          this.setState(() {
+                            selectedSessionName = sessionName;
+                            selectedCategoryId = restaurant.menuSessions
+                              .firstWhere((m) => m.name == sessionName)
+                              .categories[0].id;
+                          });
+                        } ,
+                      ),
+                      CategoryList(
+                        key: ValueKey(selectedMenuSession.name),
+                        categoryList: selectedMenuSession.categories,
+                        onCategoryClicked: (id) {
+                          this.setState(() {
+                            selectedCategoryId = id;
+                          });
+                        },
+                      ),
+                    ]),
+                pinned: true,
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: kPadding * 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Labels.createHeaderAndSummary(
+                          "Featured", "${imgList.length} items", themeData),
+                      FeaturedItemList(
+                        imgList: imgList,
+                      ),
+                      Divider(),
+                    ],
+                  ),
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate((_, index) {
+                  final menuIt = allItemsInCategory[index % allItemsInCategory.length];
+                  if (index == 0) {
+                    return Column(
+                      children: [
+                        MenuItemWidget(
+                            menuItem: menuIt,
+                            onClicked: (it) {
+                              nav.pushNamed('/item',
+                                  arguments: ItemModalArguments(it));
+                            })
+                      ],
+                    );
+                  } else if (index == 19) {
+                    return Container(height: 60);
+                  }
+                  return MenuItemWidget(
+                      menuItem: menuIt,
+                      onClicked: (it) {
+                        nav.pushNamed('/item',
+                            arguments: ItemModalArguments(it));
+                      });
+                }, childCount: allItemsInCategory.length),
+              ),
+            ],
+          );
   }
 }
 

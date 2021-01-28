@@ -1,0 +1,140 @@
+{
+  "name": "Breakfast",
+  "fromTime": "06:00",
+  "toTime": "09:00",
+  "categories": [
+    {
+      "name": "Appeteasers",
+      "id": "C00001",
+      "items": [
+        {
+          "id": "MI0001",
+          "name": "3 Chicken Wings",
+          "price": 2.59,
+          "calories": 300,
+          "description": "Tender, Spicy and Juicy. Original or Peri-Crusted",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=1"
+          }
+        },
+        {
+          "id": "MI0002",
+          "name": "Chicken Livers and Portuguese Roll",
+          "price": 2.79,
+          "calories": 370,
+          "description": "Chicken Livers Topped with PERi-PERi Sauce, Served with A Roll To Soak Up The Sauce",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=2"
+          }
+        },
+        {
+          "id": "MI0003",
+          "name": "Spicy Mixed Olives (V)",
+          "price": 2.15,
+          "calories": 140,
+          "description": "Co-Starring Garlic, Pepper and Chili",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=3"
+          }
+        },
+        {
+          "id": "MI0004",
+          "name": "Hummus with PERI-PERI Drizzle (V)",
+          "price": 2.29,
+          "calories": 120,
+          "description": "Pour Smoky PERi-PERi Oil Over Creamy Hummus and Dig in with Strips Of Warm Pita",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=4"
+          }
+        },
+        {
+          "id": "MI0005",
+          "name": "Red Pepper Dip (V)",
+          "price": 1.99,
+          "calories": 120,
+          "description": "Dive Into Temping Roasted Red Pepper and Chili Spice Dip with Warm Pita Strips",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=5"
+          }
+        },
+        {
+          "id": "MI0006",
+          "name": "All Together Now (V)",
+          "price": 5.29,
+          "calories": 530,
+          "description": "Spicy Mixed Olives, Red Pepper Dip, Hummus with PERi-PERi Drizzle and Warm Pita Strips",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=6"
+          }
+        }
+
+      ]
+    },
+    {
+      "name": "Fino Sides",
+      "id": "C00002",
+      "items": [
+        {
+          "id": "MI0101",
+          "name": "PERi-PERi Wedges",
+          "price": 2.59,
+          "calories": 300,
+          "description": "Original or Peri-Crusted",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=1"
+          },
+          "addOnGroups": [
+            {
+              "id": "AG00001",
+              "name": "Size",
+              "minItems": 1,
+              "maxItems": 1,
+              "addOns": [
+                {
+                  "id": "AO0001",
+                  "name": "Regular",
+                  "price": 1.9
+                },
+                {
+                  "id": "AO00002",
+                  "name": "Large",
+                  "price": 3.3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MI0102",
+          "name": "Corn-On-The-Cob",
+          "price": 2.59,
+          "calories": 300,
+          "description": "Fast food with corns",
+          "images": {
+            "lg": "https://picsum.photos/700/400?t=1"
+          },
+          "addOnGroups": [
+            {
+              "id": "AG00002",
+              "name": "Size",
+              "minItems": 1,
+              "maxItems": 1,
+              "addOns": [
+                {
+                  "id": "AO0003",
+                  "name": "Regular",
+                  "price": 1.8
+                },
+                {
+                  "id": "AO00004",
+                  "name": "Large",
+                  "price": 2.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

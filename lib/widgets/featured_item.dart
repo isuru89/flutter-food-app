@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/constants.dart';
-import 'package:food_app/model/menu.dart';
+import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
 

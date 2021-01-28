@@ -1,6 +1,5 @@
 
-import 'package:flutter/material.dart';
-import 'package:food_app/model/menu.dart';
+import 'menu/menu_item.dart';
 
 class CartItem {
 
