@@ -47,25 +47,6 @@ final categories = [
   MenuCategory("id10", "One-Whole"),
 ];
 
-final List<MenuItem> imgList = [
-  for (var i = 0; i < 10; i++)
-    MenuItem(i.toString(), "Chicken Salad",
-        description:
-            "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
-        images: {"lg": "https://picsum.photos/700/300?t=$i"})
-];
-
-final List<MenuItem> menuItemList = [
-  for (var i = 0; i < 15; i++)
-    MenuItem(
-      i.toString(),
-      "Chicken Salad",
-      images: {"lg": "https://picsum.photos/700/400?t=$i"},
-      description:
-          "dskjdsa dkjhewd smnadsajewm dsmadksahdks anmd qmebj kknskndlsads sdadsa dsad sadsa d",
-    )
-];
-
 class DeliciousFoodApp extends StatefulWidget {
   @override
   _DeliciousFoodAppState createState() => _DeliciousFoodAppState("restaurant.json");
@@ -135,7 +116,7 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
 
   CustomScrollView buildRestaurantHomePage(Restaurant restaurant, ThemeData themeData, NavigatorState nav) {
     var selectedMenuSession = this.selectedSessionName == null ?
-      restaurant.menuSessions[0]
+      restaurant.menuSessions.firstWhere((menu) => menu.isAvailable())
       : restaurant.menuSessions.firstWhere((m) => m.name == this.selectedSessionName);
     var selectedCategory = this.selectedCategoryId == null ?
       selectedMenuSession.categories[0] : selectedMenuSession.categories

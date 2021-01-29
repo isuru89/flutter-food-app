@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+var fmt = new NumberFormat("###", "en_US");
 
 class Labels {
 
@@ -18,7 +21,7 @@ class Labels {
   }
 
   static createCalorieLabel(num calories, TextStyle style) {
-    return Text('$calories cal', style: style);
+    return Text('${fmt.format(calories)} cal', style: style);
   }
 
   static createItemNameLabel(String name, TextStyle style, { maxLines = 2 }) {

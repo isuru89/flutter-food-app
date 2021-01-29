@@ -8,8 +8,8 @@ part of 'menu_item.dart';
 
 MenuItem _$MenuItemFromJson(Map<String, dynamic> json) {
   return MenuItem(
-    json['id'] as String,
-    json['name'] as String,
+    id: json['id'] as String,
+    name: json['name'] as String,
     price: (json['price'] as num)?.toDouble(),
     description: json['description'] as String,
     calories: (json['calories'] as num)?.toDouble(),
@@ -21,6 +21,7 @@ MenuItem _$MenuItemFromJson(Map<String, dynamic> json) {
             ? null
             : ItemAddOnGroup.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    tags: (json['tags'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -30,6 +31,7 @@ Map<String, dynamic> _$MenuItemToJson(MenuItem instance) => <String, dynamic>{
       'price': instance.price,
       'description': instance.description,
       'calories': instance.calories,
+      'tags': instance.tags,
       'images': instance.images,
       'addOnGroups': instance.addOnGroups?.map((e) => e?.toJson())?.toList(),
     };

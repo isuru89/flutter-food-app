@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/constants.dart';
+import 'package:food_app/managers/menu.dart';
 import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/add_on_selector.dart';
@@ -27,6 +28,7 @@ class ItemModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ItemModalArguments args = ModalRoute.of(context).settings.arguments;
+    final MenuItem menuItem = args.menuItem;
     var themeData = Theme.of(context);
     return Scaffold(
       body: CustomScrollView(
@@ -34,8 +36,8 @@ class ItemModal extends StatelessWidget {
           SliverPersistentHeader(
               pinned: true,
               delegate: HeaderWithImage(
-                heroTag: args.heroTag ?? "menu-item-" + args.menuItem.id,
-                heroImage: args.menuItem.images['lg'],
+                heroTag: args.heroTag ?? "menu-item-" + menuItem.id,
+                heroImage: menuItem.images['lg'],
                 maxHeight: kItemModalHeroImageMaxHeight,
                 minHeight: kItemModalHeroImageMinHeight,
                 embossPanelOffset: -kDoublePadding * 2,
@@ -52,7 +54,7 @@ class ItemModal extends StatelessWidget {
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
                           child: Text(
-                            '${args.menuItem.name} ${args.menuItem.name} ${args.menuItem.name} ${args.menuItem.name} ${args.menuItem.name}',
+                            menuItem.name,
                             style: themeData.textTheme.headline4.copyWith(
                                 color: themeData.primaryColor,
                                 fontWeight: FontWeight.bold),
@@ -105,16 +107,17 @@ class ItemModal extends StatelessWidget {
                     horizontal: kPadding, vertical: kPadding),
                 child: Column(children: [
                   Text(
-                      'In descriptive writing, the author does not just tell the reader what was seen, felt, tested, smelled, or heard. Rather, the author describes something from their own experience and, through careful choice of words and phrasing, makes it seem real. Descriptive writing is vivid, colorful, and detailed.',
+                      menuItem.description,
                       textAlign: TextAlign.justify,
                       style: TextStyle(height: 1.5, fontSize: 12)),
                   Divider(height: kDoublePadding),
                   Text("Add-ons",
                       style:
                           themeData.textTheme.headline4.copyWith(fontSize: 18)),
-                  SingleItemAddOnSelector(addOnGroup, (addon) => print(addon)),
-                  MultiItemAddOnSelector(
-                      multiAddOnGroup, (addons) => print(addons)),
+                  if (hasAddOnGroups(menuItem) && isSingleChoiceAddOnGroup(menuItem.addOnGroups[0]))
+                    SingleItemAddOnSelector(menuItem.addOnGroups[0], (addon) => print(addon))
+                  else
+                    MultiItemAddOnSelector(menuItem.addOnGroups[0], (addons) => print(addons)),
                   Divider(height: kDoublePadding),
                   Text("Instructions for Kitchen",
                       style:

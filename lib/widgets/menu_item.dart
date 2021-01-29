@@ -8,10 +8,6 @@ import 'package:food_app/widgets/food_label.dart';
 
 import 'package:food_app/constants.dart';
 
-final rnd = Random(12345);
-
-final foodLabels = ["Milk", "Soya", "Fish", "Nuts", "Glutten", "Meat", "Halal", "Spicy"];
-
 class MenuItemWidget extends StatelessWidget {
 
   static final rnd = Random(123232);
@@ -24,7 +20,6 @@ class MenuItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    var isRange = rnd.nextInt(21) % 2 == 0;
     return InkWell(
       onTap: () => this.onClicked(menuItem),
       child: Card(
@@ -59,7 +54,7 @@ class MenuItemWidget extends StatelessWidget {
                           ),
                           SizedBox(height: kPadding),
                           Labels.createFoodLabels(
-                              List.generate(rnd.nextInt(foodLabels.length), (index) => foodLabels[index])
+                              menuItem.tags ?? []
                           )
                         ],
                       ),
@@ -71,12 +66,9 @@ class MenuItemWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (isRange)
-                      PriceLabel(rnd.nextInt(15) + 0.99)
-                    else
-                      PriceRangeLabel.create(rnd.nextInt(15) + 0.99, 15 + rnd.nextInt(20) + 0.99),
+                    PriceLabel(menuItem.price),
                     SizedBox(height: kPadding),
-                    Labels.createCalorieLabel(100 + rnd.nextInt(512), themeData.textTheme.subtitle1)
+                    Labels.createCalorieLabel(menuItem.calories, themeData.textTheme.subtitle1)
                   ],
                 ),
               )

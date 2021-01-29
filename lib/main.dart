@@ -12,9 +12,7 @@ import 'widgets/featured_item.dart';
 import 'widgets/restaurant_header.dart';
 import 'constants.dart';
 void main() => runApp(MyApp());
-final List<MenuItem> imgList = [
-  for (var i = 0; i < 10; i++) MenuItem(i.toString(), "Item $i", images: { "lg": "https://picsum.photos/700/400?t=$i" })
-];
+
 
 class Pair {
   final String name;
@@ -66,7 +64,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Code Sample for material.AppBar.actions',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Poppins',
         brightness: Brightness.light,
         backgroundColor: Colors.white,
         primaryColor: kPrimaryColor,
@@ -171,7 +168,7 @@ class FoodCategoryView extends State<FoodCategoryList> {
                 itemCount: pairs.length,
                 itemBuilder: (ctx, index) {
                   if (index == 0) {
-                    return FeaturedItemList(imgList: imgList);
+                    return FeaturedItemList(imgList: []);
                   } else {
                     return Container(height: 300, child: Text(pairs[index].name));
                   }

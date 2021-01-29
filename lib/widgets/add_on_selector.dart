@@ -3,6 +3,7 @@ import 'package:food_app/constants.dart';
 import 'package:food_app/model/menu/menu_item.dart';
 
 import 'package:smart_select/smart_select.dart';
+import 'utils/app_formatter.dart';
 
 class SingleItemAddOnSelector extends StatefulWidget {
   final ItemAddOnGroup addOnGroup;
@@ -50,7 +51,7 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
         choiceItems: addOnGroup.addOns.map((e) => S2Choice(
           value: e,
           title: e.name,
-          subtitle: e.price.toString()
+          subtitle: formatPrice(e.price)
         )).toList()
       ),
     );
@@ -144,7 +145,7 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
         choiceItems: addOnGroup.addOns.map((e) => S2Choice(
           value: e,
           title: e.name,
-          subtitle: e.price.toString()
+          subtitle: formatPrice(e.price)
         )).toList()
       ),
     );

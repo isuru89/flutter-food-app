@@ -11,10 +11,11 @@ class MenuItem {
   final double price;
   final String description;
   final double calories;
+  final List<String> tags;
   final Map<String, String> images;
   final List<ItemAddOnGroup> addOnGroups;
 
-  MenuItem(this.id, this.name, {this.price, this.description, this.calories, this.images, this.addOnGroups});
+  MenuItem({this.id, this.name, this.price, this.description, this.calories, this.images, this.addOnGroups, this.tags});
 
   factory MenuItem.fromJson(Map<String, dynamic> json) => _$MenuItemFromJson(json);
   Map<String, dynamic> toJson() => _$MenuItemToJson(this);

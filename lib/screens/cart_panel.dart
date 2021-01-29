@@ -7,26 +7,7 @@ import 'package:food_app/model/cart_item.dart';
 import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
 
-final List<CartItem> cartItems = [
-  CartItem(
-      MenuItem("1", "Item 1", images: {"lg": "https://picsum.photos/300/300"}),
-      1),
-  CartItem(
-      MenuItem("2", "Item 2", images: {"lg": "https://picsum.photos/300/300"}),
-      1),
-  CartItem(
-      MenuItem("3", "Item 3", images: {"lg": "https://picsum.photos/300/300"}),
-      1),
-  CartItem(
-      MenuItem("4", "Item 4", images: {"lg": "https://picsum.photos/300/300"}),
-      1),
-  CartItem(
-      MenuItem("5", "Item 5", images: {"lg": "https://picsum.photos/300/300"}),
-      1),
-  CartItem(
-      MenuItem("6", "Item 6", images: {"lg": "https://picsum.photos/300/300"}),
-      1),
-];
+final List<CartItem> cartItems = [];
 
 class CartPanel extends StatefulWidget {
   CartPanel({Key key}) : super(key: key);
