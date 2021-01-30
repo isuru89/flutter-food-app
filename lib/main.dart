@@ -1,17 +1,20 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu/menu.dart';
+import 'package:food_app/model/cart.dart';
 import 'package:food_app/screens/cart_panel.dart';
 import 'package:food_app/screens/checkout_screen.dart';
 import 'package:food_app/screens/item_modal.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'model/menu/menu_item.dart';
-import 'widgets/featured_item.dart';
+import 'package:provider/provider.dart';
 import 'widgets/restaurant_header.dart';
 import 'constants.dart';
-void main() => runApp(MyApp());
+void main() {
+  runApp(ChangeNotifierProvider(
+      create: (context) => Cart(),
+      child: MyApp()
+    )
+  );
+}
 
 
 class Pair {
@@ -20,17 +23,6 @@ class Pair {
 
   const Pair({ this.name, this.height: 300 });
 }
-
-final List<Pair> pairs = [
-  Pair(name: "Category 1"),
-  Pair(name: "Category 2"),
-  Pair(name: "Category 3"),
-  Pair(name: "Category 4"),
-  Pair(name: "Category 5"),
-  Pair(name: "Category 6"),
-  Pair(name: "Category 7"),
-  Pair(name: "Category 8"),
-];
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -61,7 +53,7 @@ class MyApp extends StatelessWidget {
         }
         return MaterialPageRoute(builder: null);
       },
-      title: 'Flutter Code Sample for material.AppBar.actions',
+      title: 'Delicious Food App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
@@ -83,108 +75,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-final int bull = 0x2022;
-
-class FoodCategoryList extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return FoodCategoryView();
-  }
-
-}
-
-class FoodCategoryView extends State<FoodCategoryList> {
-
-  final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemScrollController catNavScrollController = ItemScrollController();
-  final ItemPositionsListener catNavPositionListener = ItemPositionsListener.create();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
-
-  int currentIndex = 0;
-  Set<int> visibleCategories = Set();
-
-  FoodCategoryView();
-
-  void scrollTo(int index) {
-    if (currentIndex != index) {
-      this.setState(() {
-        currentIndex = index;
-      });
-      itemScrollController.scrollTo(index: index, duration: Duration(milliseconds: 100));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-          children: [
-            Container(
-              height: 40,
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: ValueListenableBuilder<Iterable<ItemPosition>>(
-                valueListenable: itemPositionsListener.itemPositions,
-                builder: (ctx, positions, child) {
-                  int min;
-                  ItemPosition minPos;
-                  if (positions.isNotEmpty) {
-                    minPos = positions
-                        .where((element) => element.itemTrailingEdge > 0)
-                        .reduce((value, element) =>
-                    element.itemTrailingEdge < value.itemTrailingEdge
-                        ? element
-                        : value);
-                    min = minPos.index;
-                  }
-                  if (catNavPositionListener.itemPositions.value.length > 0 && !catNavPositionListener.itemPositions.value
-                      .any((element) => min == element.index && element.itemLeadingEdge > 0 && element.itemLeadingEdge < 1)) {
-                    catNavScrollController.scrollTo(
-                        index: min, duration: Duration(milliseconds: 100));
-                  }
-
-                  return ScrollablePositionedList.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: pairs.length,
-                    itemScrollController: catNavScrollController,
-                    itemPositionsListener: catNavPositionListener,
-                    itemBuilder: (ctx, index) {
-                      var tstyle = min == index ? TextStyle(color: Colors.red) : TextStyle();
-                      return GestureDetector(
-                        key: ValueKey('Scroll$index'),
-                        onTap: () { print("clicked $index"); scrollTo(index); },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Container(child: Text(pairs[index].name, style: tstyle,),),
-                        ),
-                      );
-                    },
-                  );
-
-                },
-              ),
-            ),
-            Expanded(
-              child: ScrollablePositionedList.builder(
-                itemCount: pairs.length,
-                itemBuilder: (ctx, index) {
-                  if (index == 0) {
-                    return FeaturedItemList(imgList: []);
-                  } else {
-                    return Container(height: 300, child: Text(pairs[index].name));
-                  }
-                } ,
-                itemScrollController: itemScrollController,
-                itemPositionsListener: itemPositionsListener,
-              ),
-            ),
-          ],
-        ),
-    );
-  }
-
-}
-
-
 
 class MyStatelessWidget extends StatelessWidget {
   MyStatelessWidget({Key key}) : super(key: key);

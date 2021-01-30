@@ -1,35 +1,51 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_app/widgets/food_label.dart';
+import 'package:food_app/widgets/quantity_slider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:food_app/constants.dart';
 import 'package:food_app/managers/menu.dart';
+import 'package:food_app/model/cart.dart';
+import 'package:food_app/model/cart_item.dart';
 import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/add_on_selector.dart';
 import 'package:food_app/widgets/icons.dart';
 import 'package:food_app/widgets/image_header.dart';
+import 'package:food_app/widgets/utils/app_formatter.dart';
+import 'package:provider/provider.dart';
 
-final ItemAddOnGroup addOnGroup =
-    ItemAddOnGroup("addon=group-1", "Toppings", 1, 1, [
-  ItemAddOn("ao-g1-1", "Salads", 2.99),
-  ItemAddOn("ao-g1-2", "Cherry", 1.99),
-  ItemAddOn("ao-g1-3", "Pineapples", 3.99),
-  ItemAddOn("ao-g1-4", "Cream", 0.99),
-]);
-final ItemAddOnGroup multiAddOnGroup =
-    ItemAddOnGroup("addon-group-2", "Flavours", 1, 3, [
-  ItemAddOn("ao-g2-1", "Chocolate", 2.99),
-  ItemAddOn("ao-g2-2", "Vanilla", 1.99),
-  ItemAddOn("ao-g2-3", "Strawberry", 3.99),
-  ItemAddOn("ao-g2-4", "Cherry", 0.99),
-  ItemAddOn("ao-g2-5", "Hazlenuts", 0.99),
-]);
+var uuid = Uuid();
+class ItemModal extends StatefulWidget {
+  @override
+  _ItemModalState createState() => _ItemModalState();
+}
 
-class ItemModal extends StatelessWidget {
+class _ItemModalState extends State<ItemModal> {
+
+  int quantity;
+  double itemPrice;
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+  double _calculateItemPrice(MenuItem item) {
+    return item.price * (this.quantity ?? 1);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ItemModalArguments args = ModalRoute.of(context).settings.arguments;
-    final MenuItem menuItem = args.menuItem;
+    final MenuItem menuItem = args.cartItem != null ? args.cartItem.menuItem : args.menuItem;
+    final int itemQuantity = (quantity ?? (args.cartItem != null ? args.cartItem.quantity : 1));
+    final double itemPrice = itemQuantity * menuItem.price;
     var themeData = Theme.of(context);
+    var cartRef = Provider.of<Cart>(context);
+    bool addMode = args.cartItem == null;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -42,7 +58,6 @@ class ItemModal extends StatelessWidget {
                 minHeight: kItemModalHeroImageMinHeight,
                 embossPanelOffset: -kDoublePadding * 2,
                 embossedPanel: Container(
-                  height: kDoublePadding * 4,
                   width: MediaQuery.of(context).size.width,
                   child: Align(
                     alignment: Alignment.center,
@@ -53,15 +68,36 @@ class ItemModal extends StatelessWidget {
                             vertical: kPadding, horizontal: kPadding),
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
-                          child: Text(
-                            menuItem.name,
-                            style: themeData.textTheme.headline4.copyWith(
-                                color: themeData.primaryColor,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  menuItem.name,
+                                  style: themeData.textTheme.headline3.copyWith(
+                                      color: themeData.primaryColor,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(
+                                child: QuantitySlider(itemQuantity,
+                                  () {
+                                    setState(() {
+                                      print(itemQuantity);
+                                      quantity = (quantity ?? itemQuantity) + 1;
+                                    });
+                                  },
+                                  itemQuantity < 2 ? null : () {
+                                    setState(() {
+                                      quantity = (quantity ?? itemQuantity) - 1;
+                                    });
+                                  }),
+                              )
+                            ],
                           ),
                         ),
                       ),
@@ -105,20 +141,17 @@ class ItemModal extends StatelessWidget {
             child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: kPadding, vertical: kPadding),
-                child: Column(children: [
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                  Labels.createFoodLabels(menuItem.tags ?? ["Milk", "Halal"]),
+                  Container(height: kPadding,),
                   Text(
                       menuItem.description,
                       textAlign: TextAlign.justify,
                       style: TextStyle(height: 1.5, fontSize: 12)),
                   Divider(height: kDoublePadding),
-                  Text("Add-ons",
-                      style:
-                          themeData.textTheme.headline4.copyWith(fontSize: 18)),
-                  if (hasAddOnGroups(menuItem) && isSingleChoiceAddOnGroup(menuItem.addOnGroups[0]))
-                    SingleItemAddOnSelector(menuItem.addOnGroups[0], (addon) => print(addon))
-                  else
-                    MultiItemAddOnSelector(menuItem.addOnGroups[0], (addons) => print(addons)),
-                  Divider(height: kDoublePadding),
+                  _buildAddOnGroups(themeData, menuItem),
                   Text("Instructions for Kitchen",
                       style:
                           themeData.textTheme.headline4.copyWith(fontSize: 18)),
@@ -142,7 +175,9 @@ class ItemModal extends StatelessWidget {
                         hintText:
                             'Tell something to kitchen when preparing this'),
                   )
-                ])),
+                ]
+              )
+            ),
           ),
         ],
       ),
@@ -156,7 +191,7 @@ class ItemModal extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("\$824.21",
+              Text("\$${formatPrice(itemPrice)}",
                   style: themeData.textTheme.headline3
                       .copyWith(letterSpacing: 1, color: Colors.white)),
               Row(
@@ -164,8 +199,17 @@ class ItemModal extends StatelessWidget {
                   FlatButton(
                     shape: StadiumBorder(),
                     color: Colors.white,
-                    onPressed: () { Navigator.of(context).pop(); },
-                    child: Text("Add to Cart",
+                    onPressed: () {
+                      var cartRef = Provider.of<Cart>(context, listen: false);
+                      if (addMode) {
+                        cartRef.addItem(CartItem(uuid.v4(), menuItem, itemQuantity));
+                      } else {
+                        args.cartItem.quantity = this.quantity ?? 1;
+                        cartRef.updateItem(args.cartItem);
+                      }
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(addMode ? "Add to Cart" : "Update",
                         style: themeData.textTheme.headline3.copyWith(
                             color: themeData.primaryColor, fontSize: 18)),
                   )
@@ -175,6 +219,28 @@ class ItemModal extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildAddOnGroups(ThemeData themeData, MenuItem menuItem) {
+    if (menuItem.addOnGroups == null || menuItem.addOnGroups.length == 0) {
+      return Container();
+    }
+
+    List<Widget> allWidgets = [
+      Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18))
+    ];
+
+    menuItem.addOnGroups.forEach((addOnGroup) => {
+        if (isSingleChoiceAddOnGroup(addOnGroup))
+          allWidgets.add(SingleItemAddOnSelector(addOnGroup, (addon) => print(addon)))
+        else
+          allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) => print(addons)))
+    });
+    allWidgets.add(Divider(height: kDoublePadding));
+
+    return Column(
+      children: allWidgets
     );
   }
 }
