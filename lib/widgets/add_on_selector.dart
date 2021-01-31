@@ -8,11 +8,12 @@ import 'utils/app_formatter.dart';
 class SingleItemAddOnSelector extends StatefulWidget {
   final ItemAddOnGroup addOnGroup;
   final Function(ItemAddOn) onAddOnSelected;
+  final ItemAddOn selectedAddOn;
 
-  SingleItemAddOnSelector(this.addOnGroup, this.onAddOnSelected, {Key key}) : super(key: key);
+  SingleItemAddOnSelector(this.addOnGroup, this.onAddOnSelected, {Key key, this.selectedAddOn}) : super(key: key);
 
   @override
-  _SingleItemAddOnSelectorState createState() => _SingleItemAddOnSelectorState(addOnGroup, onAddOnSelected);
+  _SingleItemAddOnSelectorState createState() => _SingleItemAddOnSelectorState(addOnGroup, onAddOnSelected, selectedAddOn: selectedAddOn);
 }
 
 class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
@@ -21,7 +22,7 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
   final Function(ItemAddOn) onAddOnSelected;
   ItemAddOn selectedAddOn;
 
-  _SingleItemAddOnSelectorState(this.addOnGroup, this.onAddOnSelected);
+  _SingleItemAddOnSelectorState(this.addOnGroup, this.onAddOnSelected, { this.selectedAddOn });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,13 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
         tileBuilder: (ctx, value) {
           return S2Tile(
             padding: EdgeInsets.zero,
-            title: Text(addOnGroup.name),
+            title: this.addOnGroup.minItems > 0 ?
+              Row(children: [
+                Text(addOnGroup.name, style: themeData.textTheme.bodyText2),
+                Text("  *", style: themeData.textTheme.bodyText1.apply(color: Colors.red),),
+                ],
+              ) :
+             Text(addOnGroup.name),
             onTap: value.showModal,
             value: value.valueDisplay,
           );
@@ -51,7 +58,7 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
         choiceItems: addOnGroup.addOns.map((e) => S2Choice(
           value: e,
           title: e.name,
-          subtitle: formatPrice(e.price)
+          subtitle: "+ \$${formatPrice(e.price)}"
         )).toList()
       ),
     );
@@ -62,11 +69,12 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
 class MultiItemAddOnSelector extends StatefulWidget {
   final ItemAddOnGroup addOnGroup;
   final Function(List<ItemAddOn>) onAddOnsSelected;
+  final List<ItemAddOn> selectedAddOns;
 
-  MultiItemAddOnSelector(this.addOnGroup, this.onAddOnsSelected, {Key key}) : super(key: key);
+  MultiItemAddOnSelector(this.addOnGroup, this.onAddOnsSelected, {Key key, this.selectedAddOns}) : super(key: key);
 
   @override
-  _MultiItemAddOnSelectorState createState() => _MultiItemAddOnSelectorState(addOnGroup, onAddOnsSelected);
+  _MultiItemAddOnSelectorState createState() => _MultiItemAddOnSelectorState(addOnGroup, onAddOnsSelected, this.selectedAddOns);
 }
 
 class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
@@ -75,7 +83,7 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
   final Function(List<ItemAddOn>) onAddOnsSelected;
   List<ItemAddOn> selectedAddOns;
 
-  _MultiItemAddOnSelectorState(this.addOnGroup, this.onAddOnsSelected);
+  _MultiItemAddOnSelectorState(this.addOnGroup, this.onAddOnsSelected, this.selectedAddOns);
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +92,15 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
       child: SmartSelect<ItemAddOn>.multiple(
         tileBuilder: (ctx, value) {
           return S2Tile(
+            trailing: Text("  *", style: themeData.textTheme.bodyText1.apply(color: Colors.red),),
             padding: EdgeInsets.zero,
-            title: Text(addOnGroup.name),
+            title: this.addOnGroup.minItems > 0 ?
+              Row(children: [
+                Text(addOnGroup.name, style: themeData.textTheme.bodyText2),
+                Text("  *", style: themeData.textTheme.bodyText1.apply(color: Colors.red),),
+                ],
+              ) :
+             Text(addOnGroup.name),
             onTap: value.showModal,
             value: value.valueDisplay,
           );

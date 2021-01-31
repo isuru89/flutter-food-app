@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_app/screens/cart_panel.dart';
 import 'package:food_app/widgets/food_label.dart';
 import 'package:food_app/widgets/quantity_slider.dart';
 import 'package:uuid/uuid.dart';
@@ -17,42 +18,80 @@ import 'package:food_app/widgets/utils/app_formatter.dart';
 import 'package:provider/provider.dart';
 
 var uuid = Uuid();
-class ItemModal extends StatefulWidget {
-  @override
-  _ItemModalState createState() => _ItemModalState();
-}
-
-class _ItemModalState extends State<ItemModal> {
-
-  int quantity;
-  double itemPrice;
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
-
-  double _calculateItemPrice(MenuItem item) {
-    return item.price * (this.quantity ?? 1);
-  }
+class ItemModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     final ItemModalArguments args = ModalRoute.of(context).settings.arguments;
     final MenuItem menuItem = args.cartItem != null ? args.cartItem.menuItem : args.menuItem;
-    final int itemQuantity = (quantity ?? (args.cartItem != null ? args.cartItem.quantity : 1));
-    final double itemPrice = itemQuantity * menuItem.price;
+    return ItemModalView(cartItem: args.cartItem, menuItem: menuItem);
+  }
+
+}
+
+class ItemModalView extends StatefulWidget {
+
+  final CartItem cartItem;
+  final MenuItem menuItem;
+  final String heroTag;
+
+  const ItemModalView({Key key, this.cartItem, this.menuItem, this.heroTag}) : super(key: key);
+
+  @override
+  _ItemModalState createState() {
+    return _ItemModalState(this.cartItem, this.menuItem, this.heroTag);
+  }
+
+}
+
+class _ItemModalState extends State<ItemModalView> {
+
+
+  final CartItem cartItem;
+  final MenuItem menuItem;
+  final String heroTag;
+
+  int quantity;
+  double itemPrice;
+  Map<String, List<String>> selectedAddOns;
+  bool canAddToCard = true;
+
+  _ItemModalState(this.cartItem, this.menuItem, this.heroTag);
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.selectedAddOns = this.cartItem != null ? this.cartItem.addOns : Map();
+    this.quantity = this.cartItem != null ? this.cartItem.quantity : 1;
+    this.itemPrice = this.quantity * this.menuItem.price;
+    this.canAddToCard = _checkCanAddToCart(this.menuItem);
+  }
+
+  bool _checkCanAddToCart(MenuItem item) {
+    if (item.addOnGroups != null) {
+      return item.addOnGroups.where((ag) => ag.minItems > 0)
+        .where((ag) => !selectedAddOns.containsKey(ag.id) || selectedAddOns[ag.id].length < ag.minItems)
+        .length == 0;
+    }
+    return true;
+  }
+
+  double _calculatePrice(int quantity, MenuItem item) {
+    return quantity * item.price;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    var cartRef = Provider.of<Cart>(context);
-    bool addMode = args.cartItem == null;
+    bool addMode = this.cartItem == null;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
               pinned: true,
               delegate: HeaderWithImage(
-                heroTag: args.heroTag ?? "menu-item-" + menuItem.id,
+                heroTag: this.heroTag ?? "menu-item-" + menuItem.id,
                 heroImage: menuItem.images['lg'],
                 maxHeight: kItemModalHeroImageMaxHeight,
                 minHeight: kItemModalHeroImageMinHeight,
@@ -62,6 +101,7 @@ class _ItemModalState extends State<ItemModal> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Card(
+                      shape: StadiumBorder(),
                       elevation: 4,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -84,16 +124,19 @@ class _ItemModalState extends State<ItemModal> {
                                 ),
                               ),
                               Expanded(
-                                child: QuantitySlider(itemQuantity,
+                                child: QuantitySlider(this.quantity,
                                   () {
+                                    int nxQuantity = quantity + 1;
                                     setState(() {
-                                      print(itemQuantity);
-                                      quantity = (quantity ?? itemQuantity) + 1;
+                                      quantity = nxQuantity;
+                                      itemPrice = _calculatePrice(nxQuantity, menuItem);
                                     });
                                   },
-                                  itemQuantity < 2 ? null : () {
+                                  quantity < 2 ? null : () {
+                                    int nxQuantity = quantity - 1;
                                     setState(() {
-                                      quantity = (quantity ?? itemQuantity) - 1;
+                                      quantity = nxQuantity;
+                                      itemPrice = _calculatePrice(nxQuantity, menuItem);
                                     });
                                   }),
                               )
@@ -151,7 +194,7 @@ class _ItemModalState extends State<ItemModal> {
                       textAlign: TextAlign.justify,
                       style: TextStyle(height: 1.5, fontSize: 12)),
                   Divider(height: kDoublePadding),
-                  _buildAddOnGroups(themeData, menuItem),
+                  _buildAddOnGroups(themeData, menuItem, this.cartItem),
                   Text("Instructions for Kitchen",
                       style:
                           themeData.textTheme.headline4.copyWith(fontSize: 18)),
@@ -199,16 +242,17 @@ class _ItemModalState extends State<ItemModal> {
                   FlatButton(
                     shape: StadiumBorder(),
                     color: Colors.white,
-                    onPressed: () {
+                    onPressed: _checkCanAddToCart(menuItem) ? () {
                       var cartRef = Provider.of<Cart>(context, listen: false);
                       if (addMode) {
-                        cartRef.addItem(CartItem(uuid.v4(), menuItem, itemQuantity));
+                        cartRef.addItem(CartItem(uuid.v4(), menuItem, quantity, addOns: this.selectedAddOns));
                       } else {
-                        args.cartItem.quantity = this.quantity ?? 1;
-                        cartRef.updateItem(args.cartItem);
+                        cartItem.addOns = this.selectedAddOns;
+                        cartItem.quantity = this.quantity ?? 1;
+                        cartRef.updateItem(cartItem);
                       }
                       Navigator.of(context).pop();
-                    },
+                    } : null,
                     child: Text(addMode ? "Add to Cart" : "Update",
                         style: themeData.textTheme.headline3.copyWith(
                             color: themeData.primaryColor, fontSize: 18)),
@@ -222,7 +266,7 @@ class _ItemModalState extends State<ItemModal> {
     );
   }
 
-  Widget _buildAddOnGroups(ThemeData themeData, MenuItem menuItem) {
+  Widget _buildAddOnGroups(ThemeData themeData, MenuItem menuItem, CartItem cartItem) {
     if (menuItem.addOnGroups == null || menuItem.addOnGroups.length == 0) {
       return Container();
     }
@@ -231,16 +275,46 @@ class _ItemModalState extends State<ItemModal> {
       Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18))
     ];
 
-    menuItem.addOnGroups.forEach((addOnGroup) => {
-        if (isSingleChoiceAddOnGroup(addOnGroup))
-          allWidgets.add(SingleItemAddOnSelector(addOnGroup, (addon) => print(addon)))
-        else
-          allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) => print(addons)))
+    menuItem.addOnGroups.forEach((addOnGroup) {
+        if (isSingleChoiceAddOnGroup(addOnGroup)) {
+          var selectedAddOn;
+          if (selectedAddOns.containsKey(addOnGroup.id)) {
+            var tmp = filterAddOnFromGroup(addOnGroup, selectedAddOns[addOnGroup.id]);
+            if (tmp.length > 0) {
+              selectedAddOn = tmp[0];
+            }
+          }
+          allWidgets.add(SingleItemAddOnSelector(addOnGroup,
+            (addon) {
+              var tmp = {...selectedAddOns};
+              tmp[addOnGroup.id] = [addon.id];
+              this.setState(() {
+                selectedAddOns = tmp;
+              });
+            },
+            selectedAddOn: selectedAddOn));
+        } else {
+          var selAddOns;
+          if (this.selectedAddOns.containsKey(addOnGroup.id)) {
+            selAddOns = filterAddOnFromGroup(addOnGroup, this.selectedAddOns[addOnGroup.id]);
+          }
+          allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) {
+            var tmp = {...this.selectedAddOns};
+            tmp[addOnGroup.id] = addons.map((ao) => ao.id).toList();
+            this.setState(() {
+              selectedAddOns = tmp;
+            });
+          }, selectedAddOns: selAddOns));
+        }
     });
     allWidgets.add(Divider(height: kDoublePadding));
 
     return Column(
       children: allWidgets
     );
+  }
+
+  List<ItemAddOn> filterAddOnFromGroup(ItemAddOnGroup addOnGroup, List<String> addOnIds) {
+    return addOnGroup.addOns.where((it) => addOnIds.contains(it.id)).toList();
   }
 }

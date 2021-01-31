@@ -164,7 +164,6 @@ class _CartPanel extends State<CartPanel> {
       children: [
         InkWell(
           onTap: () {
-            print("xxxx");
             nav.pushNamed('/item', arguments: ItemModalArguments(null, cartItem: item));
           },
           child: Container(
@@ -187,6 +186,7 @@ class _CartPanel extends State<CartPanel> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(child: Text("${item.menuItem.name}")),
+                          _printAddOnLines(item, themeData),
                           SizedBox(
                             height: kPadding,
                           ),
@@ -206,7 +206,7 @@ class _CartPanel extends State<CartPanel> {
                         child: Icon(Icons.arrow_drop_up,
                             color: themeData.primaryColor, size: 32),
                       ),
-                      Text("${item.quantity}"),
+                      Text("x${item.quantity}"),
                       GestureDetector(
                         onTap: () => cartRef.decreaseQuantity(item, 1),
                         child: Icon(
@@ -228,5 +228,29 @@ class _CartPanel extends State<CartPanel> {
           ),
       ],
     );
+  }
+
+  Widget _printAddOnLines(CartItem cartItem, ThemeData themeData) {
+    if (cartItem.addOns == null || cartItem.addOns.isEmpty) {
+      return Container();
+    }
+
+    return Column(
+      children: cartItem.addOns.keys.map((addOnGroupName) {
+        var grpName = _findAddOnGroupName(addOnGroupName, cartItem);
+        var addonNames = _findAddOnNames(addOnGroupName, cartItem.addOns[addOnGroupName], cartItem).join(", ");
+        return Text("   - $grpName: $addonNames", style: themeData.textTheme.subtitle2.copyWith(fontSize: 12),);
+      }).toList(),
+    );
+  }
+
+  String _findAddOnGroupName(String id, CartItem cartItem) {
+    return cartItem.menuItem.addOnGroups.firstWhere((ag) => ag.id == id).name;
+  }
+
+  List<String> _findAddOnNames(String groupId, List<String> ids, CartItem cartItem) {
+    return cartItem.menuItem.addOnGroups
+      .firstWhere((ag) => ag.id == groupId).addOns
+      .where((ao) => ids.contains(ao.id)).map((ao) => ao.name).toList();
   }
 }
