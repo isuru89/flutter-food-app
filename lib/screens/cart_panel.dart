@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +5,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:food_app/constants.dart';
 import 'package:food_app/model/cart.dart';
 import 'package:food_app/model/cart_item.dart';
+import 'package:food_app/model/order_types.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
 import 'package:food_app/widgets/utils/app_formatter.dart';
@@ -23,7 +23,7 @@ class CartPanel extends StatefulWidget {
 }
 
 class _CartPanel extends State<CartPanel> {
-  String selectedOrderType = 'pickup';
+  OrderType selectedOrderType = OrderType.Pickup;
 
   _CartPanel();
 
@@ -42,7 +42,8 @@ class _CartPanel extends State<CartPanel> {
               Text('Cart'),
               SizedBox(width: kPadding),
               Text('(${cart.items.length} items)',
-                  style: themeData.textTheme.headline4.copyWith(fontSize: 14))
+                  style: themeData.textTheme.headline4
+                      .copyWith(fontSize: 14, color: themeData.backgroundColor))
             ],
           ),
         ),
@@ -67,15 +68,15 @@ class _CartPanel extends State<CartPanel> {
                         },
                         groupValue: cart.orderType ?? selectedOrderType,
                         children: {
-                          'delivery': Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: kPadding),
-                            child: Text('Delivery'),
+                          OrderType.Delivery: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPadding),
+                            child: Text(OrderType.Delivery.displayText),
                           ),
-                          'pickup': Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: kPadding),
-                            child: Text('Pickup'),
+                          OrderType.Pickup: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPadding),
+                            child: Text(OrderType.Pickup.displayText),
                           )
                         },
                       ),
@@ -94,9 +95,12 @@ class _CartPanel extends State<CartPanel> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(formatOrderReadyTime(cart.orderTime ?? DateTime.now())),
-                            Icon(Icons.date_range,
-                              color: kPrimaryColor,),
+                            Text(formatOrderReadyTime(
+                                cart.orderTime ?? DateTime.now())),
+                            Icon(
+                              Icons.date_range,
+                              color: kPrimaryColor,
+                            ),
                           ],
                         ),
                       ),
@@ -105,53 +109,24 @@ class _CartPanel extends State<CartPanel> {
                 ),
               ),
               Expanded(
-                child:
-                    ListView(padding: const EdgeInsets.all(kPadding), children: [
-                  for (var i = 0; i < cart.items.length; i++)
-                    createCartItem(
-                        cart.items[i], i == cart.items.length - 1, themeData, cart, nav)
-                ]),
+                child: cart.hasItems()
+                    ? ListView(
+                        padding: const EdgeInsets.all(kPadding),
+                        children: [
+                            for (var i = 0; i < cart.items.length; i++)
+                              createCartItem(
+                                  context,
+                                  cart.items[i],
+                                  i == cart.items.length - 1,
+                                  themeData,
+                                  cart,
+                                  nav)
+                          ])
+                    : Align(
+                        child:
+                            Text("You need to add items to place an order!")),
               ),
-              Container(
-                height: 64,
-                padding: const EdgeInsets.symmetric(horizontal: kDoublePadding),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(kDoublePadding),
-                      topLeft: Radius.circular(kDoublePadding)),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black87, blurRadius: kPadding)
-                  ],
-                  color: themeData.backgroundColor,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "\$${formatPrice(cart.subTotal)}",
-                        style: themeData.textTheme.headline3
-                            .copyWith(color: themeData.primaryColor),
-                      ),
-                    ),
-                    Expanded(
-                      child: SafeArea(
-                          bottom: true,
-                          top: false,
-                          child: FlatButton.icon(
-                              onPressed: cart.canCheckout() ? () => Navigator.of(context).pushNamed("/checkout") : null,
-                              icon: Text('Checkout'),
-                              label: Icon(Icons.arrow_forward_ios, size: 16),
-                              shape: StadiumBorder(),
-                              textColor: themeData.backgroundColor,
-                              color: themeData.primaryColor,
-                          )
-                      ),
-                    )
-                  ],
-                ),
-              )
+              createBottomPanel(themeData, cart)
             ],
           ),
         ),
@@ -159,12 +134,125 @@ class _CartPanel extends State<CartPanel> {
     );
   }
 
-  Widget createCartItem(CartItem item, bool isLast, ThemeData themeData, Cart cartRef, NavigatorState nav) {
+  Widget _recieptLine(String title, String value, ThemeData themeData) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title,
+            style: themeData.textTheme.bodyText2.copyWith(fontSize: 18)),
+        Text(value, style: themeData.textTheme.bodyText1.copyWith(fontSize: 18))
+      ],
+    );
+  }
+
+  Widget createBottomPanel(ThemeData themeData, Cart cart) {
+    return Container(
+      // height: 64,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(kDoublePadding),
+            topLeft: Radius.circular(kDoublePadding)),
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: kDoublePadding)
+        ],
+        color: themeData.backgroundColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDoublePadding, vertical: kDoublePadding),
+              child: Column(
+                children: [
+                  _recieptLine(
+                      "Subtotal", "\$${formatPrice(cart.subTotal)}", themeData),
+                  if (cart.hasDiscount())
+                    _recieptLine("Discount", "-\$${formatPrice(cart.discount)}",
+                        themeData),
+                  if (cart.orderType == OrderType.Delivery)
+                    _recieptLine("Delivery Fee",
+                        "\$${formatPrice(cart.deliveryFee)}", themeData),
+                  if (cart.hasTax())
+                    _recieptLine(
+                        "Tax", "\$${formatPrice(cart.totalTax)}", themeData),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Total",
+                          style: themeData.textTheme.headline3
+                              .copyWith(fontSize: 22)),
+                      Text("\$${formatPrice(cart.grandTotal)}",
+                          style: themeData.textTheme.headline3
+                              .copyWith(fontSize: 22))
+                    ],
+                  )
+                ],
+              )),
+          if (cart.canCheckout())
+            Container(
+              height: 56,
+              color: kPrimaryColor,
+              width: double.infinity,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: FlatButton.icon(
+                  onPressed: () => Navigator.of(context).pushNamed("/checkout"),
+                  icon: Text(
+                    'Pay & Checkout',
+                    style: themeData.textTheme.headline3
+                        .copyWith(color: themeData.backgroundColor),
+                  ),
+                  label: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                    color: themeData.backgroundColor,
+                  ),
+                  textColor: themeData.backgroundColor,
+                  color: themeData.primaryColor,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget createCartItem(BuildContext context, CartItem item, bool isLast,
+      ThemeData themeData, Cart cartRef, NavigatorState nav) {
     return Column(
       children: [
         InkWell(
           onTap: () {
-            nav.pushNamed('/item', arguments: ItemModalArguments(null, cartItem: item));
+            showModalBottomSheet<void>(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    height: 120,
+                    child: ListView(children: [
+                      ListTile(
+                        title: Text("Edit"),
+                        leading: Icon(Icons.edit),
+                        onTap: () {
+                          Navigator.pop(context);
+                          nav.pushNamed('/item',
+                              arguments:
+                                  ItemModalArguments(null, cartItem: item));
+                        },
+                      ),
+                      ListTile(
+                        title: Text("Delete"),
+                        leading: Icon(Icons.delete),
+                        onTap: () {
+                          cartRef.removeItem(item);
+                          Navigator.pop(context);
+                        },
+                      )
+                    ]),
+                  );
+                });
           },
           child: Container(
             padding: const EdgeInsets.only(left: kDoublePadding),
@@ -190,7 +278,7 @@ class _CartPanel extends State<CartPanel> {
                           SizedBox(
                             height: kPadding,
                           ),
-                          Text("\$${formatPrice(item.menuItem.price)}")
+                          // Text("\$${formatPrice(item.menuItem.price)}")
                         ],
                       ),
                     ),
@@ -238,8 +326,13 @@ class _CartPanel extends State<CartPanel> {
     return Column(
       children: cartItem.addOns.keys.map((addOnGroupName) {
         var grpName = _findAddOnGroupName(addOnGroupName, cartItem);
-        var addonNames = _findAddOnNames(addOnGroupName, cartItem.addOns[addOnGroupName], cartItem).join(", ");
-        return Text("   - $grpName: $addonNames", style: themeData.textTheme.subtitle2.copyWith(fontSize: 12),);
+        var addonNames = _findAddOnNames(
+                addOnGroupName, cartItem.addOns[addOnGroupName], cartItem)
+            .join(", ");
+        return Text(
+          "   - $grpName: $addonNames",
+          style: themeData.textTheme.subtitle2.copyWith(fontSize: 12),
+        );
       }).toList(),
     );
   }
@@ -248,9 +341,13 @@ class _CartPanel extends State<CartPanel> {
     return cartItem.menuItem.addOnGroups.firstWhere((ag) => ag.id == id).name;
   }
 
-  List<String> _findAddOnNames(String groupId, List<String> ids, CartItem cartItem) {
+  List<String> _findAddOnNames(
+      String groupId, List<String> ids, CartItem cartItem) {
     return cartItem.menuItem.addOnGroups
-      .firstWhere((ag) => ag.id == groupId).addOns
-      .where((ao) => ids.contains(ao.id)).map((ao) => ao.name).toList();
+        .firstWhere((ag) => ag.id == groupId)
+        .addOns
+        .where((ao) => ids.contains(ao.id))
+        .map((ao) => ao.name)
+        .toList();
   }
 }

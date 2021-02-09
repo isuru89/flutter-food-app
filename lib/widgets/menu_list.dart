@@ -99,8 +99,8 @@ class _SessionItem extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(session.name, style: themeData.textTheme.headline4),
-                    Text('${session.fromTime}-${session.endTime}', style: themeData.textTheme.subtitle1)
+                    Text(session.name, style: themeData.textTheme.headline4.copyWith(color: isSelected ? kOnPrimaryColor : null)),
+                    Text('${session.fromTime}-${session.endTime}', style: themeData.textTheme.subtitle1.copyWith(color: isSelected ? kOnPrimaryColor : null))
                   ],
                 ),
               ),

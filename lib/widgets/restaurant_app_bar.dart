@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/constants.dart';
 import 'package:food_app/model/restaurant.dart';
 import 'package:food_app/widgets/icons.dart';
+import 'package:food_app/widgets/restaurant_info.dart';
 
 class RestaurantHeader extends SliverPersistentHeaderDelegate {
   final Restaurant restaurant;
@@ -96,8 +97,11 @@ class RestaurantHeader extends SliverPersistentHeaderDelegate {
                   Padding(
                     padding: const EdgeInsets.only(bottom: kPadding / 2),
                     child: IconButton(
-                        onPressed: () { print("clicked"); },
-                        icon: IconUtils.createShadowIcon(Icon(Icons.account_circle, color: Colors.white), 24)
+                        onPressed: () {
+                          showModalBottomSheet(context: context,
+                          builder: (context) => RestaurantInfo(restaurant: this.restaurant,));
+                        },
+                        icon: IconUtils.createShadowIcon(Icon(Icons.info_outlined, color: Colors.white), 24)
                     ),
                   )
                 ],

@@ -3,6 +3,7 @@ import 'package:food_app/model/view/bottom_panel.dart';
 
 // theme related data
 const kPrimaryColor = Colors.blue;
+const kOnPrimaryColor = Colors.white;
 const kErrorColor = Colors.red;
 
 

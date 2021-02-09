@@ -3,15 +3,55 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:food_app/model/cart_item.dart';
+import 'package:food_app/model/order_types.dart';
 
 class Cart extends ChangeNotifier {
 
   final List<CartItem> _items = [];
   double subTotal = 0;
-  String orderType = "delivery";
+  double grandTotal = 0;
+  double deliveryFee = 0;
+  double discount;
+  double totalTax;
+
+  OrderType orderType = OrderType.Delivery;
   DateTime orderTime;
 
+  String orderNote;
+
   UnmodifiableListView<CartItem> get items => UnmodifiableListView(_items);
+
+  void updateOrderNote(String orderNote) {
+    this.orderNote = orderNote;
+
+    notifyListeners();
+  }
+
+  bool hasTax() {
+    return totalTax != null && totalTax > 0;
+  }
+
+  bool hasDiscount() {
+    return discount != null && discount > 0;
+  }
+
+  void updateTax(double totalTax) {
+    this.totalTax = totalTax;
+
+    notifyListeners();
+  }
+
+  void updateDiscounts(double discount) {
+    this.discount = discount;
+
+    notifyListeners();
+  }
+
+  void updateDeliveryFee(double newDeliveryFee) {
+    this.deliveryFee = newDeliveryFee;
+
+    notifyListeners();
+  }
 
   void setOrderReadyTime(DateTime readyTime) {
     orderTime = readyTime;
@@ -19,7 +59,7 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeOrderType(String newOrderType) {
+  void changeOrderType(OrderType newOrderType) {
     orderType = newOrderType;
 
     notifyListeners();
@@ -63,8 +103,13 @@ class Cart extends ChangeNotifier {
   }
 
   void _calculateTotal() {
-    subTotal = _items.map((e) => e.menuItem.price * e.quantity)
-        .reduce((value, element) => value + element);
+    var itemPrices = _items.map((e) => e.menuItem.price * e.quantity);
+    subTotal = itemPrices.length > 0 ? itemPrices.reduce((value, element) => value + element)  : 0;
+    grandTotal = subTotal - (discount ?? 0) + (deliveryFee ?? 0) + (totalTax ?? 0);
+  }
+
+  bool hasItems() {
+    return _items.length > 0;
   }
 
   bool canCheckout() {
