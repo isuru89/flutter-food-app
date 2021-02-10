@@ -4,6 +4,8 @@ import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
 
+import '../extensions.dart';
+
 class FeaturedItemList extends StatelessWidget {
 
   final List<MenuItem> imgList;
@@ -59,13 +61,6 @@ class _FeaturedItem extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             border: Border.all(color: Colors.black12),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: kPadding,
-                  offset: Offset(0, 0)
-              ),
-            ]
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,6 +106,12 @@ class _FeaturedItem extends StatelessWidget {
             ),
           ],
         )
+    ).addNeumorphism(
+      blurRadius: kDoublePadding,
+      borderRadius: kDoublePadding,
+      offset: Offset(5, 5),
+      topShadowColor: Colors.white60,
+      bottomShadowColor: Color(0xFF234395).withOpacity(0.05),
     );
   }
 

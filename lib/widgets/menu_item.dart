@@ -7,6 +7,7 @@ import 'package:food_app/widgets/price_label.dart';
 import 'package:food_app/widgets/food_label.dart';
 
 import 'package:food_app/constants.dart';
+import '../extensions.dart';
 
 class MenuItemWidget extends StatelessWidget {
 
@@ -75,6 +76,12 @@ class MenuItemWidget extends StatelessWidget {
             ],
           ),
         ),
+      ).addNeumorphism(
+        blurRadius: 15,
+        borderRadius: 15,
+        offset: Offset(5, 5),
+        topShadowColor: Colors.white60,
+        bottomShadowColor: themeData.backgroundColor.withOpacity(0.15),
       ),
     );
   }

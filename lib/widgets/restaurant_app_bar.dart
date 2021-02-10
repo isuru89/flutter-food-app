@@ -4,6 +4,8 @@ import 'package:food_app/model/restaurant.dart';
 import 'package:food_app/widgets/icons.dart';
 import 'package:food_app/widgets/restaurant_info.dart';
 
+import '../extensions.dart';
+
 class RestaurantHeader extends SliverPersistentHeaderDelegate {
   final Restaurant restaurant;
   final double expandedHeight;
@@ -30,7 +32,6 @@ class RestaurantHeader extends SliverPersistentHeaderDelegate {
       overflow: Overflow.visible,
       children: [
         ClipRRect(
-          //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40*(1-ratio)), bottomRight: Radius.circular(40*(1-ratio))),
           child: Image.network(
             restaurant.bannerUrl,
             fit: BoxFit.cover,
@@ -54,12 +55,17 @@ class RestaurantHeader extends SliverPersistentHeaderDelegate {
                       children: [
                         if (showLogo) Card(
                           color: transparentLogo ? Colors.transparent : logoBackgroundColor,
-                          elevation: transparentLogo ? 0 : 3,
                           child: SizedBox(
                             height: logoSize,
                             width: logoSize,
                             child: FlutterLogo(),
                           ),
+                        ).addNeumorphism(
+                          blurRadius: 15,
+                          borderRadius: 15,
+                          offset: Offset(5, 5),
+                          topShadowColor: Colors.white60,
+                          bottomShadowColor: Color(0xFF234395).withOpacity(0.15),
                         ),
                         SizedBox(width: 4),
                         Flexible(

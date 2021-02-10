@@ -19,11 +19,6 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : PaymentCard.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    favourites: (json['favourites'] as List)
-        ?.map((e) => e == null
-            ? null
-            : FavouriteItem.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
   );
 }
 
@@ -33,7 +28,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'phoneNo': instance.phoneNo,
       'addresses': instance.addresses?.map((e) => e?.toJson())?.toList(),
       'paymentCards': instance.paymentCards?.map((e) => e?.toJson())?.toList(),
-      'favourites': instance.favourites?.map((e) => e?.toJson())?.toList(),
     };
 
 PaymentCard _$PaymentCardFromJson(Map<String, dynamic> json) {
@@ -43,6 +37,7 @@ PaymentCard _$PaymentCardFromJson(Map<String, dynamic> json) {
     securityCode: json['securityCode'] as String,
     expiration: json['expiration'] as String,
     zipCode: json['zipCode'] as String,
+    isDefault: json['isDefault'] as bool,
   );
 }
 
@@ -53,6 +48,7 @@ Map<String, dynamic> _$PaymentCardToJson(PaymentCard instance) =>
       'securityCode': instance.securityCode,
       'expiration': instance.expiration,
       'zipCode': instance.zipCode,
+      'isDefault': instance.isDefault,
     };
 
 FavouriteItem _$FavouriteItemFromJson(Map<String, dynamic> json) {

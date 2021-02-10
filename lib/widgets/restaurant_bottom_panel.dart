@@ -56,22 +56,25 @@ class _RestaurantBottomPanelState extends State<RestaurantBottomPanel>
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    return AnimatedBottomNavigationBar(
-      icons: items.map((e) => e.icon).toList(),
-      backgroundColor: themeData.backgroundColor,
-      inactiveColor: Colors.grey,
-      splashColor: themeData.primaryColor,
-      activeColor: themeData.primaryColor,
-      activeIndex: _selIndex,
-      elevation: kPadding,
-      gapLocation: GapLocation.center,
-      notchAndCornersAnimation: animation,
-      leftCornerRadius: kDoublePadding * 2,
-      rightCornerRadius: kDoublePadding * 2,
-      onTap: (idx) => this.setState(() {
-        _selIndex = idx;
-        this.onItemClicked(items[idx], idx);
-      }),
+    return Container(
+      color: Colors.transparent,
+      child: AnimatedBottomNavigationBar(
+        icons: items.map((e) => e.icon).toList(),
+        backgroundColor: themeData.backgroundColor,
+        inactiveColor: Colors.grey,
+        splashColor: themeData.primaryColor,
+        activeColor: themeData.primaryColor,
+        activeIndex: _selIndex,
+        elevation: kPadding,
+        gapLocation: GapLocation.center,
+        notchAndCornersAnimation: animation,
+        leftCornerRadius: kDoublePadding * 2,
+        rightCornerRadius: kDoublePadding * 2,
+        onTap: (idx) => this.setState(() {
+          _selIndex = idx;
+          this.onItemClicked(items[idx], idx);
+        }),
+      ),
     );
   }
 }

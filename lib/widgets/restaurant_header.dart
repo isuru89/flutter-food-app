@@ -87,6 +87,7 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
           backgroundColor: themeData.primaryColor),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: themeData.backgroundColor,
+      extendBody: true,
       bottomNavigationBar:
           RestaurantBottomPanel(kBottomPanelItems, (item, _) => print('$item')),
       body: Column(
@@ -202,6 +203,9 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
                       });
                 }, childCount: allItemsInCategory.length),
               ),
+              SliverToBoxAdapter(
+                child: SizedBox(height: 64,),
+              )
             ],
           );
   }
