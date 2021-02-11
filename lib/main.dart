@@ -8,6 +8,9 @@ import 'package:food_app/screens/item_modal.dart';
 import 'package:provider/provider.dart';
 import 'widgets/restaurant_header.dart';
 import 'constants.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+
 void main() {
   runApp(ChangeNotifierProvider(
       create: (context) => Cart(),
@@ -28,6 +31,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return MaterialApp(
       routes: {
         '/item': (_) => ItemModal(),
@@ -62,7 +67,7 @@ class MyApp extends StatelessWidget {
         dividerColor: kPrimaryColor,
         accentColor: kPrimaryColor.shade800,
         errorColor: kErrorColor,
-        textTheme: TextTheme(
+        textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
           headline3: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: kPrimaryColor),
           headline4: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           headline5: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),

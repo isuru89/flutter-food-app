@@ -15,6 +15,7 @@ import 'package:food_app/widgets/add_on_selector.dart';
 import 'package:food_app/widgets/icons.dart';
 import 'package:food_app/widgets/image_header.dart';
 import 'package:food_app/widgets/utils/app_formatter.dart';
+import 'package:food_app/extensions.dart';
 import 'package:provider/provider.dart';
 
 var uuid = Uuid();
@@ -69,11 +70,11 @@ class _ItemModalState extends State<ItemModalView> {
   }
 
   bool _checkCanAddToCart(MenuItem item) {
-    if (item.addOnGroups != null) {
-      return item.addOnGroups.where((ag) => ag.minItems > 0)
-        .where((ag) => !selectedAddOns.containsKey(ag.id) || selectedAddOns[ag.id].length < ag.minItems)
-        .length == 0;
-    }
+    // if (item.addOnGroups != null) {
+    //   return item.addOnGroups.where((ag) => ag.minItems > 0)
+    //     .where((ag) => !selectedAddOns.containsKey(ag.id) || selectedAddOns[ag.id].length < ag.minItems)
+    //     .length == 0;
+    // }
     return true;
   }
 
@@ -92,7 +93,7 @@ class _ItemModalState extends State<ItemModalView> {
               pinned: true,
               delegate: HeaderWithImage(
                 heroTag: this.heroTag ?? "menu-item-" + menuItem.id,
-                heroImage: menuItem.images['lg'],
+                heroImage: menuItem.imageUrl,
                 maxHeight: kItemModalHeroImageMaxHeight,
                 minHeight: kItemModalHeroImageMinHeight,
                 embossPanelOffset: -kDoublePadding * 2,
@@ -102,7 +103,6 @@ class _ItemModalState extends State<ItemModalView> {
                     alignment: Alignment.center,
                     child: Card(
                       shape: StadiumBorder(),
-                      elevation: 4,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: kPadding, horizontal: kPadding),
@@ -113,7 +113,7 @@ class _ItemModalState extends State<ItemModalView> {
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  menuItem.name,
+                                  menuItem.title,
                                   style: themeData.textTheme.headline3.copyWith(
                                       color: themeData.primaryColor,
                                       fontWeight: FontWeight.bold),
@@ -142,6 +142,12 @@ class _ItemModalState extends State<ItemModalView> {
                               )
                             ],
                           ),
+                        ).addNeumorphism(
+                          blurRadius: 15,
+                          borderRadius: 15,
+                          offset: Offset(5, 5),
+                          topShadowColor: Colors.white60,
+                          bottomShadowColor: themeData.backgroundColor.withOpacity(0.15),
                         ),
                       ),
                     ),
@@ -187,7 +193,7 @@ class _ItemModalState extends State<ItemModalView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  Labels.createFoodLabels(menuItem.tags ?? ["Milk", "Halal"]),
+                  Labels.createFoodLabels(menuItem.itemAttributes.dietaryLabels ?? ["Milk", "Halal"]),
                   Container(height: kPadding,),
                   Text(
                       menuItem.description,
@@ -267,51 +273,52 @@ class _ItemModalState extends State<ItemModalView> {
   }
 
   Widget _buildAddOnGroups(ThemeData themeData, MenuItem menuItem, CartItem cartItem) {
-    if (menuItem.addOnGroups == null || menuItem.addOnGroups.length == 0) {
-      return Container();
-    }
+    return Container();
+    // if (menuItem.addOnGroups == null || menuItem.addOnGroups.length == 0) {
+    //   return Container();
+    // }
 
-    List<Widget> allWidgets = [
-      Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18))
-    ];
+    // List<Widget> allWidgets = [
+    //   Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18))
+    // ];
 
-    menuItem.addOnGroups.forEach((addOnGroup) {
-        if (isSingleChoiceAddOnGroup(addOnGroup)) {
-          var selectedAddOn;
-          if (selectedAddOns.containsKey(addOnGroup.id)) {
-            var tmp = filterAddOnFromGroup(addOnGroup, selectedAddOns[addOnGroup.id]);
-            if (tmp.length > 0) {
-              selectedAddOn = tmp[0];
-            }
-          }
-          allWidgets.add(SingleItemAddOnSelector(addOnGroup,
-            (addon) {
-              var tmp = {...selectedAddOns};
-              tmp[addOnGroup.id] = [addon.id];
-              this.setState(() {
-                selectedAddOns = tmp;
-              });
-            },
-            selectedAddOn: selectedAddOn));
-        } else {
-          var selAddOns;
-          if (this.selectedAddOns.containsKey(addOnGroup.id)) {
-            selAddOns = filterAddOnFromGroup(addOnGroup, this.selectedAddOns[addOnGroup.id]);
-          }
-          allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) {
-            var tmp = {...this.selectedAddOns};
-            tmp[addOnGroup.id] = addons.map((ao) => ao.id).toList();
-            this.setState(() {
-              selectedAddOns = tmp;
-            });
-          }, selectedAddOns: selAddOns));
-        }
-    });
-    allWidgets.add(Divider(height: kDoublePadding));
+    // menuItem.addOnGroups.forEach((addOnGroup) {
+    //     if (isSingleChoiceAddOnGroup(addOnGroup)) {
+    //       var selectedAddOn;
+    //       if (selectedAddOns.containsKey(addOnGroup.id)) {
+    //         var tmp = filterAddOnFromGroup(addOnGroup, selectedAddOns[addOnGroup.id]);
+    //         if (tmp.length > 0) {
+    //           selectedAddOn = tmp[0];
+    //         }
+    //       }
+    //       allWidgets.add(SingleItemAddOnSelector(addOnGroup,
+    //         (addon) {
+    //           var tmp = {...selectedAddOns};
+    //           tmp[addOnGroup.id] = [addon.id];
+    //           this.setState(() {
+    //             selectedAddOns = tmp;
+    //           });
+    //         },
+    //         selectedAddOn: selectedAddOn));
+    //     } else {
+    //       var selAddOns;
+    //       if (this.selectedAddOns.containsKey(addOnGroup.id)) {
+    //         selAddOns = filterAddOnFromGroup(addOnGroup, this.selectedAddOns[addOnGroup.id]);
+    //       }
+    //       allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) {
+    //         var tmp = {...this.selectedAddOns};
+    //         tmp[addOnGroup.id] = addons.map((ao) => ao.id).toList();
+    //         this.setState(() {
+    //           selectedAddOns = tmp;
+    //         });
+    //       }, selectedAddOns: selAddOns));
+    //     }
+    // });
+    // allWidgets.add(Divider(height: kDoublePadding));
 
-    return Column(
-      children: allWidgets
-    );
+    // return Column(
+    //   children: allWidgets
+    // );
   }
 
   List<ItemAddOn> filterAddOnFromGroup(ItemAddOnGroup addOnGroup, List<String> addOnIds) {

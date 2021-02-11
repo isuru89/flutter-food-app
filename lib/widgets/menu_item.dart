@@ -39,7 +39,7 @@ class MenuItemWidget extends StatelessWidget {
                     Hero(
                       tag: "menu-item-${menuItem.id}",
                       child: MenuItemImage(
-                        imageUrl: menuItem.images['lg'],
+                        imageUrl: menuItem.imageUrl,
                         isSoldOut: rnd.nextInt(5) % 2 == 0,
                         width: kMenuItemImageSize,
                         height: kMenuItemImageSize,
@@ -50,12 +50,12 @@ class MenuItemWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Labels.createItemNameLabel(menuItem.name,
+                          Labels.createItemNameLabel(menuItem.title,
                               themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800)
                           ),
                           SizedBox(height: kPadding),
                           Labels.createFoodLabels(
-                              menuItem.tags ?? []
+                              menuItem.itemAttributes.dietaryLabels ?? []
                           )
                         ],
                       ),
@@ -69,7 +69,7 @@ class MenuItemWidget extends StatelessWidget {
                   children: [
                     PriceLabel(menuItem.price),
                     SizedBox(height: kPadding),
-                    Labels.createCalorieLabel(menuItem.calories, themeData.textTheme.subtitle1)
+                    if (menuItem.hasCalories) Labels.createCalorieLabel(menuItem.calories, themeData.textTheme.subtitle1)
                   ],
                 ),
               )

@@ -11,5 +11,5 @@ isSingleChoiceAddOnGroup(ItemAddOnGroup addOnGroup) {
 }
 
 hasAddOnGroups(MenuItem item) {
-  return item.addOnGroups != null && item.addOnGroups.length > 0;
+  return false;
 }

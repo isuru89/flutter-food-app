@@ -81,13 +81,17 @@ class PriceLabel extends StatelessWidget {
   final TextStyle valueStyle;
   final TextStyle decimalStyle;
   final bool isShowCurrency;
+  final double centFontSize;
+  final double priceFontSize;
 
   const PriceLabel(this.price, {
     this.currency: '\$',
     this.valueStyle,
     this.decimalStyle,
     this.currencyStyle,
-    this.isShowCurrency = true
+    this.isShowCurrency = true,
+    this.centFontSize = 18,
+    this.priceFontSize = 24,
   }) : super();
 
   @override
@@ -96,10 +100,10 @@ class PriceLabel extends StatelessWidget {
     var textThemes = Theme.of(context).textTheme;
     return RichText(
       text: TextSpan(
-          style: textThemes.headline3.copyWith(fontSize: 18, letterSpacing: -1, fontWeight: FontWeight.w500),
+          style: textThemes.headline3.copyWith(fontSize: this.centFontSize, letterSpacing: -1, fontWeight: FontWeight.w500),
           children: [
             if (isShowCurrency) TextSpan(text: "${this.currency}"),
-            TextSpan(text: "${parts[0]}", style: valueStyle ?? textThemes.headline3.copyWith(fontSize: 24)),
+            TextSpan(text: "${parts[0]}", style: valueStyle ?? textThemes.headline3.copyWith(fontSize: priceFontSize)),
             TextSpan(text: ".${parts[1]}", style: decimalStyle)
           ]
       ),

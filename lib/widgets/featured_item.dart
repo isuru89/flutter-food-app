@@ -3,6 +3,7 @@ import 'package:food_app/constants.dart';
 import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
 import 'package:food_app/widgets/menu_item_image.dart';
+import 'package:food_app/widgets/price_label.dart';
 
 import '../extensions.dart';
 
@@ -68,7 +69,7 @@ class _FeaturedItem extends StatelessWidget {
             Hero(
                 tag: 'featured-item-${item.id}',
                 child: MenuItemImage(
-                  imageUrl: item.images["lg"],
+                  imageUrl: item.imageUrl,
                   width: this.width,
                   height: this.height,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
@@ -81,7 +82,7 @@ class _FeaturedItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: kPadding),
                 child: Text(
-                  '${item.name}',
+                  '${item.title}',
                   softWrap: true,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -96,10 +97,7 @@ class _FeaturedItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  Text(
-                    "\$12.99",
-                    style: themeData.textTheme.headline4.copyWith(color: themeData.primaryColor),
-                  ),
+                  PriceLabel(item.price, centFontSize: 14, priceFontSize: 18,),
                   Text("324 cal", style: themeData.textTheme.subtitle1,)
                 ],
               ),

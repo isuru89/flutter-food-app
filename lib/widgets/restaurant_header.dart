@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:food_app/model/menu/menu.dart';
-import 'package:food_app/model/menu/menu_category.dart';
+import 'package:food_app/model/cart.dart';
 import 'package:food_app/model/menu/menu_item.dart';
 import 'package:food_app/model/restaurant.dart';
 import 'package:food_app/model/routes/item_modal_args.dart';
@@ -18,43 +18,15 @@ import 'package:food_app/widgets/restaurant_app_bar.dart';
 
 import 'package:food_app/constants.dart';
 import 'package:food_app/widgets/restaurant_bottom_panel.dart';
-
-
-class Song {
-  final String title;
-  final String image;
-
-  const Song({this.title, this.image});
-}
-
-final sessions = [
-  Menu(name: "Breakfast", fromTime: "07:00", endTime: "09:00"),
-  Menu(name: "Lunch", fromTime: "12:00", endTime: "15:00"),
-  Menu(name: "Brunch", fromTime: "15:00", endTime: "17:30"),
-  Menu(name: "Dinner", fromTime: "18:30", endTime: "21:30"),
-  Menu(name: "Mid-Night", fromTime: "22:00", endTime: "23:30"),
-];
-
-final categories = [
-  MenuCategory("id1", "Drinks"),
-  MenuCategory("id2", "Salads"),
-  MenuCategory("id3", "Snacks"),
-  MenuCategory("id4", "Pizzas"),
-  MenuCategory("id5", "One-Whole"),
-  MenuCategory("id6", "Drinks"),
-  MenuCategory("id7", "Salads"),
-  MenuCategory("id8", "Snacks"),
-  MenuCategory("id9", "Pizzas"),
-  MenuCategory("id10", "One-Whole"),
-];
+import 'package:provider/provider.dart';
 
 class DeliciousFoodApp extends StatefulWidget {
   @override
-  _DeliciousFoodAppState createState() => _DeliciousFoodAppState("restaurant.json");
+  _DeliciousFoodAppState createState() =>
+      _DeliciousFoodAppState("restaurant.json");
 }
 
 class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
-
   final Random random = Random(123456);
 
   final String restaurantFileName;
@@ -71,7 +43,8 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
   }
 
   Future<Restaurant> loadRestaurant() async {
-    var jsonStr = await rootBundle.loadString("assets/localdata/${this.restaurantFileName}");
+    var jsonStr = await rootBundle
+        .loadString("assets/localdata/${this.restaurantFileName}");
     var decoded = jsonDecode(jsonStr);
     return Restaurant.fromJson(decoded);
   }
@@ -82,14 +55,23 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
     var themeData = Theme.of(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => nav.pushNamed('/cart'),
-          child: Icon(Icons.shopping_cart_outlined),
+          onPressed: () => nav.pushNamed('/cart'),
+          child: Badge(
+            badgeContent: Text(
+              "${Provider.of<Cart>(context).items.length}",
+              style: TextStyle(color: Colors.white),
+            ),
+            position: BadgePosition.topEnd(top: -20, end: -20),
+            child: Icon(Icons.shopping_cart_outlined),
+          ),
           backgroundColor: themeData.primaryColor),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: themeData.backgroundColor,
       extendBody: true,
-      bottomNavigationBar:
-          RestaurantBottomPanel(kBottomPanelItems, (item, _) => print('$item')),
+      bottomNavigationBar: RestaurantBottomPanel(
+        kBottomPanelItems,
+        (item, _) => print('$item'),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -116,98 +98,114 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
     return tmpList.sublist(0, random.nextInt(fullMenuItemList.length));
   }
 
-  CustomScrollView buildRestaurantHomePage(Restaurant restaurant, ThemeData themeData, NavigatorState nav) {
-    var selectedMenuSession = this.selectedSessionName == null ?
-      restaurant.menuSessions.firstWhere((menu) => menu.isAvailable())
-      : restaurant.menuSessions.firstWhere((m) => m.name == this.selectedSessionName);
-    var selectedCategory = this.selectedCategoryId == null ?
-      selectedMenuSession.categories[0] : selectedMenuSession.categories
-        .firstWhere((cat) => cat.id == this.selectedCategoryId);
-    var allItemsInCategory = selectedCategory.items;
+  CustomScrollView buildRestaurantHomePage(
+      Restaurant restaurant, ThemeData themeData, NavigatorState nav) {
+    var selectedMenuSession = this.selectedSessionName == null
+        ? restaurant.menuSessions.firstWhere((menu) => menu.isAvailable())
+        : restaurant.menuSessions
+            .firstWhere((m) => m.name == this.selectedSessionName);
+    var selectedCategory = this.selectedCategoryId == null
+        ? selectedMenuSession.categories.values.first
+        : selectedMenuSession.categories.values
+            .firstWhere((cat) => cat.id == this.selectedCategoryId);
+    var allItemsInCategory = selectedCategory.itemIds
+        .map((itId) => selectedMenuSession.items[itId])
+        .toList();
     var featuredItems = findFeaturedItems(allItemsInCategory);
 
     return CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                  delegate: RestaurantHeader(
-                    restaurant: restaurant,
-                    expandedHeight: kRestaurantHeaderHeight,
-                  ),
-                  pinned: true),
-              SliverPersistentHeader(
-                delegate: SessionBar(preferredHeight: kSessionBarHeight,
-                    // marginTop: 20,
-                    children: [
-                      MenuList(
-                        menuList: restaurant.menuSessions,
-                        onMenuSelected: (sessionName) {
-                          this.setState(() {
-                            selectedSessionName = sessionName;
-                            selectedCategoryId = restaurant.menuSessions
-                              .firstWhere((m) => m.name == sessionName)
-                              .categories[0].id;
-                          });
-                        } ,
-                      ),
-                      CategoryList(
-                        key: ValueKey(selectedMenuSession.name),
-                        categoryList: selectedMenuSession.categories,
-                        onCategoryClicked: (id) {
-                          this.setState(() {
-                            selectedCategoryId = id;
-                          });
-                        },
-                      ),
-                    ]),
-                pinned: true,
-              ),
-              if (featuredItems.length > 0) SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: kPadding * 2),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Labels.createHeaderAndSummary(
-                          "Featured", "${featuredItems.length} items", themeData),
-                      FeaturedItemList(
-                        imgList: featuredItems,
-                      ),
-                      Divider(),
-                    ],
-                  ),
+      slivers: [
+        SliverPersistentHeader(
+            delegate: RestaurantHeader(
+              restaurant: restaurant,
+              expandedHeight: kRestaurantHeaderHeight,
+            ),
+            pinned: true),
+        SliverPersistentHeader(
+          delegate: SessionBar(preferredHeight: kSessionBarHeight,
+              // marginTop: 20,
+              children: [
+                MenuList(
+                  menuList: restaurant.menuSessions.toList(),
+                  onMenuSelected: (sessionName) {
+                    this.setState(() {
+                      selectedSessionName = sessionName;
+                      selectedCategoryId = restaurant.menuSessions
+                          .firstWhere((m) => m.name == sessionName)
+                          .categories[0]
+                          .id;
+                    });
+                  },
                 ),
+                CategoryList(
+                  key: ValueKey(selectedMenuSession.name),
+                  categoryList: selectedMenuSession.categories.values.toList(),
+                  onCategoryClicked: (id) {
+                    this.setState(() {
+                      selectedCategoryId = id;
+                    });
+                  },
+                ),
+              ]),
+          pinned: true,
+        ),
+        if (featuredItems.length > 0)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kPadding * 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Labels.createHeaderAndSummary(
+                    "Featured",
+                    "${featuredItems.length} items",
+                    themeData,
+                  ),
+                  FeaturedItemList(
+                    imgList: featuredItems,
+                  ),
+                  Divider(),
+                ],
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate((_, index) {
-                  final menuIt = allItemsInCategory[index % allItemsInCategory.length];
-                  if (index == 0) {
-                    return Column(
-                      children: [
-                        MenuItemWidget(
-                            menuItem: menuIt,
-                            onClicked: (it) {
-                              nav.pushNamed('/item',
-                                  arguments: ItemModalArguments(it));
-                            })
-                      ],
-                    );
-                  } else if (index == 19) {
-                    return Container(height: 60);
-                  }
-                  return MenuItemWidget(
+            ),
+          ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate((_, index) {
+            final menuIt =
+                allItemsInCategory[index % allItemsInCategory.length];
+            if (index == 0) {
+              return Column(
+                children: [
+                  MenuItemWidget(
                       menuItem: menuIt,
                       onClicked: (it) {
-                        nav.pushNamed('/item',
-                            arguments: ItemModalArguments(it));
-                      });
-                }, childCount: allItemsInCategory.length),
-              ),
-              SliverToBoxAdapter(
-                child: SizedBox(height: 64,),
-              )
-            ],
-          );
+                        nav.pushNamed(
+                          '/item',
+                          arguments: ItemModalArguments(it),
+                        );
+                      })
+                ],
+              );
+            } else if (index == 19) {
+              return Container(height: 60);
+            }
+            return MenuItemWidget(
+                menuItem: menuIt,
+                onClicked: (it) {
+                  nav.pushNamed(
+                    '/item',
+                    arguments: ItemModalArguments(it),
+                  );
+                });
+          }, childCount: allItemsInCategory.length),
+        ),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 64,
+          ),
+        )
+      ],
+    );
   }
 }
 

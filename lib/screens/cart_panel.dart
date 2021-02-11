@@ -262,7 +262,7 @@ class _CartPanel extends State<CartPanel> {
                 Row(
                   children: [
                     MenuItemImage(
-                        imageUrl: item.menuItem.images["lg"],
+                        imageUrl: item.menuItem.imageUrl,
                         width: 64,
                         height: 64),
                     SizedBox(
@@ -273,7 +273,7 @@ class _CartPanel extends State<CartPanel> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(child: Text("${item.menuItem.name}")),
+                          Container(child: Text("${item.menuItem.title}")),
                           _printAddOnLines(item, themeData),
                           SizedBox(
                             height: kPadding,
@@ -338,16 +338,18 @@ class _CartPanel extends State<CartPanel> {
   }
 
   String _findAddOnGroupName(String id, CartItem cartItem) {
-    return cartItem.menuItem.addOnGroups.firstWhere((ag) => ag.id == id).name;
+    return null;
+    // return cartItem.menuItem.addOnGroups.firstWhere((ag) => ag.id == id).name;
   }
 
   List<String> _findAddOnNames(
       String groupId, List<String> ids, CartItem cartItem) {
-    return cartItem.menuItem.addOnGroups
-        .firstWhere((ag) => ag.id == groupId)
-        .addOns
-        .where((ao) => ids.contains(ao.id))
-        .map((ao) => ao.name)
-        .toList();
+        return List();
+    // return cartItem.menuItem.addOnGroups
+    //     .firstWhere((ag) => ag.id == groupId)
+    //     .addOns
+    //     .where((ao) => ids.contains(ao.id))
+    //     .map((ao) => ao.name)
+    //     .toList();
   }
 }

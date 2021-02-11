@@ -11,10 +11,14 @@ Menu _$MenuFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     fromTime: json['fromTime'] as String,
     endTime: json['endTime'] as String,
-    categories: (json['categories'] as List)
-        ?.map((e) =>
-            e == null ? null : MenuCategory.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    items: (json['items'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(
+          k, e == null ? null : MenuItem.fromJson(e as Map<String, dynamic>)),
+    ),
+    categories: (json['categories'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k,
+          e == null ? null : MenuCategory.fromJson(e as Map<String, dynamic>)),
+    ),
   );
 }
 
@@ -22,5 +26,7 @@ Map<String, dynamic> _$MenuToJson(Menu instance) => <String, dynamic>{
       'name': instance.name,
       'fromTime': instance.fromTime,
       'endTime': instance.endTime,
-      'categories': instance.categories?.map((e) => e?.toJson())?.toList(),
+      'items': instance.items?.map((k, e) => MapEntry(k, e?.toJson())),
+      'categories':
+          instance.categories?.map((k, e) => MapEntry(k, e?.toJson())),
     };

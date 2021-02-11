@@ -11,6 +11,7 @@ class MenuList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
+    print(menuList);
     return _MenuListState(sessionList: menuList, onMenuSelected: onMenuSelected);
   }
 

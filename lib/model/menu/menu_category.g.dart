@@ -10,10 +10,8 @@ MenuCategory _$MenuCategoryFromJson(Map<String, dynamic> json) {
   return MenuCategory(
     json['id'] as String,
     json['name'] as String,
-    items: (json['items'] as List)
-        ?.map((e) =>
-            e == null ? null : MenuItem.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    itemIds: (json['itemIds'] as List)?.map((e) => e as String)?.toList(),
+    priority: json['priority'] as int,
   );
 }
 
@@ -21,5 +19,6 @@ Map<String, dynamic> _$MenuCategoryToJson(MenuCategory instance) =>
     <String, dynamic>{
       'name': instance.name,
       'id': instance.id,
-      'items': instance.items?.map((e) => e?.toJson())?.toList(),
+      'itemIds': instance.itemIds,
+      'priority': instance.priority,
     };
