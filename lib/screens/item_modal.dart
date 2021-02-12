@@ -1,21 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_app/screens/cart_panel.dart';
-import 'package:food_app/widgets/food_label.dart';
-import 'package:food_app/widgets/quantity_slider.dart';
+import 'package:delizious/widgets/food_label.dart';
+import 'package:delizious/widgets/quantity_slider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/managers/menu.dart';
-import 'package:food_app/model/cart.dart';
-import 'package:food_app/model/cart_item.dart';
-import 'package:food_app/model/menu/menu_item.dart';
-import 'package:food_app/model/routes/item_modal_args.dart';
-import 'package:food_app/widgets/add_on_selector.dart';
-import 'package:food_app/widgets/icons.dart';
-import 'package:food_app/widgets/image_header.dart';
-import 'package:food_app/widgets/utils/app_formatter.dart';
-import 'package:food_app/extensions.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/cart.dart';
+import 'package:delizious/model/cart_item.dart';
+import 'package:delizious/model/menu/menu_item.dart';
+import 'package:delizious/model/routes/item_modal_args.dart';
+import 'package:delizious/widgets/icons.dart';
+import 'package:delizious/widgets/image_header.dart';
+import 'package:delizious/widgets/utils/app_formatter.dart';
+import 'package:delizious/extensions.dart';
 import 'package:provider/provider.dart';
 
 var uuid = Uuid();

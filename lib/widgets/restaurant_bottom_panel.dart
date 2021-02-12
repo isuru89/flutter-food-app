@@ -1,7 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/view/bottom_panel.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/view/bottom_panel.dart';
 
 class RestaurantBottomPanel extends StatefulWidget {
 

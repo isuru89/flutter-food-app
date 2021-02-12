@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
+import 'package:delizious/constants.dart';
 
 class CheckoutUserInfo extends StatefulWidget {
   CheckoutUserInfo({Key key}) : super(key: key);

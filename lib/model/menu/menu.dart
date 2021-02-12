@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu/menu_item.dart';
+import 'package:delizious/model/menu/menu_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'menu_category.dart';

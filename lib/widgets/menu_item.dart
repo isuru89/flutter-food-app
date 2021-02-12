@@ -1,22 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu/menu_item.dart';
-import 'package:food_app/widgets/menu_item_image.dart';
-import 'package:food_app/widgets/price_label.dart';
-import 'package:food_app/widgets/food_label.dart';
+import 'package:delizious/model/menu/menu_item.dart';
+import 'package:delizious/widgets/menu_item_image.dart';
+import 'package:delizious/widgets/price_label.dart';
+import 'package:delizious/widgets/food_label.dart';
 
-import 'package:food_app/constants.dart';
+import 'package:delizious/constants.dart';
 import '../extensions.dart';
 
 class MenuItemWidget extends StatelessWidget {
-
   static final rnd = Random(123232);
 
   final MenuItem menuItem;
   final Function(MenuItem) onClicked;
 
-  const MenuItemWidget({Key key, this.menuItem, this.onClicked}) : super(key: key);
+  const MenuItemWidget({Key key, this.menuItem, this.onClicked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,26 +37,25 @@ class MenuItemWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Hero(
-                      tag: "menu-item-${menuItem.id}",
-                      child: MenuItemImage(
-                        imageUrl: menuItem.imageUrl,
-                        isSoldOut: rnd.nextInt(5) % 2 == 0,
-                        width: kMenuItemImageSize,
-                        height: kMenuItemImageSize,
-                      )
-                    ),
+                        tag: "menu-item-${menuItem.id}",
+                        child: MenuItemImage(
+                          imageUrl: menuItem.imageUrl,
+                          isSoldOut: rnd.nextInt(5) % 2 == 0,
+                          width: kMenuItemImageSize,
+                          height: kMenuItemImageSize,
+                        )),
                     SizedBox(width: kDoublePadding),
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Labels.createItemNameLabel(menuItem.title,
-                              themeData.textTheme.headline4.copyWith(fontWeight: FontWeight.w800)
-                          ),
+                          Labels.createItemNameLabel(
+                              menuItem.title,
+                              themeData.textTheme.headline4
+                                  .copyWith(fontWeight: FontWeight.w800)),
                           SizedBox(height: kPadding),
                           Labels.createFoodLabels(
-                              menuItem.itemAttributes.dietaryLabels ?? []
-                          )
+                              menuItem.itemAttributes.dietaryLabels ?? [])
                         ],
                       ),
                     ),
@@ -69,7 +68,11 @@ class MenuItemWidget extends StatelessWidget {
                   children: [
                     PriceLabel(menuItem.price),
                     SizedBox(height: kPadding),
-                    if (menuItem.hasCalories) Labels.createCalorieLabel(menuItem.calories, themeData.textTheme.subtitle1)
+                    if (menuItem.hasCalories)
+                      Labels.createCalorieLabel(
+                        menuItem.calories,
+                        themeData.textTheme.subtitle1,
+                      )
                   ],
                 ),
               )
@@ -85,5 +88,4 @@ class MenuItemWidget extends StatelessWidget {
       ),
     );
   }
-
 }

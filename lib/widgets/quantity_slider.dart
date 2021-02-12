@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
+import 'package:delizious/constants.dart';
 
 class QuantitySlider extends StatelessWidget {
 

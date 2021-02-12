@@ -1,10 +1,10 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/cart.dart';
-import 'package:food_app/screens/cart_panel.dart';
-import 'package:food_app/screens/checkout_screen.dart';
-import 'package:food_app/screens/item_modal.dart';
+import 'package:delizious/model/cart.dart';
+import 'package:delizious/screens/cart_panel.dart';
+import 'package:delizious/screens/checkout_screen.dart';
+import 'package:delizious/screens/item_modal.dart';
 import 'package:provider/provider.dart';
 import 'widgets/restaurant_header.dart';
 import 'constants.dart';

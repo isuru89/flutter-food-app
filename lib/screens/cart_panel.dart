@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/cart.dart';
-import 'package:food_app/model/cart_item.dart';
-import 'package:food_app/model/order_types.dart';
-import 'package:food_app/model/routes/item_modal_args.dart';
-import 'package:food_app/widgets/menu_item_image.dart';
-import 'package:food_app/widgets/utils/app_formatter.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/cart.dart';
+import 'package:delizious/model/cart_item.dart';
+import 'package:delizious/model/order_types.dart';
+import 'package:delizious/model/routes/item_modal_args.dart';
+import 'package:delizious/widgets/menu_item_image.dart';
+import 'package:delizious/widgets/utils/app_formatter.dart';
 import 'package:provider/provider.dart';
 
 final List<CartItem> cartItems = [];

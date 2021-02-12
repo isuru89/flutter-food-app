@@ -1,4 +1,4 @@
-package isuru.github.io.food_app
+package isuru.github.io.delizious
 
 import io.flutter.embedding.android.FlutterActivity
 

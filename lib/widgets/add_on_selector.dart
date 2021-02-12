@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/menu/menu_item.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/menu/menu_item.dart';
 
 import 'package:smart_select/smart_select.dart';
 import 'utils/app_formatter.dart';

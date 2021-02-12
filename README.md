@@ -1,4 +1,4 @@
-# food_app
+# delizious
 
 A new Flutter application.
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/menu/menu_item.dart';
-import 'package:food_app/model/routes/item_modal_args.dart';
-import 'package:food_app/widgets/menu_item_image.dart';
-import 'package:food_app/widgets/price_label.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/menu/menu_item.dart';
+import 'package:delizious/model/routes/item_modal_args.dart';
+import 'package:delizious/widgets/menu_item_image.dart';
+import 'package:delizious/widgets/price_label.dart';
 
 import '../extensions.dart';
 

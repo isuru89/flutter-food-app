@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
+import 'package:delizious/constants.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class CheckoutPaymentSection extends StatefulWidget {

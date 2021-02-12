@@ -1,6 +1,6 @@
 
 
-import 'package:food_app/model/menu/menu_item.dart';
+import 'package:delizious/model/menu/menu_item.dart';
 
 isMultiChoiceAddOnGroup(ItemAddOnGroup addOnGroup) {
   return addOnGroup.maxItems > 1;

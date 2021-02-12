@@ -2,8 +2,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:food_app/model/cart_item.dart';
-import 'package:food_app/model/order_types.dart';
+import 'package:delizious/model/cart_item.dart';
+import 'package:delizious/model/order_types.dart';
 
 class Cart extends ChangeNotifier {
 

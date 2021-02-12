@@ -1,6 +1,6 @@
 
 
-import 'package:food_app/model/restaurant.dart';
+import 'package:delizious/model/restaurant.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';

@@ -5,19 +5,19 @@ import 'dart:ui';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:food_app/model/cart.dart';
-import 'package:food_app/model/menu/menu_item.dart';
-import 'package:food_app/model/restaurant.dart';
-import 'package:food_app/model/routes/item_modal_args.dart';
-import 'package:food_app/widgets/featured_item.dart';
-import 'package:food_app/widgets/food_label.dart';
-import 'package:food_app/widgets/menu_item.dart';
-import 'package:food_app/widgets/menu_list.dart';
-import 'package:food_app/widgets/category_list.dart';
-import 'package:food_app/widgets/restaurant_app_bar.dart';
+import 'package:delizious/model/cart.dart';
+import 'package:delizious/model/menu/menu_item.dart';
+import 'package:delizious/model/restaurant.dart';
+import 'package:delizious/model/routes/item_modal_args.dart';
+import 'package:delizious/widgets/featured_item.dart';
+import 'package:delizious/widgets/food_label.dart';
+import 'package:delizious/widgets/menu_item.dart';
+import 'package:delizious/widgets/menu_list.dart';
+import 'package:delizious/widgets/category_list.dart';
+import 'package:delizious/widgets/restaurant_app_bar.dart';
 
-import 'package:food_app/constants.dart';
-import 'package:food_app/widgets/restaurant_bottom_panel.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/widgets/restaurant_bottom_panel.dart';
 import 'package:provider/provider.dart';
 
 class DeliciousFoodApp extends StatefulWidget {
@@ -57,6 +57,7 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
       floatingActionButton: FloatingActionButton(
           onPressed: () => nav.pushNamed('/cart'),
           child: Badge(
+            badgeColor: kAccentColor,
             badgeContent: Text(
               "${Provider.of<Cart>(context).items.length}",
               style: TextStyle(color: Colors.white),

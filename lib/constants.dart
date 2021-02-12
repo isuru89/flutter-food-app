@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/view/bottom_panel.dart';
+import 'package:delizious/model/view/bottom_panel.dart';
 
 // theme related data
 const kPrimaryColor = Colors.blue;
 const kOnPrimaryColor = Colors.white;
+const kAccentColor = Colors.orange;
 const kErrorColor = Colors.red;
 
 
@@ -15,7 +16,7 @@ const double kRestaurantHeaderHeight = 280;
 const double kRestaurantHeaderMinHeight = 80;
 const double kRestaurantHeaderLogoMaxSize = 96;
 const double kRestaurantHeaderLogoMinSize = 48;
-const bool kRestaurantHeaderShowLogo = true;
+const bool kRestaurantHeaderShowLogo = false;
 const bool kRestaurantHeaderTransparentLogo = false;
 const Color kRestaurantHeaderLogoColor = Colors.white;
 const double kRestaurantHeaderFontSize = 22;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/menu/menu_category.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/menu/menu_category.dart';
 
 const List<MenuCategory> EMPTY_CATS = [];
 

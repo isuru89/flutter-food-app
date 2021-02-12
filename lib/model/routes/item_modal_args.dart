@@ -1,5 +1,5 @@
 
-import 'package:food_app/model/menu/menu_item.dart';
+import 'package:delizious/model/menu/menu_item.dart';
 
 import '../cart_item.dart';
 

@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/restaurant.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/restaurant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantInfo extends StatelessWidget {

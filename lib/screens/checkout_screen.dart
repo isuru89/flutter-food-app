@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/widgets/checkout/payment_section.dart';
-import 'package:food_app/widgets/checkout/user_info.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/widgets/checkout/payment_section.dart';
+import 'package:delizious/widgets/checkout/user_info.dart';
 
 const ButtonNames = {
   1: { 'next': 'Next', 'back': 'Cart' },

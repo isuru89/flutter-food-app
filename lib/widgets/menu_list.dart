@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/menu/menu.dart';
-import 'package:food_app/constants.dart';
+import 'package:delizious/model/menu/menu.dart';
+import 'package:delizious/constants.dart';
 
 class MenuList extends StatefulWidget {
 

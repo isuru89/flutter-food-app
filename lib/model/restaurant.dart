@@ -1,5 +1,5 @@
 
-import 'package:food_app/model/menu/menu.dart';
+import 'package:delizious/model/menu/menu.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'restaurant.g.dart';

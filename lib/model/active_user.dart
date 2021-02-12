@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/model/restaurant.dart';
-import 'package:food_app/model/user.dart';
+import 'package:delizious/model/restaurant.dart';
+import 'package:delizious/model/user.dart';
 
 class ActiveUser extends ChangeNotifier {
   User _user;

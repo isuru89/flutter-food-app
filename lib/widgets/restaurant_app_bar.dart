@@ -1,8 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:food_app/constants.dart';
-import 'package:food_app/model/restaurant.dart';
-import 'package:food_app/widgets/icons.dart';
-import 'package:food_app/widgets/restaurant_info.dart';
+import 'package:delizious/constants.dart';
+import 'package:delizious/model/restaurant.dart';
+import 'package:delizious/widgets/icons.dart';
+import 'package:delizious/widgets/restaurant_info.dart';
 
 import '../extensions.dart';
 
@@ -86,9 +88,9 @@ class RestaurantHeader extends SliverPersistentHeaderDelegate {
                                       fontSize: kRestaurantHeaderFontSize,
                                       shadows: [
                                         Shadow(
-                                          offset: Offset(0.0, 0.0),
+                                          offset: const Offset(0.0, 0.0),
                                           blurRadius: 20.0,
-                                          color: Color.fromARGB(128, 0, 0, 0),
+                                          color: Color.fromARGB(255, 0, 0, 0),
                                         ),
                                       ]
                                   ),
