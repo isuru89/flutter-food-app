@@ -46,7 +46,9 @@ class _DeliciousFoodAppState extends State<DeliciousFoodApp> {
     var jsonStr = await rootBundle
         .loadString("assets/localdata/${this.restaurantFileName}");
     var decoded = jsonDecode(jsonStr);
-    return Restaurant.fromJson(decoded);
+    Restaurant restaurant = Restaurant.fromJson(decoded);
+    restaurant.menuSessions.forEach((ms) => ms.synthesize());
+    return restaurant;
   }
 
   @override

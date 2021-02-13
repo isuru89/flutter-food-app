@@ -1,4 +1,6 @@
 
+import 'package:delizious/managers/menu.dart';
+import 'package:delizious/widgets/add_on_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:delizious/widgets/food_label.dart';
@@ -67,11 +69,11 @@ class _ItemModalState extends State<ItemModalView> {
   }
 
   bool _checkCanAddToCart(MenuItem item) {
-    // if (item.addOnGroups != null) {
-    //   return item.addOnGroups.where((ag) => ag.minItems > 0)
-    //     .where((ag) => !selectedAddOns.containsKey(ag.id) || selectedAddOns[ag.id].length < ag.minItems)
-    //     .length == 0;
-    // }
+    if (item.addOnGroups != null) {
+      return item.addOnGroups.where((ag) => ag.minPermitted > 0)
+        .where((ag) => !selectedAddOns.containsKey(ag.id) || selectedAddOns[ag.id].length < ag.minPermitted)
+        .length == 0;
+    }
     return true;
   }
 
@@ -270,52 +272,51 @@ class _ItemModalState extends State<ItemModalView> {
   }
 
   Widget _buildAddOnGroups(ThemeData themeData, MenuItem menuItem, CartItem cartItem) {
-    return Container();
-    // if (menuItem.addOnGroups == null || menuItem.addOnGroups.length == 0) {
-    //   return Container();
-    // }
+    if (menuItem.addOnGroups == null || menuItem.addOnGroups.length == 0) {
+      return Container();
+    }
 
-    // List<Widget> allWidgets = [
-    //   Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18))
-    // ];
+    List<Widget> allWidgets = [
+      Text("Add-ons", style: themeData.textTheme.headline4.copyWith(fontSize: 18))
+    ];
 
-    // menuItem.addOnGroups.forEach((addOnGroup) {
-    //     if (isSingleChoiceAddOnGroup(addOnGroup)) {
-    //       var selectedAddOn;
-    //       if (selectedAddOns.containsKey(addOnGroup.id)) {
-    //         var tmp = filterAddOnFromGroup(addOnGroup, selectedAddOns[addOnGroup.id]);
-    //         if (tmp.length > 0) {
-    //           selectedAddOn = tmp[0];
-    //         }
-    //       }
-    //       allWidgets.add(SingleItemAddOnSelector(addOnGroup,
-    //         (addon) {
-    //           var tmp = {...selectedAddOns};
-    //           tmp[addOnGroup.id] = [addon.id];
-    //           this.setState(() {
-    //             selectedAddOns = tmp;
-    //           });
-    //         },
-    //         selectedAddOn: selectedAddOn));
-    //     } else {
-    //       var selAddOns;
-    //       if (this.selectedAddOns.containsKey(addOnGroup.id)) {
-    //         selAddOns = filterAddOnFromGroup(addOnGroup, this.selectedAddOns[addOnGroup.id]);
-    //       }
-    //       allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) {
-    //         var tmp = {...this.selectedAddOns};
-    //         tmp[addOnGroup.id] = addons.map((ao) => ao.id).toList();
-    //         this.setState(() {
-    //           selectedAddOns = tmp;
-    //         });
-    //       }, selectedAddOns: selAddOns));
-    //     }
-    // });
-    // allWidgets.add(Divider(height: kDoublePadding));
+    menuItem.addOnGroups.forEach((addOnGroup) {
+        if (isSingleChoiceAddOnGroup(addOnGroup)) {
+          var selectedAddOn;
+          if (selectedAddOns.containsKey(addOnGroup.id)) {
+            var tmp = filterAddOnFromGroup(addOnGroup, selectedAddOns[addOnGroup.id]);
+            if (tmp.length > 0) {
+              selectedAddOn = tmp[0];
+            }
+          }
+          allWidgets.add(SingleItemAddOnSelector(addOnGroup,
+            (addon) {
+              var tmp = {...selectedAddOns};
+              tmp[addOnGroup.id] = [addon.id];
+              this.setState(() {
+                selectedAddOns = tmp;
+              });
+            },
+            selectedAddOn: selectedAddOn));
+        } else {
+          var selAddOns;
+          if (this.selectedAddOns.containsKey(addOnGroup.id)) {
+            selAddOns = filterAddOnFromGroup(addOnGroup, this.selectedAddOns[addOnGroup.id]);
+          }
+          allWidgets.add(MultiItemAddOnSelector(addOnGroup, (addons) {
+            var tmp = {...this.selectedAddOns};
+            tmp[addOnGroup.id] = addons.map((ao) => ao.id).toList();
+            this.setState(() {
+              selectedAddOns = tmp;
+            });
+          }, selectedAddOns: selAddOns));
+        }
+    });
+    allWidgets.add(Divider(height: kDoublePadding));
 
-    // return Column(
-    //   children: allWidgets
-    // );
+    return Column(
+      children: allWidgets
+    );
   }
 
   List<ItemAddOn> filterAddOnFromGroup(ItemAddOnGroup addOnGroup, List<String> addOnIds) {

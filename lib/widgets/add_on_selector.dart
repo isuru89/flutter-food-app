@@ -32,13 +32,13 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
         tileBuilder: (ctx, value) {
           return S2Tile(
             padding: EdgeInsets.zero,
-            title: this.addOnGroup.minItems > 0 ?
+            title: this.addOnGroup.minPermitted > 0 ?
               Row(children: [
-                Text(addOnGroup.name, style: themeData.textTheme.bodyText2),
+                Text(addOnGroup.title, style: themeData.textTheme.bodyText2),
                 Text("  *", style: themeData.textTheme.bodyText1.apply(color: Colors.red),),
                 ],
               ) :
-             Text(addOnGroup.name),
+             Text(addOnGroup.title),
             onTap: value.showModal,
             value: value.valueDisplay,
           );
@@ -47,7 +47,7 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
         modalHeaderStyle:
             S2ModalHeaderStyle(textStyle: themeData.textTheme.headline4),
         value: selectedAddOn,
-        title: addOnGroup.name,
+        title: addOnGroup.title,
         placeholder: 'Select one',
         onChange: (state) {
           this.setState(() {
@@ -57,7 +57,7 @@ class _SingleItemAddOnSelectorState extends State<SingleItemAddOnSelector> {
         },
         choiceItems: addOnGroup.addOns.map((e) => S2Choice(
           value: e,
-          title: e.name,
+          title: e.title,
           subtitle: "+ \$${formatPrice(e.price)}"
         )).toList()
       ),
@@ -94,13 +94,13 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
           return S2Tile(
             trailing: Text("  *", style: themeData.textTheme.bodyText1.apply(color: Colors.red),),
             padding: EdgeInsets.zero,
-            title: this.addOnGroup.minItems > 0 ?
+            title: this.addOnGroup.minPermitted > 0 ?
               Row(children: [
-                Text(addOnGroup.name, style: themeData.textTheme.bodyText2),
+                Text(addOnGroup.title, style: themeData.textTheme.bodyText2),
                 Text("  *", style: themeData.textTheme.bodyText1.apply(color: Colors.red),),
                 ],
               ) :
-             Text(addOnGroup.name),
+             Text(addOnGroup.title),
             onTap: value.showModal,
             value: value.valueDisplay,
           );
@@ -108,10 +108,10 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
         modalType: S2ModalType.bottomSheet,
         modalHeaderStyle: S2ModalHeaderStyle(textStyle: themeData.textTheme.headline4),
         modalValidation: (state) {
-          if (state.length < addOnGroup.minItems) {
-            return 'Select at least ${addOnGroup.minItems}';
-          } else if (state.length > addOnGroup.maxItems) {
-            return 'Select only ${addOnGroup.maxItems}';
+          if (state.length < addOnGroup.minPermitted) {
+            return 'Select at least ${addOnGroup.minPermitted}';
+          } else if (state.length > addOnGroup.maxPermitted) {
+            return 'Select only ${addOnGroup.maxPermitted}';
           }
           return null;
         },
@@ -148,7 +148,7 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
         },
         modalConfirm: true,
         value: selectedAddOns,
-        title: addOnGroup.name,
+        title: addOnGroup.title,
         placeholder: 'Select one',
         modalFilter: true,
         onChange: (state) {
@@ -159,7 +159,7 @@ class _MultiItemAddOnSelectorState extends State<MultiItemAddOnSelector> {
         },
         choiceItems: addOnGroup.addOns.map((e) => S2Choice(
           value: e,
-          title: e.name,
+          title: e.title,
           subtitle: formatPrice(e.price)
         )).toList()
       ),

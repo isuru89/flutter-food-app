@@ -20,19 +20,22 @@ MenuItem _$MenuItemFromJson(Map<String, dynamic> json) {
         ? null
         : ItemAttributes.fromJson(
             json['itemAttributes'] as Map<String, dynamic>),
+    addOnGroupIds:
+        (json['addOnGroupIds'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
 Map<String, dynamic> _$MenuItemToJson(MenuItem instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'price': instance.price,
       'description': instance.description,
       'calories': instance.calories,
       'rating': instance.rating,
       'imageUrl': instance.imageUrl,
       'prepTime': instance.prepTime,
       'itemAttributes': instance.itemAttributes?.toJson(),
+      'addOnGroupIds': instance.addOnGroupIds,
+      'price': instance.price,
     };
 
 ItemAttributes _$ItemAttributesFromJson(Map<String, dynamic> json) {
@@ -52,37 +55,36 @@ Map<String, dynamic> _$ItemAttributesToJson(ItemAttributes instance) =>
 ItemAddOnGroup _$ItemAddOnGroupFromJson(Map<String, dynamic> json) {
   return ItemAddOnGroup(
     json['id'] as String,
-    json['name'] as String,
-    json['minItems'] as int,
-    json['maxItems'] as int,
-    (json['addOns'] as List)
-        ?.map((e) =>
-            e == null ? null : ItemAddOn.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    json['title'] as String,
+    json['minPermitted'] as int,
+    json['maxPermitted'] as int,
+    (json['addOnIds'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
 Map<String, dynamic> _$ItemAddOnGroupToJson(ItemAddOnGroup instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'minItems': instance.minItems,
-      'maxItems': instance.maxItems,
-      'addOns': instance.addOns?.map((e) => e?.toJson())?.toList(),
+      'title': instance.title,
+      'minPermitted': instance.minPermitted,
+      'maxPermitted': instance.maxPermitted,
+      'addOnIds': instance.addOnIds,
     };
 
 ItemAddOn _$ItemAddOnFromJson(Map<String, dynamic> json) {
   return ItemAddOn(
-    json['id'] as String,
-    json['name'] as String,
-    (json['price'] as num)?.toDouble(),
-    json['description'] as String,
+    id: json['id'] as String,
+    title: json['title'] as String,
+    price: json['price'],
+    description: json['description'] as String,
+    isSoldOut: json['isSoldOut'] as bool,
   );
 }
 
 Map<String, dynamic> _$ItemAddOnToJson(ItemAddOn instance) => <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
+      'title': instance.title,
       'description': instance.description,
       'price': instance.price,
+      'isSoldOut': instance.isSoldOut,
     };

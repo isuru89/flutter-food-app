@@ -274,7 +274,7 @@ class _CartPanel extends State<CartPanel> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(child: Text("${item.menuItem.title}")),
-                          _printAddOnLines(item, themeData),
+                          _printAddOnLines(item, themeData, context),
                           SizedBox(
                             height: kPadding,
                           ),
@@ -318,38 +318,43 @@ class _CartPanel extends State<CartPanel> {
     );
   }
 
-  Widget _printAddOnLines(CartItem cartItem, ThemeData themeData) {
+  Widget _printAddOnLines(CartItem cartItem, ThemeData themeData, BuildContext context) {
     if (cartItem.addOns == null || cartItem.addOns.isEmpty) {
       return Container();
     }
 
-    return Column(
-      children: cartItem.addOns.keys.map((addOnGroupName) {
-        var grpName = _findAddOnGroupName(addOnGroupName, cartItem);
-        var addonNames = _findAddOnNames(
-                addOnGroupName, cartItem.addOns[addOnGroupName], cartItem)
-            .join(", ");
-        return Text(
-          "   - $grpName: $addonNames",
-          style: themeData.textTheme.subtitle2.copyWith(fontSize: 12),
-        );
-      }).toList(),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: cartItem.addOns.keys.map((addOnGroupName) {
+          var grpName = _findAddOnGroupName(addOnGroupName, cartItem);
+          var addonNames = _findAddOnNames(
+                  addOnGroupName, cartItem.addOns[addOnGroupName], cartItem)
+              .join(", ");
+          return Text(
+            "   - $grpName: $addonNames",
+            style: themeData.textTheme.subtitle2.copyWith(fontSize: 12),
+            maxLines: 2,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          );
+        }).toList(),
+      ),
     );
   }
 
   String _findAddOnGroupName(String id, CartItem cartItem) {
-    return null;
-    // return cartItem.menuItem.addOnGroups.firstWhere((ag) => ag.id == id).name;
+    return cartItem.menuItem.addOnGroups.firstWhere((ag) => ag.id == id).title;
   }
 
   List<String> _findAddOnNames(
       String groupId, List<String> ids, CartItem cartItem) {
-        return List();
-    // return cartItem.menuItem.addOnGroups
-    //     .firstWhere((ag) => ag.id == groupId)
-    //     .addOns
-    //     .where((ao) => ids.contains(ao.id))
-    //     .map((ao) => ao.name)
-    //     .toList();
+    return cartItem.menuItem.addOnGroups
+        .firstWhere((ag) => ag.id == groupId)
+        .addOns
+        .where((ao) => ids.contains(ao.id))
+        .map((ao) => ao.title)
+        .toList();
   }
 }

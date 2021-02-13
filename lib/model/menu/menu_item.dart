@@ -1,3 +1,4 @@
+import 'package:delizious/model/menu/menu.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'menu_item.g.dart';
@@ -12,7 +13,12 @@ class MenuItem {
   final String imageUrl;
   final int prepTime;
   final ItemAttributes itemAttributes;
+  final List<String> addOnGroupIds;
   double price;
+
+  @JsonKey(ignore: true)
+  List<ItemAddOnGroup> _addOnGroups;
+  List<ItemAddOnGroup> get addOnGroups => _addOnGroups;
 
   MenuItem({
     this.id,
@@ -24,6 +30,7 @@ class MenuItem {
     this.prepTime,
     this.calories = 0,
     this.itemAttributes,
+    this.addOnGroupIds,
   }) {
     this.price = price / 100;
   }
@@ -33,6 +40,14 @@ class MenuItem {
   Map<String, dynamic> toJson() => _$MenuItemToJson(this);
 
   get hasCalories => calories != null && calories > 0;
+
+  void synthesize(Menu menuRef) {
+    if (addOnGroupIds != null) {
+      this._addOnGroups =
+          this.addOnGroupIds.map((ag) => menuRef.addOnGroups[ag]).toList();
+      this._addOnGroups.sort((ag1, ag2) => ag2.minPermitted.compareTo(ag1.minPermitted));
+    }
+  }
 }
 
 @JsonSerializable()
@@ -50,27 +65,47 @@ class ItemAttributes {
 @JsonSerializable(explicitToJson: true)
 class ItemAddOnGroup {
   final String id;
-  final String name;
+  final String title;
 
-  final int minItems;
-  final int maxItems;
-  final List<ItemAddOn> addOns;
+  final int minPermitted;
+  final int maxPermitted;
+  final List<String> addOnIds;
 
-  ItemAddOnGroup(this.id, this.name, this.minItems, this.maxItems, this.addOns);
+  @JsonKey(ignore: true)
+  List<ItemAddOn> _addOns;
+  List<ItemAddOn> get addOns => _addOns;
+
+  ItemAddOnGroup(
+      this.id, this.title, this.minPermitted, this.maxPermitted, this.addOnIds);
 
   factory ItemAddOnGroup.fromJson(Map<String, dynamic> json) =>
       _$ItemAddOnGroupFromJson(json);
   Map<String, dynamic> toJson() => _$ItemAddOnGroupToJson(this);
+
+  void synthesize(Menu menuRef) {
+    if (addOnIds != null) {
+      this._addOns = this.addOnIds.map((ao) => menuRef.addOns[ao]).toList();
+    }
+  }
 }
 
 @JsonSerializable()
 class ItemAddOn {
   final String id;
-  final String name;
+  final String title;
   final String description;
-  final double price;
+  double price;
+  final bool isSoldOut;
 
-  ItemAddOn(this.id, this.name, this.price, this.description);
+  ItemAddOn({
+    this.id,
+    this.title,
+    price,
+    this.description,
+    this.isSoldOut,
+  }) {
+    this.price = price / 100;
+  }
 
   factory ItemAddOn.fromJson(Map<String, dynamic> json) =>
       _$ItemAddOnFromJson(json);
