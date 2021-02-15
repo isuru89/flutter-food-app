@@ -1,5 +1,6 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
 
+import 'package:delizious/model/active_user.dart';
 import 'package:flutter/material.dart';
 import 'package:delizious/model/cart.dart';
 import 'package:delizious/screens/cart_panel.dart';
@@ -12,19 +13,23 @@ import 'constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (context) => Cart(),
-      child: MyApp()
-    )
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider<Cart>(
+        create: (context) => Cart(),
+      ),
+      ChangeNotifierProvider<ActiveUser>(
+        create: (context) => ActiveUser(),
+      ),
+    ], child: MyApp()),
   );
 }
-
 
 class Pair {
   final String name;
   final double height;
 
-  const Pair({ this.name, this.height: 300 });
+  const Pair({this.name, this.height: 300});
 }
 
 class MyApp extends StatelessWidget {
@@ -34,48 +39,47 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return MaterialApp(
-      routes: {
-        '/item': (_) => ItemModal(),
-        '/checkout': (_) => CheckoutPage()
-      },
+      routes: {'/item': (_) => ItemModal(), '/checkout': (_) => CheckoutPage()},
       onGenerateRoute: (settings) {
         if (settings.name == "/cart") {
           return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => CartPanel(),
-            transitionsBuilder: (_, anim, __, child) {
-              var begin = Offset(0.0, 1.0);
-              var end = Offset.zero;
-              var curve = Curves.ease;
+              pageBuilder: (_, __, ___) => CartPanel(),
+              transitionsBuilder: (_, anim, __, child) {
+                var begin = Offset(0.0, 1.0);
+                var end = Offset.zero;
+                var curve = Curves.ease;
 
-              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
 
-              return SlideTransition(
-                position: anim.drive(tween),
-                child: child,
-              );
-            }
-          );
+                return SlideTransition(
+                  position: anim.drive(tween),
+                  child: child,
+                );
+              });
         }
         return MaterialPageRoute(builder: null);
       },
       title: 'Delicious Food App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-        primaryColor: kPrimaryColor,
-        dividerColor: kPrimaryColor,
-        accentColor: kPrimaryColor.shade800,
-        errorColor: kErrorColor,
-        textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
-          headline3: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: kPrimaryColor),
-          headline4: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          headline5: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-          headline6: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
-          subtitle1: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
-          subtitle2: TextStyle(fontSize: 10, fontWeight: FontWeight.w200),
-        )
-      ),
+          brightness: Brightness.light,
+          backgroundColor: Colors.white,
+          primaryColor: kPrimaryColor,
+          dividerColor: kPrimaryColor,
+          accentColor: kPrimaryColor.shade800,
+          errorColor: kErrorColor,
+          textTheme: GoogleFonts.montserratTextTheme(textTheme).copyWith(
+            headline3: GoogleFonts.montserrat(
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
+                color: kPrimaryColor),
+            headline4: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
+            headline5: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400),
+            headline6: GoogleFonts.montserrat(fontSize: 10, fontWeight: FontWeight.w400),
+            subtitle1: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w300),
+            subtitle2: GoogleFonts.montserrat(fontSize: 10, fontWeight: FontWeight.w200),
+          )),
       home: MyStatelessWidget(),
     );
   }

@@ -30,7 +30,6 @@ class _CartPanel extends State<CartPanel> {
   @override
   Widget build(BuildContext context) {
     var themeData = Theme.of(context);
-    print(selectedOrderType);
     var nav = Navigator.of(context);
     return Consumer<Cart>(
       builder: (context, cart, child) => Scaffold(
@@ -111,7 +110,7 @@ class _CartPanel extends State<CartPanel> {
               Expanded(
                 child: cart.hasItems()
                     ? ListView(
-                        padding: const EdgeInsets.all(kPadding),
+                        padding: const EdgeInsets.symmetric(vertical: kPadding),
                         children: [
                             for (var i = 0; i < cart.items.length; i++)
                               createCartItem(
@@ -222,103 +221,105 @@ class _CartPanel extends State<CartPanel> {
 
   Widget createCartItem(BuildContext context, CartItem item, bool isLast,
       ThemeData themeData, Cart cartRef, NavigatorState nav) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-            showModalBottomSheet<void>(
-                context: context,
-                builder: (context) {
-                  return Container(
-                    height: 120,
-                    child: ListView(children: [
-                      ListTile(
-                        title: Text("Edit"),
-                        leading: Icon(Icons.edit),
-                        onTap: () {
-                          Navigator.pop(context);
-                          nav.pushNamed('/item',
-                              arguments:
-                                  ItemModalArguments(null, cartItem: item));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Delete"),
-                        leading: Icon(Icons.delete),
-                        onTap: () {
-                          cartRef.removeItem(item);
-                          Navigator.pop(context);
-                        },
-                      )
-                    ]),
-                  );
-                });
-          },
-          child: Container(
-            padding: const EdgeInsets.only(left: kDoublePadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    MenuItemImage(
-                        imageUrl: item.menuItem.imageUrl,
-                        width: 64,
-                        height: 64),
-                    SizedBox(
-                      width: kDoublePadding,
-                    ),
-                    Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(child: Text("${item.menuItem.title}")),
-                          _printAddOnLines(item, themeData, context),
-                          SizedBox(
-                            height: kPadding,
-                          ),
-                          // Text("\$${formatPrice(item.menuItem.price)}")
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  width: 48,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return Dismissible(
+      key: ValueKey(item.id),
+      background: Container(
+        padding: const EdgeInsets.symmetric(horizontal: kPadding),
+        color: Colors.red,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Delete",
+              style: TextStyle(color: kOnPrimaryColor),
+            ),
+            Text(
+              "Delete",
+              style: TextStyle(color: kOnPrimaryColor),
+            ),
+          ],
+        ),
+      ),
+      dismissThresholds: {DismissDirection.horizontal: 0.4},
+      onDismissed: (direction) {
+        print("yes");
+        cartRef.removeItem(item);
+      },
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              nav.pushNamed('/item',
+                  arguments: ItemModalArguments(null, cartItem: item));
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: kDoublePadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     children: [
-                      GestureDetector(
-                        onTap: () => cartRef.increaseQuantity(item, 1),
-                        child: Icon(Icons.arrow_drop_up,
-                            color: themeData.primaryColor, size: 32),
+                      MenuItemImage(
+                          imageUrl: item.menuItem.imageUrl,
+                          width: 64,
+                          height: 64),
+                      SizedBox(
+                        width: kDoublePadding,
                       ),
-                      Text("x${item.quantity}"),
-                      GestureDetector(
-                        onTap: () => cartRef.decreaseQuantity(item, 1),
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          color: themeData.primaryColor,
-                          size: 32,
+                      Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(child: Text("${item.menuItem.title}")),
+                            _printAddOnLines(item, themeData, context),
+                            SizedBox(
+                              height: kPadding,
+                            ),
+                            // Text("\$${formatPrice(item.menuItem.price)}")
+                          ],
                         ),
                       ),
                     ],
                   ),
-                )
-              ],
+                  Container(
+                    width: 48,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => cartRef.increaseQuantity(item, 1),
+                          child: Icon(Icons.arrow_drop_up,
+                              color: themeData.primaryColor, size: 32),
+                        ),
+                        Text("x${item.quantity}"),
+                        GestureDetector(
+                          onTap: () => cartRef.decreaseQuantity(item, 1),
+                          child: Icon(
+                            Icons.arrow_drop_down,
+                            color: themeData.primaryColor,
+                            size: 32,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        if (!isLast)
-          Divider(
-            color: themeData.primaryColor.withOpacity(0.5),
-          ),
-      ],
+          if (!isLast)
+            Divider(
+              height: 2,
+              color: themeData.primaryColor.withOpacity(0.5),
+            ),
+        ],
+      ),
     );
   }
 
-  Widget _printAddOnLines(CartItem cartItem, ThemeData themeData, BuildContext context) {
+  Widget _printAddOnLines(
+      CartItem cartItem, ThemeData themeData, BuildContext context) {
     if (cartItem.addOns == null || cartItem.addOns.isEmpty) {
       return Container();
     }

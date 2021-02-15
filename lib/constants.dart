@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:delizious/model/view/bottom_panel.dart';
 
 // theme related data
-const kPrimaryColor = Colors.blue;
+const kPrimaryColor = Colors.red;
 const kOnPrimaryColor = Colors.white;
-const kAccentColor = Colors.orange;
-const kErrorColor = Colors.red;
+const kAccentColor = Colors.blue;
+const kErrorColor = Colors.grey;
 
 
 const double kPadding = 8;

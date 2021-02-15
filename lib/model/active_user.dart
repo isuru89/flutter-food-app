@@ -7,13 +7,21 @@ class ActiveUser extends ChangeNotifier {
 
   List<FavouriteItem> _favourites = [];
 
+  bool isMarkedAsFavourite(String id) {
+    print('checking...');
+    print(_favourites);
+    return _favourites.any((it) => it.itemId == id);
+  }
+
   void addToFavourite(FavouriteItem favouriteItem) {
+    print('adding');
     _favourites.add(favouriteItem);
 
     notifyListeners();
   }
 
   void removeFromFavourite(String restaurantId, String itemId) {
+    print('removing');
     _favourites.removeWhere(
         (f) => f.restaurantId == restaurantId && f.itemId == itemId);
 

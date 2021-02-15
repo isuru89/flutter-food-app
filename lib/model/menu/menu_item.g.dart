@@ -22,6 +22,7 @@ MenuItem _$MenuItemFromJson(Map<String, dynamic> json) {
             json['itemAttributes'] as Map<String, dynamic>),
     addOnGroupIds:
         (json['addOnGroupIds'] as List)?.map((e) => e as String)?.toList(),
+    canAddItemInstructions: json['canAddItemInstructions'] as bool,
   );
 }
 
@@ -33,6 +34,7 @@ Map<String, dynamic> _$MenuItemToJson(MenuItem instance) => <String, dynamic>{
       'rating': instance.rating,
       'imageUrl': instance.imageUrl,
       'prepTime': instance.prepTime,
+      'canAddItemInstructions': instance.canAddItemInstructions,
       'itemAttributes': instance.itemAttributes?.toJson(),
       'addOnGroupIds': instance.addOnGroupIds,
       'price': instance.price,

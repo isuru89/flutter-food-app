@@ -12,6 +12,7 @@ class MenuItem {
   final double rating;
   final String imageUrl;
   final int prepTime;
+  final bool canAddItemInstructions;
   final ItemAttributes itemAttributes;
   final List<String> addOnGroupIds;
   double price;
@@ -31,6 +32,7 @@ class MenuItem {
     this.calories = 0,
     this.itemAttributes,
     this.addOnGroupIds,
+    this.canAddItemInstructions,
   }) {
     this.price = price / 100;
   }

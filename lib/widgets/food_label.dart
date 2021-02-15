@@ -61,7 +61,7 @@ class FoodLabel extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Text(label, style: txtStyle),
+        child: Text(label, style: txtStyle.copyWith(fontSize: 11)),
       ),
     );
   }

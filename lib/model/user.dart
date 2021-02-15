@@ -51,4 +51,9 @@ class FavouriteItem {
 
   factory FavouriteItem.fromJson(Map<String, dynamic> json) => _$FavouriteItemFromJson(json);
   Map<String, dynamic> toJson() => _$FavouriteItemToJson(this);
+
+  @override
+  String toString() {
+  return itemId + " " + restaurantId;
+   }
 }

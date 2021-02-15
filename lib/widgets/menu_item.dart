@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:delizious/widgets/food_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:delizious/model/menu/menu_item.dart';
 import 'package:delizious/widgets/menu_item_image.dart';
@@ -54,8 +55,10 @@ class MenuItemWidget extends StatelessWidget {
                               themeData.textTheme.headline4
                                   .copyWith(fontWeight: FontWeight.w800)),
                           SizedBox(height: kPadding),
+                          FoodRating(menuItem.rating / 10,),
+                          SizedBox(height: kPadding,),
                           Labels.createFoodLabels(
-                              menuItem.itemAttributes.dietaryLabels ?? [])
+                              menuItem.itemAttributes.dietaryLabels ?? []),
                         ],
                       ),
                     ),
